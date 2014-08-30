@@ -18,7 +18,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase {
     {
         $this->root = vfsStream::setup('root',null, array(
                 'empty_file.csv',
-                'one_line.csv' => '"className","method","data","dataName"'
+                'one_line.csv' => '"className","method","dataName","data"',
             )
         );
     }

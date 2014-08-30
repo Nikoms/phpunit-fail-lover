@@ -9,8 +9,8 @@ use Nikoms\FailLover\TestCaseResult\TestCase;
 class CsvReader {
     const CLASS_NAME = 0;
     const METHOD_NAME = 1;
-    const DATA = 2;
-    const DATA_NAME = 3;
+    const DATA_NAME = 2;
+    const DATA = 3;
 
     /**
      * @var string
