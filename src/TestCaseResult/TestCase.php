@@ -11,6 +11,12 @@ class TestCase implements TestCaseInterface{
     private $dataName;
     private $data;
 
+    /**
+     * @param string $className
+     * @param string $method
+     * @param string $dataName
+     * @param mixed $data
+     */
     public function __construct($className, $method, $dataName = null, $data = null)
     {
         $this->className = $className;
@@ -19,11 +25,17 @@ class TestCase implements TestCaseInterface{
         $this->data = $data;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->className.'::'.$this->method . $this->getSuffix();
     }
 
+    /**
+     * @return string
+     */
     private function getSuffix()
     {
         $suffix = '';

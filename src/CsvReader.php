@@ -17,11 +17,17 @@ class CsvReader {
      */
     private $fileName;
 
+    /**
+     * @param string $fileName
+     */
     public function __construct($fileName)
     {
         $this->fileName = $fileName;
     }
 
+    /**
+     * @return array
+     */
     public function getList()
     {
         if(!file_exists($this->fileName)){
