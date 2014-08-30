@@ -6,29 +6,28 @@ namespace Nikoms\FailLover\TestCaseResult;
 
 class TestCaseTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetName()
+    public function testGetFilter()
     {
         $testCase = new TestCase('ClassName','method');
-        $this->assertSame('ClassName::method', $testCase->getName());
+        $this->assertSame('^ClassName\:\:method$', $testCase->getFilter());
     }
 
-    public function testGetNameWithNamespace()
+    public function testGetFilterWithNamespace()
     {
         $testCase = new TestCase('TestNamespace\TestCaseClass','testMethod');
-        $this->assertSame('TestNamespace\TestCaseClass::testMethod', $testCase->getName());
+        $this->assertSame('^TestNamespace\\\\TestCaseClass\:\:testMethod$', $testCase->getFilter());
     }
 
-    public function testGetNameWithIndexedData()
+    public function testGetFilterWithIndexedData()
     {
         $testCase = new TestCase('TestNamespace\TestCaseClass','testMethod', 0);
-        $this->assertSame('TestNamespace\TestCaseClass::testMethod#0', $testCase->getName());
+        $this->assertSame('^TestNamespace\\\\TestCaseClass\:\:testMethod#0$', $testCase->getFilter());
     }
 
-    public function testGetNameWithNamedData()
+    public function testGetFilterWithNamedData()
     {
         $testCase = new TestCase('TestNamespace\TestCaseClass','testMethod', 'my named data');
-        $this->assertSame('TestNamespace\TestCaseClass::testMethod@my named data', $testCase->getName());
+        $this->assertSame('^TestNamespace\\\\TestCaseClass\:\:testMethod@my named data$', $testCase->getFilter());
     }
-
 }
  

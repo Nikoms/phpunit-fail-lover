@@ -19,7 +19,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase{
         $filterFactory = new \PHPUnit_Runner_Filter_Factory();
         $filters = array();
         foreach ($testCases as $testCase) {
-            $filters[] = preg_quote($testCase->getName(), '/');
+            $filters[] = $testCase->getFilter();
         }
         $filterFactory->addFilter(
             new \ReflectionClass('PHPUnit_Runner_Filter_Test'),
@@ -42,9 +42,6 @@ class FilterTest extends \PHPUnit_Framework_TestCase{
         return $suite;
     }
 
-    /**
-     * @group XXX
-     */
     public function testFilter_WhenASingleFilterIsSet_OnlyOneTestIsRunning()
     {
         $suite = $this->makeSuite(array('testSimple', 'testToRun', 'testThatWontBeExecuted'));
@@ -52,9 +49,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase{
         $this->addFilterOnSuite($suite, array($testToRun));
         $this->assertCount(1, $suite);
     }
-    /**
-     * @group XXX
-     */
+
     public function testFilter_WhenTwoFiltersAreSet_TwoTestsAreRunning()
     {
         $suite = $this->makeSuite(array('testSimple', 'testToRun', 'testThatWontBeExecuted'));
@@ -64,6 +59,16 @@ class FilterTest extends \PHPUnit_Framework_TestCase{
         );
         $this->addFilterOnSuite($suite, $testsToRun);
         $this->assertCount(2, $suite);
+    }
+
+    public function testFilter_WhenAFilterContainsTheNameOfAnother_TheLongTestIsNotTaken()
+    {
+        $suite = $this->makeSuite(array('testContains', 'testContainsFull'));
+        $testsToRun = array(
+            new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testContains'),
+        );
+        $this->addFilterOnSuite($suite, $testsToRun);
+        $this->assertCount(1, $suite);
     }
 
 } 

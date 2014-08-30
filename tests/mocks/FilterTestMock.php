@@ -18,5 +18,15 @@ class FilterTestMock extends \PHPUnit_Framework_TestCase {
     {
         $this->assertTrue(false);
     }
+
+    public function testContains()
+    {
+        $this->assertTrue(true);
+    }
+
+    public function testContainsFull()
+    {
+        $this->assertTrue(true);
+    }
 }
  

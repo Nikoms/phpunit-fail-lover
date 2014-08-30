@@ -28,10 +28,20 @@ class TestCase implements TestCaseInterface{
     /**
      * @return string
      */
-    public function getName()
+    private function getName()
     {
         return $this->className.'::'.$this->method . $this->getSuffix();
     }
+
+    /**
+     * @param string $separator
+     * @return string
+     */
+    public function getFilter($separator = '/')
+    {
+        return '^'.preg_quote($this->getName(), $separator).'$';
+    }
+
 
     /**
      * @return string
