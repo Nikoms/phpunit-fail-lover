@@ -11,7 +11,7 @@ class FailLoverListener extends \PHPUnit_Framework_BaseTestListener
     private $mustLogError = false;
     private $filePath;
 
-    function __construct($filePath)
+    function __construct($filePath = '')
     {
         $this->filePath = $filePath;
     }

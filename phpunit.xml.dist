@@ -11,8 +11,8 @@
          bootstrap="vendor/autoload.php"
         >
     <testsuites>
-        <testsuite name="myTestFailedSuite">
-            <directory>./tests/failed</directory>
+        <testsuite name="Main suite">
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
     <filter>
