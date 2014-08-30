@@ -21,17 +21,17 @@ class TestCase implements TestCaseInterface{
 
     public function getName()
     {
-        $name = $this->className.'::'.$this->method;
-        if($this->dataName !== null){
-
-            if(is_numeric($this->dataName)){
-                $name .= ' with data set #' . $this->dataName;
-            }else{
-                $name .= ' with data set "'.$this->dataName.'"';
-            }
-        }
-        return $name;
+        return $this->className.'::'.$this->method . $this->getSuffix();
     }
 
+    private function getSuffix()
+    {
+        $suffix = '';
+        if($this->dataName !== null){
+            $prefix = is_numeric($this->dataName) ? '#' : '@';
+            $suffix = $prefix . $this->dataName;
+        }
+        return $suffix;
+    }
 
 }
