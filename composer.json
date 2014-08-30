@@ -11,7 +11,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "Nikoms\\FailLover\\": "src"
+            "Nikoms\\FailLover\\": "src",
+            "Nikoms\\FailLover\\Tests\\" : "tests/mocks"
         }
     },
     "require-dev": {
