@@ -22,4 +22,19 @@ class TestCaseRecorder
             }
         }
     }
+
+    public function add(\PHPUnit_Framework_TestCase $testCase)
+    {
+        $reflectionClass = new \ReflectionClass($testCase);
+        $columns = array(
+            $reflectionClass->getName(),
+            $testCase->getName(false),
+            '',
+            '',
+        );
+
+        $fp = fopen($this->filePath, 'a');
+        fputcsv($fp, $columns);
+        fclose($fp);
+    }
 } 
