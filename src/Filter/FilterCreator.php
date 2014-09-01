@@ -17,8 +17,15 @@ class FilterCreator {
         $this->reader = $reader;
     }
 
+    /**
+     * @return string
+     */
     public function getFilter()
     {
-        return '';
+        $filters = array();
+        foreach ($this->reader->getList() as $testCase) {
+            $filters[] = $testCase->getFilter();
+        }
+        return implode('|', $filters);
     }
 } 
