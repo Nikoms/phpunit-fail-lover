@@ -5,9 +5,9 @@ namespace Nikoms\FailLover\FileSystem\Csv;
 
 
 use Nikoms\FailLover\TestCaseResult\Exception\FileNotCreatedException;
-use Nikoms\FailLover\TestCaseResult\TestCaseRecorderInterface;
+use Nikoms\FailLover\TestCaseResult\RecorderInterface;
 
-class CsvRecorder implements TestCaseRecorderInterface
+class CsvRecorder implements RecorderInterface
 {
     /**
      * @var string

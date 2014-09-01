@@ -4,7 +4,7 @@
 namespace Nikoms\FailLover\TestCaseResult;
 
 
-interface TestCaseRecorderInterface
+interface RecorderInterface
 {
     /**
      * @param \PHPUnit_Framework_TestCase $testCase
