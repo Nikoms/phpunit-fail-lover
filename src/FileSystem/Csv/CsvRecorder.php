@@ -48,10 +48,10 @@ class CsvRecorder implements TestCaseRecorderInterface
     {
         $reflectionClass = new \ReflectionClass($testCase);
         $columns = array(
-            Csv::CLASS_NAME_COLUMN => $reflectionClass->getName(),
-            Csv::METHOD_NAME_COLUMN => $testCase->getName(false),
-            Csv::DATA_NAME_COLUMN => '',
-            Csv::DATA_COLUMN => '',
+            Columns::CLASS_NAME => $reflectionClass->getName(),
+            Columns::METHOD_NAME => $testCase->getName(false),
+            Columns::DATA_NAME => '',
+            Columns::DATA => '',
         );
         ksort($columns);
         return $columns;

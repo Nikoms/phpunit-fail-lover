@@ -33,7 +33,7 @@ class CsvReader {
         $list = array();
         if (($handle = fopen($this->fileName, "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                $list[] = new TestCase($data[Csv::CLASS_NAME_COLUMN], $data[Csv::METHOD_NAME_COLUMN], $data[Csv::DATA_NAME_COLUMN], $data[Csv::DATA_COLUMN]);
+                $list[] = new TestCase($data[Columns::CLASS_NAME], $data[Columns::METHOD_NAME], $data[Columns::DATA_NAME], $data[Columns::DATA]);
             }
             fclose($handle);
         }
