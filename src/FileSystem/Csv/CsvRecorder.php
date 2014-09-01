@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Nikoms\FailLover\TestCaseResult;
+namespace Nikoms\FailLover\FileSystem\Csv;
 
 
-use Nikoms\FailLover\Csv;
 use Nikoms\FailLover\TestCaseResult\Exception\FileNotCreatedException;
+use Nikoms\FailLover\TestCaseResult\TestCaseRecorderInterface;
 
-class TestCaseRecorder implements TestCaseRecorderInterface
+class CsvRecorder implements TestCaseRecorderInterface
 {
     /**
      * @var string

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Nikoms\FailLover;
+namespace Nikoms\FailLover\FileSystem\Csv;
 
 
 use Nikoms\FailLover\TestCaseResult\TestCase;

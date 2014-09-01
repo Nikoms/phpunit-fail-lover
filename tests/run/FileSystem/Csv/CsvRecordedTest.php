@@ -4,11 +4,12 @@
 namespace Nikoms\FailLover\TestCaseResult;
 
 
+use Nikoms\FailLover\FileSystem\Csv\CsvRecorder;
 use Nikoms\FailLover\Tests\FilterTestMock;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 
-class TestCaseRecorderTest extends \PHPUnit_Framework_TestCase {
+class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @var vfsStreamDirectory
@@ -28,14 +29,14 @@ class TestCaseRecorderTest extends \PHPUnit_Framework_TestCase {
     public function testContruct_WhenTheFileDoesNotExist_TheFileIsCreated()
     {
         $filePath = $this->root->url() . '/unknown_file.csv';
-        new TestCaseRecorder($filePath);
+        new CsvRecorder($filePath);
         $this->assertFileExists($filePath);
     }
 
     public function testAdd_WhenTheFileIsEmpty_OneLineIsAdded()
     {
         $filePath = $this->root->url() . '/empty_file.csv';
-        $recorder = new TestCaseRecorder($filePath);
+        $recorder = new CsvRecorder($filePath);
         $testCase = new FilterTestMock('testSimple');
 
         $recorder->add($testCase);
@@ -46,7 +47,7 @@ class TestCaseRecorderTest extends \PHPUnit_Framework_TestCase {
     public function testAdd_WhenAddIsCalledTwice_TwoLinesAreAdded()
     {
         $filePath = $this->root->url() . '/empty_file.csv';
-        $recorder = new TestCaseRecorder($filePath);
+        $recorder = new CsvRecorder($filePath);
 
         $testCase = new FilterTestMock('testSimple');
         $recorder->add($testCase);

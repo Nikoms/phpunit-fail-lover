@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Nikoms\FailLover;
+namespace Nikoms\FailLover\FileSystem\Csv;
 
 
 class Csv {
