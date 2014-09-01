@@ -6,7 +6,7 @@ namespace Nikoms\FailLover\Filter;
 
 use Nikoms\FailLover\TestCaseResult\ReaderInterface;
 
-class FilterCreator {
+class Filter {
 
     /**
      * @var ReaderInterface
@@ -20,7 +20,7 @@ class FilterCreator {
     /**
      * @return string
      */
-    public function getFilter()
+    public function __toString()
     {
         $filters = array();
         foreach ($this->reader->getList() as $testCase) {
