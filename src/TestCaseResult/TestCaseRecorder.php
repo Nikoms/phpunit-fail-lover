@@ -25,16 +25,19 @@ class TestCaseRecorder
 
     public function add(\PHPUnit_Framework_TestCase $testCase)
     {
+        $fp = fopen($this->filePath, 'a');
+        fputcsv($fp, $this->getColumns($testCase));
+        fclose($fp);
+    }
+
+    private function getColumns(\PHPUnit_Framework_TestCase $testCase)
+    {
         $reflectionClass = new \ReflectionClass($testCase);
-        $columns = array(
+        return array(
             $reflectionClass->getName(),
             $testCase->getName(false),
             '',
             '',
         );
-
-        $fp = fopen($this->filePath, 'a');
-        fputcsv($fp, $columns);
-        fclose($fp);
     }
 } 
