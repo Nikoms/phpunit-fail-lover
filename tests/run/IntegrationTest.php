@@ -34,14 +34,10 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase{
         $suite->injectFilter($filterFactory->createFactory(new Filter($this->reader)));
     }
 
-    /**
-     * @param array $tests
-     * @return \PHPUnit_Framework_TestSuite
-     */
-    private function makeSuite(array $tests)
+    private function createSuiteWithTests()
     {
         $suite = new \PHPUnit_Framework_TestSuite('Test');
-        foreach ($tests as $testName) {
+        foreach (func_get_args() as $testName) {
             $suite->addTest(new FilterTestMock($testName));
         }
         return $suite;
@@ -49,7 +45,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase{
 
     public function testFilter_WhenASingleFilterIsSet_OnlyOneTestIsRunning()
     {
-        $suite = $this->makeSuite(array('testSimple', 'testToRun', 'testThatWontBeExecuted'));
+        $suite = $this->createSuiteWithTests('testSimple', 'testToRun', 'testThatWontBeExecuted');
         $this->reader->expects($this->any())->method('getList')->willReturn(array(
                 new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testSimple')
             )
@@ -61,7 +57,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase{
 
     public function testFilter_WhenTwoFiltersAreSet_TwoTestsAreRunning()
     {
-        $suite = $this->makeSuite(array('testSimple', 'testToRun', 'testThatWontBeExecuted'));
+        $suite = $this->createSuiteWithTests('testSimple', 'testToRun', 'testThatWontBeExecuted');
         $this->reader->expects($this->any())->method('getList')->willReturn(array(
                 new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testSimple'),
                 new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testToRun')
@@ -74,7 +70,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase{
 
     public function testFilter_WhenAFilterContainsTheNameOfAnother_TheLongTestIsNotTaken()
     {
-        $suite = $this->makeSuite(array('testContains', 'testContainsFull'));
+        $suite = $this->createSuiteWithTests('testContains', 'testContainsFull');
         $this->reader->expects($this->any())->method('getList')->willReturn(array(
                 new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testContains'),
             )
