@@ -20,8 +20,7 @@ class TestCaseRecorderTest extends \PHPUnit_Framework_TestCase {
         $this->root = vfsStream::setup('root',null, array(
                 'empty_file.csv' => '',
                 'empty_file_after_add_one_line.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testSimple,,' . "\n",
-//                'one_line.csv' => '"className","method","dataName","data"',
-//                'two_lines.csv' => '"className1","method1","dataName1","data1"'.PHP_EOL.'"className2","method2","dataName2","data2"',
+                'empty_file_after_add_two_lines.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testSimple,,' . "\n" . '"Nikoms\FailLover\Tests\FilterTestMock",testToRun,,' . "\n",
             )
         );
     }
@@ -42,6 +41,19 @@ class TestCaseRecorderTest extends \PHPUnit_Framework_TestCase {
         $recorder->add($testCase);
 
         $this->assertFileEquals($this->root->url() . '/empty_file_after_add_one_line.csv', $filePath);
+    }
+
+    public function testAdd_WhenAddIsCalledTwice_TwoLinesAreAdded()
+    {
+        $filePath = $this->root->url() . '/empty_file.csv';
+        $recorder = new TestCaseRecorder($filePath);
+
+        $testCase = new FilterTestMock('testSimple');
+        $recorder->add($testCase);
+        $testCase = new FilterTestMock('testToRun');
+        $recorder->add($testCase);
+
+        $this->assertFileEquals($this->root->url() . '/empty_file_after_add_two_lines.csv', $filePath);
     }
 }
  
