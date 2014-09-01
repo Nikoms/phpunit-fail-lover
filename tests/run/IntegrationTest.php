@@ -5,6 +5,7 @@ namespace Nikoms\FailLover;
 
 
 use Nikoms\FailLover\Filter\Filter;
+use Nikoms\FailLover\Filter\FilterFactory;
 use Nikoms\FailLover\TestCaseResult\ReaderInterface;
 use Nikoms\FailLover\TestCaseResult\TestCase;
 use Nikoms\FailLover\Tests\FilterTestMock;
@@ -13,7 +14,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase{
 
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject|ReaderInterface
      */
     private $reader;
 
@@ -26,17 +27,11 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase{
 
     /**
      * @param \PHPUnit_Framework_TestSuite $suite
-     * @param ReaderInterface $reader
      */
-    private function addFilterOnSuite(\PHPUnit_Framework_TestSuite $suite, ReaderInterface $reader)
+    private function addFilterOnSuite(\PHPUnit_Framework_TestSuite $suite)
     {
-        $filterFactory = new \PHPUnit_Runner_Filter_Factory();
-        $filterFactory->addFilter(
-            new \ReflectionClass('PHPUnit_Runner_Filter_Test'),
-            (string) new Filter($reader)
-        );
-
-        $suite->injectFilter($filterFactory);
+        $filterFactory = new FilterFactory();
+        $suite->injectFilter($filterFactory->createFactory(new Filter($this->reader)));
     }
 
     /**
@@ -60,7 +55,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase{
             )
         );
 
-        $this->addFilterOnSuite($suite, $this->reader);
+        $this->addFilterOnSuite($suite);
         $this->assertCount(1, $suite);
     }
 
@@ -73,7 +68,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase{
             )
         );
 
-        $this->addFilterOnSuite($suite, $this->reader);
+        $this->addFilterOnSuite($suite);
         $this->assertCount(2, $suite);
     }
 
@@ -86,7 +81,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase{
         );
 
 
-        $this->addFilterOnSuite($suite, $this->reader);
+        $this->addFilterOnSuite($suite);
         $this->assertCount(1, $suite);
     }
 
