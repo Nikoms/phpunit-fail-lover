@@ -1,6 +1,6 @@
 <?php
 
-namespace Nikoms\FailLover;
+namespace Nikoms\FailLover\Listener;
 
 use PHPUnit_Framework_AssertionFailedError;
 use PHPUnit_Framework_Test;
