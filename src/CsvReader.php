@@ -7,10 +7,6 @@ namespace Nikoms\FailLover;
 use Nikoms\FailLover\TestCaseResult\TestCase;
 
 class CsvReader {
-    const CLASS_NAME_COLUMN = 0;
-    const METHOD_NAME_COLUMN = 1;
-    const DATA_NAME_COLUMN = 2;
-    const DATA_COLUMN = 3;
 
     /**
      * @var string
@@ -37,7 +33,7 @@ class CsvReader {
         $list = array();
         if (($handle = fopen($this->fileName, "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                $list[] = new TestCase($data[self::CLASS_NAME_COLUMN], $data[self::METHOD_NAME_COLUMN], $data[self::DATA_NAME_COLUMN], $data[self::DATA_COLUMN]);
+                $list[] = new TestCase($data[Csv::CLASS_NAME_COLUMN], $data[Csv::METHOD_NAME_COLUMN], $data[Csv::DATA_NAME_COLUMN], $data[Csv::DATA_COLUMN]);
             }
             fclose($handle);
         }
