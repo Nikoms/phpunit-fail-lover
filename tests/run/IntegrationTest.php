@@ -4,26 +4,36 @@
 namespace Nikoms\FailLover;
 
 
+use Nikoms\FailLover\Filter\Filter;
+use Nikoms\FailLover\TestCaseResult\ReaderInterface;
 use Nikoms\FailLover\TestCaseResult\TestCase;
 use Nikoms\FailLover\Tests\FilterTestMock;
 
-class FilterTest extends \PHPUnit_Framework_TestCase{
+class IntegrationTest extends \PHPUnit_Framework_TestCase{
 
 
     /**
-     * @param \PHPUnit_Framework_TestSuite $suite
-     * @param TestCase[] $testCases
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    private function addFilterOnSuite(\PHPUnit_Framework_TestSuite $suite, array $testCases)
+    private $reader;
+
+    public function setUp()
+    {
+        $this->reader = $this->getMockBuilder('Nikoms\FailLover\TestCaseResult\ReaderInterface')
+            ->setMethods(array('getList'))
+            ->getMock();
+    }
+
+    /**
+     * @param \PHPUnit_Framework_TestSuite $suite
+     * @param ReaderInterface $reader
+     */
+    private function addFilterOnSuite(\PHPUnit_Framework_TestSuite $suite, ReaderInterface $reader)
     {
         $filterFactory = new \PHPUnit_Runner_Filter_Factory();
-        $filters = array();
-        foreach ($testCases as $testCase) {
-            $filters[] = $testCase->getFilter();
-        }
         $filterFactory->addFilter(
             new \ReflectionClass('PHPUnit_Runner_Filter_Test'),
-            implode('|', $filters)
+            (string) new Filter($reader)
         );
 
         $suite->injectFilter($filterFactory);
@@ -45,29 +55,38 @@ class FilterTest extends \PHPUnit_Framework_TestCase{
     public function testFilter_WhenASingleFilterIsSet_OnlyOneTestIsRunning()
     {
         $suite = $this->makeSuite(array('testSimple', 'testToRun', 'testThatWontBeExecuted'));
-        $testToRun = new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testSimple');
-        $this->addFilterOnSuite($suite, array($testToRun));
+        $this->reader->expects($this->any())->method('getList')->willReturn(array(
+                new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testSimple')
+            )
+        );
+
+        $this->addFilterOnSuite($suite, $this->reader);
         $this->assertCount(1, $suite);
     }
 
     public function testFilter_WhenTwoFiltersAreSet_TwoTestsAreRunning()
     {
         $suite = $this->makeSuite(array('testSimple', 'testToRun', 'testThatWontBeExecuted'));
-        $testsToRun = array(
-            new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testSimple'),
-            new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testToRun')
+        $this->reader->expects($this->any())->method('getList')->willReturn(array(
+                new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testSimple'),
+                new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testToRun')
+            )
         );
-        $this->addFilterOnSuite($suite, $testsToRun);
+
+        $this->addFilterOnSuite($suite, $this->reader);
         $this->assertCount(2, $suite);
     }
 
     public function testFilter_WhenAFilterContainsTheNameOfAnother_TheLongTestIsNotTaken()
     {
         $suite = $this->makeSuite(array('testContains', 'testContainsFull'));
-        $testsToRun = array(
-            new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testContains'),
+        $this->reader->expects($this->any())->method('getList')->willReturn(array(
+                new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testContains'),
+            )
         );
-        $this->addFilterOnSuite($suite, $testsToRun);
+
+
+        $this->addFilterOnSuite($suite, $this->reader);
         $this->assertCount(1, $suite);
     }
 
