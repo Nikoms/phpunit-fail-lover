@@ -4,9 +4,10 @@
 namespace Nikoms\FailLover\FileSystem\Csv;
 
 
+use Nikoms\FailLover\TestCaseResult\ReaderInterface;
 use Nikoms\FailLover\TestCaseResult\TestCase;
 
-class CsvReader {
+class CsvReader implements ReaderInterface{
 
     /**
      * @var string
@@ -22,7 +23,7 @@ class CsvReader {
     }
 
     /**
-     * @return array
+     * @return \Nikoms\FailLover\TestCaseResult\TestCase[]
      */
     public function getList()
     {
