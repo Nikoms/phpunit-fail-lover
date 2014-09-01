@@ -7,13 +7,17 @@ namespace Nikoms\FailLover\TestCaseResult;
 use Nikoms\FailLover\Csv;
 use Nikoms\FailLover\TestCaseResult\Exception\FileNotCreatedException;
 
-class TestCaseRecorder
+class TestCaseRecorder implements TestCaseRecorderInterface
 {
     /**
      * @var string
      */
     private $filePath;
 
+    /**
+     * @param $filePath
+     * @throws FileNotCreatedException
+     */
     public function __construct($filePath)
     {
         $this->filePath = $filePath;
@@ -24,13 +28,22 @@ class TestCaseRecorder
         }
     }
 
+    /**
+     * @param \PHPUnit_Framework_TestCase $testCase
+     * @return bool
+     */
     public function add(\PHPUnit_Framework_TestCase $testCase)
     {
         $fp = fopen($this->filePath, 'a');
-        fputcsv($fp, $this->getColumns($testCase));
+        $added = false !== fputcsv($fp, $this->getColumns($testCase));
         fclose($fp);
+        return $added;
     }
 
+    /**
+     * @param \PHPUnit_Framework_TestCase $testCase
+     * @return array
+     */
     private function getColumns(\PHPUnit_Framework_TestCase $testCase)
     {
         $reflectionClass = new \ReflectionClass($testCase);
