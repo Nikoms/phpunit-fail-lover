@@ -56,4 +56,35 @@ class TestCase implements TestCaseInterface{
         return $suffix;
     }
 
+    /**
+     * @return string
+     */
+    public function getClassName()
+    {
+        return $this->className;
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getDataName()
+    {
+        return $this->dataName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethod()
+    {
+        return $this->method;
+    }
 }
