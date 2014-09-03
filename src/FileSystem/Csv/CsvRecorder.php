@@ -5,7 +5,6 @@ namespace Nikoms\FailLover\FileSystem\Csv;
 
 
 use Nikoms\FailLover\TestCaseResult\Exception\FileNotCreatedException;
-use Nikoms\FailLover\TestCaseResult\Exception\NoFileGivenException;
 use Nikoms\FailLover\TestCaseResult\RecorderInterface;
 
 class CsvRecorder implements RecorderInterface
@@ -18,13 +17,13 @@ class CsvRecorder implements RecorderInterface
     /**
      * @param $filePath
      * @throws FileNotCreatedException
-     * @throws NoFileGivenException
+     * @throws \InvalidArgumentException
      */
     public function __construct($filePath)
     {
         $filePath = (string) $filePath;
         if($filePath === '' || is_dir($filePath)){
-            throw new NoFileGivenException();
+            throw new \InvalidArgumentException();
         }
         $this->filePath = $filePath;
         if (!file_exists($this->filePath)) {

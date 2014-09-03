@@ -35,13 +35,13 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
 
     public function testConstruct_WhenTheFileIsEmpty_AnExceptionOccur()
     {
-        $this->setExpectedException('Nikoms\FailLover\TestCaseResult\Exception\NoFileGivenException');
+        $this->setExpectedException('\InvalidArgumentException');
         new CsvRecorder('');
     }
 
     public function testConstruct_WhenTheFileIsAFolder_AnExceptionOccur()
     {
-        $this->setExpectedException('Nikoms\FailLover\TestCaseResult\Exception\NoFileGivenException');
+        $this->setExpectedException('\InvalidArgumentException');
         new CsvRecorder($this->root->url());
     }
 
