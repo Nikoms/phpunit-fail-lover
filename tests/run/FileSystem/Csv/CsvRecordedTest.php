@@ -33,16 +33,22 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $this->assertFileExists($filePath);
     }
 
-    public function testConstruct_WhenTheFileIsEmpty_AnExceptionOccured()
+    public function testConstruct_WhenTheFileIsEmpty_AnExceptionOccur()
     {
         $this->setExpectedException('Nikoms\FailLover\TestCaseResult\Exception\NoFileGivenException');
         new CsvRecorder('');
     }
 
-    public function testConstruct_WhenTheFileIsAFolder_AnExceptionOccured()
+    public function testConstruct_WhenTheFileIsAFolder_AnExceptionOccur()
     {
         $this->setExpectedException('Nikoms\FailLover\TestCaseResult\Exception\NoFileGivenException');
         new CsvRecorder($this->root->url());
+    }
+
+    public function testConstruct_WhenTheFolderDoesNotExists_AnExceptionOccur()
+    {
+        $this->setExpectedException('Nikoms\FailLover\TestCaseResult\Exception\FileNotCreatedException');
+        new CsvRecorder($this->root->url() . '/unknown_dir/unknown_file.csv');
     }
 
     public function testAdd_WhenTheFileIsEmpty_OneLineIsAdded()

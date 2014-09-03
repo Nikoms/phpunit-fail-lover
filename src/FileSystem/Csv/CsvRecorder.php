@@ -28,7 +28,7 @@ class CsvRecorder implements RecorderInterface
         }
         $this->filePath = $filePath;
         if (!file_exists($this->filePath)) {
-            if(file_put_contents($this->filePath, '') === false){
+            if(@file_put_contents($this->filePath, '') === false){
                 throw new FileNotCreatedException();
             }
         }
