@@ -58,7 +58,7 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
     {
         $filePath = $this->root->url() . '/empty_file.csv';
         $recorder = new CsvRecorder($filePath);
-        $recorder->add(new FilterTestMock('testSimple'));
+        $this->assertTrue($recorder->add(new FilterTestMock('testSimple')));
 
         $this->assertFileEquals($this->root->url() . '/empty_file_after_add_one_line.csv', $filePath);
     }
@@ -68,8 +68,8 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $filePath = $this->root->url() . '/empty_file.csv';
         $recorder = new CsvRecorder($filePath);
 
-        $recorder->add(new FilterTestMock('testSimple'));
-        $recorder->add(new FilterTestMock('testToRun'));
+        $this->assertTrue($recorder->add(new FilterTestMock('testSimple')));
+        $this->assertTrue($recorder->add(new FilterTestMock('testToRun')));
 
         $this->assertFileEquals($this->root->url() . '/empty_file_after_add_two_lines.csv', $filePath);
     }
@@ -79,7 +79,7 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $filePath = $this->root->url() . '/empty_file.csv';
         $recorder = new CsvRecorder($filePath);
 
-        $recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('no empty data'), '0'));
+        $this->assertTrue($recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('no empty data'), '0')));
         $this->assertFileEquals($this->root->url() . '/empty_file_after_add_one_line_with_indexed_data_0.csv', $filePath);
     }
 
@@ -88,8 +88,8 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $filePath = $this->root->url() . '/empty_file.csv';
         $recorder = new CsvRecorder($filePath);
 
-        $recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('data 0'), 0));
-        $recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('data 1'), 'myIndex'));
+        $this->assertTrue($recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('data 0'), 0)));
+        $this->assertTrue($recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('data 1'), 'myIndex')));
         $this->assertFileEquals($this->root->url() . '/empty_file_after_add_two_lines_with_indexed_data.csv', $filePath);
     }
 
@@ -98,7 +98,7 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $filePath = $this->root->url() . '/empty_file.csv';
         $recorder = new CsvRecorder($filePath);
 
-        $recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('data 1'), '"myIndex"'));
+        $this->assertTrue($recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('data 1'), '"myIndex"')));
         $this->assertFileEquals($this->root->url() . '/empty_file_after_add_one_line_with_double_quote_index.csv', $filePath);
     }
 }
