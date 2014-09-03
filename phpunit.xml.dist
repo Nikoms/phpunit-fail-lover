@@ -24,7 +24,7 @@
             </exclude>
         </whitelist>
     </filter>
-    <listeners>
-        <listener class="Nikoms\FailLover\Listener\FailLoverListener" file="src/Listener/FailLoverListener.php" />
-    </listeners>
+    <!--<listeners>-->
+        <!--<listener class="Nikoms\FailLover\Listener\FailLoverListener" file="src/Listener/FailLoverListener.php" />-->
+    <!--</listeners>-->
 </phpunit>
