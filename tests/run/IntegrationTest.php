@@ -88,10 +88,33 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase{
 
     public function testFilter_WhenAFilterHasIndex_OnlyTheSpecifiedIndexedTestIsRunning()
     {
-
         $suite = $this->createSuiteWithTests(array('testName' =>'testWithData', 'dataName' => 0), array('testName' =>'testWithData', 'dataName' => 1));
         $this->reader->expects($this->any())->method('getList')->willReturn(array(
                 new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testWithData', 0),
+            )
+        );
+
+        $this->addFilterOnSuite($suite);
+        $this->assertCount(1, $suite);
+    }
+
+    public function testFilter_WhenAFilterHasStringIndex_OnlyTheSpecifiedIndexedTestIsRunning()
+    {
+        $suite = $this->createSuiteWithTests(array('testName' =>'testWithData', 'dataName' => 'runMe'), array('testName' =>'testWithData', 'dataName' => 'forgetMe'));
+        $this->reader->expects($this->any())->method('getList')->willReturn(array(
+                new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testWithData', 'runMe'),
+            )
+        );
+
+        $this->addFilterOnSuite($suite);
+        $this->assertCount(1, $suite);
+    }
+
+    public function testFilter_WhenAFilterHasDoubleQuoteStringIndex_OnlyTheSpecifiedIndexedTestIsRunning()
+    {
+        $suite = $this->createSuiteWithTests(array('testName' =>'testWithData', 'dataName' => '"runMe"'), array('testName' =>'testWithData', 'dataName' => '"forgetMe"'));
+        $this->reader->expects($this->any())->method('getList')->willReturn(array(
+                new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testWithData', '"runMe"'),
             )
         );
 
