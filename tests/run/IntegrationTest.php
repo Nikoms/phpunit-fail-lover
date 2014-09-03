@@ -86,7 +86,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase{
         $this->assertCount(1, $suite);
     }
 
-    public function testFilter_WhenAFilterHasIndex_OnlyTheSpecifiedIndexedTestIsRunning()
+    public function testFilter_WhenAFilterHasIndexedData_OnlyTheSpecifiedIndexedTestIsRunning()
     {
         $suite = $this->createSuiteWithTests(array('testName' =>'testWithData', 'dataName' => 0), array('testName' =>'testWithData', 'dataName' => 1));
         $this->reader->expects($this->any())->method('getList')->willReturn(array(
@@ -98,7 +98,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase{
         $this->assertCount(1, $suite);
     }
 
-    public function testFilter_WhenAFilterHasStringIndex_OnlyTheSpecifiedIndexedTestIsRunning()
+    public function testFilter_WhenAFilterHasNamedData_OnlyTheSpecifiedNamedTestIsRunning()
     {
         $suite = $this->createSuiteWithTests(array('testName' =>'testWithData', 'dataName' => 'runMe'), array('testName' =>'testWithData', 'dataName' => 'forgetMe'));
         $this->reader->expects($this->any())->method('getList')->willReturn(array(
@@ -110,7 +110,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase{
         $this->assertCount(1, $suite);
     }
 
-    public function testFilter_WhenAFilterHasDoubleQuoteStringIndex_OnlyTheSpecifiedIndexedTestIsRunning()
+    public function testFilter_WhenAFilterHasDoubleQuoteNamedData_OnlyTheSpecifiedNamedTestIsRunning()
     {
         $suite = $this->createSuiteWithTests(array('testName' =>'testWithData', 'dataName' => '"runMe"'), array('testName' =>'testWithData', 'dataName' => '"forgetMe"'));
         $this->reader->expects($this->any())->method('getList')->willReturn(array(
