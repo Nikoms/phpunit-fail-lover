@@ -48,12 +48,14 @@ class TestCase implements TestCaseInterface{
      */
     private function getSuffix()
     {
-        $suffix = '';
-        if($this->dataName !== null){
-            $prefix = is_numeric($this->dataName) ? '#' : '@';
-            $suffix = $prefix . $this->dataName;
+        if($this->dataName === null){
+            return '';
         }
-        return $suffix;
+        if(is_numeric($this->dataName)){
+            return ' with data set #'.$this->dataName;
+        }else{
+            return ' with data set "'.$this->dataName.'"';
+        }
     }
 
     /**

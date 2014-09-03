@@ -37,8 +37,13 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase{
     private function createSuiteWithTests()
     {
         $suite = new \PHPUnit_Framework_TestSuite('Test');
-        foreach (func_get_args() as $testName) {
-            $suite->addTest(new FilterTestMock($testName));
+        foreach (func_get_args() as $test) {
+            if(is_array($test)){
+                $mock = new FilterTestMock($test['testName'], array('faked data'), $test['dataName']);
+            }else{
+                $mock = new FilterTestMock($test);
+            }
+            $suite->addTest($mock);
         }
         return $suite;
     }
@@ -76,6 +81,19 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase{
             )
         );
 
+
+        $this->addFilterOnSuite($suite);
+        $this->assertCount(1, $suite);
+    }
+
+    public function testFilter_WhenAFilterHasIndex_OnlyTheSpecifiedIndexedTestIsRunning()
+    {
+
+        $suite = $this->createSuiteWithTests(array('testName' =>'testWithData', 'dataName' => 0), array('testName' =>'testWithData', 'dataName' => 1));
+        $this->reader->expects($this->any())->method('getList')->willReturn(array(
+                new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testWithData', 0),
+            )
+        );
 
         $this->addFilterOnSuite($suite);
         $this->assertCount(1, $suite);

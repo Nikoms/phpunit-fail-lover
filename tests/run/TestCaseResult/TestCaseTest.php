@@ -21,13 +21,13 @@ class TestCaseTest extends \PHPUnit_Framework_TestCase
     public function testGetFilterWithIndexedData()
     {
         $testCase = new TestCase('TestNamespace\TestCaseClass','testMethod', 0);
-        $this->assertSame('^TestNamespace\\\\TestCaseClass\:\:testMethod#0$', $testCase->getFilter());
+        $this->assertSame('^TestNamespace\\\\TestCaseClass\:\:testMethod with data set #0$', $testCase->getFilter());
     }
 
     public function testGetFilterWithNamedData()
     {
         $testCase = new TestCase('TestNamespace\TestCaseClass','testMethod', 'my named data');
-        $this->assertSame('^TestNamespace\\\\TestCaseClass\:\:testMethod@my named data$', $testCase->getFilter());
+        $this->assertSame('^TestNamespace\\\\TestCaseClass\:\:testMethod with data set "my named data"$', $testCase->getFilter());
     }
 }
  
