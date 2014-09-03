@@ -22,6 +22,8 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
                 'empty_file.csv' => '',
                 'empty_file_after_add_one_line.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testSimple,,' . "\n",
                 'empty_file_after_add_two_lines.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testSimple,,' . "\n" . '"Nikoms\FailLover\Tests\FilterTestMock",testToRun,,' . "\n",
+                'empty_file_after_add_one_line_with_indexed_data_0.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testWithIndexedDataProvider,0,' . "\n",
+                'empty_file_after_add_two_lines_with_indexed_data.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testWithIndexedDataProvider,0,' . "\n" . '"Nikoms\FailLover\Tests\FilterTestMock",testWithIndexedDataProvider,1,' . "\n",
             )
         );
     }
@@ -69,6 +71,25 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $recorder->add(new FilterTestMock('testToRun'));
 
         $this->assertFileEquals($this->root->url() . '/empty_file_after_add_two_lines.csv', $filePath);
+    }
+
+    public function testAdd_WhenAddAIndexedDataName_TheDataNameIsInAColumn()
+    {
+        $filePath = $this->root->url() . '/empty_file.csv';
+        $recorder = new CsvRecorder($filePath);
+
+        $recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('no empty data'), '0'));
+        $this->assertFileEquals($this->root->url() . '/empty_file_after_add_one_line_with_indexed_data_0.csv', $filePath);
+    }
+
+    public function testAdd_WhenAddTwoIndexedDataName_TwoLinesWithDataNameAreAdded()
+    {
+        $filePath = $this->root->url() . '/empty_file.csv';
+        $recorder = new CsvRecorder($filePath);
+
+        $recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('data 0'), '0'));
+        $recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('data 1'), '1'));
+        $this->assertFileEquals($this->root->url() . '/empty_file_after_add_two_lines_with_indexed_data.csv', $filePath);
     }
 }
  

@@ -55,10 +55,27 @@ class CsvRecorder implements RecorderInterface
         $columns = array(
             Columns::CLASS_NAME => $reflectionClass->getName(),
             Columns::METHOD_NAME => $testCase->getName(false),
-            Columns::DATA_NAME => '',
+            Columns::DATA_NAME => $this->getDataName($testCase),
             Columns::DATA => '',
         );
         ksort($columns);
         return $columns;
+    }
+
+    /**
+     * @param \PHPUnit_Framework_TestCase $testCase
+     * @return mixed|string
+     */
+    private function getDataName(\PHPUnit_Framework_TestCase $testCase)
+    {
+        $dataName = '';
+        if ($testCase->getName(false) !== $testCase->getName(true)) {
+            $dataName = substr($testCase->getName(true), strlen($testCase->getName(false)));
+            $dataName = str_replace('with data set', '', $dataName);
+            $dataName = trim($dataName);
+            $dataName = trim($dataName, '#"');
+            return $dataName;
+        }
+        return $dataName;
     }
 } 
