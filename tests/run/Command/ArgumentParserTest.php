@@ -54,5 +54,12 @@ class ArgumentParserTest extends \PHPUnit_Framework_TestCase
         $parser = new ArgumentParser(array('-d', 'fail-lover=param1', 'uselesss', '-d', 'fail-lover=param2'));
         $this->assertSame(array('param1','param2'), $parser->getActions());
     }
+
+    public function testHasAction()
+    {
+        $parser = new ArgumentParser(array('-d','fail-lover=param'));
+        $this->assertTrue($parser->hasAction('param'));
+        $this->assertFalse($parser->hasAction('param-not-found'));
+    }
 }
  

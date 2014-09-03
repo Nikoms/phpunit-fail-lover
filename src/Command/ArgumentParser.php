@@ -64,4 +64,13 @@ class ArgumentParser
         return strpos($parameterName, self::PARAMETER_NAME) === 0;
     }
 
+    /**
+     * @param string $action
+     * @return bool
+     */
+    public function hasAction($action)
+    {
+        return in_array($action, $this->getActions());
+    }
+
 }
