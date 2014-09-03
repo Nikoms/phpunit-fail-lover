@@ -5,6 +5,7 @@ namespace Nikoms\FailLover\Command;
 class ArgumentParser
 {
     const PARAMETER_NAME = 'fail-lover=';
+    const COMMAND_PREFIX = '-d';
 
     /**
      * @var array
@@ -35,7 +36,7 @@ class ArgumentParser
     }
 
     /**
-     * @param $i
+     * @param int $i Index of the COMMAND_PREFIX
      * @return string
      */
     private function getAtIndex($i)
@@ -44,16 +45,20 @@ class ArgumentParser
     }
 
     /**
-     * @param $i
+     * @param int $i Index of the COMMAND_PREFIX
      * @return bool
      */
     private function isValidAtIndex($i)
     {
-        return $this->arguments[$i] === '-d'
+        return $this->arguments[$i] === self::COMMAND_PREFIX
         && isset($this->arguments[$i + 1])
         && $this->isValidParameterName($this->arguments[$i + 1]);
     }
 
+    /**
+     * @param string $parameterName
+     * @return bool
+     */
     private function isValidParameterName($parameterName)
     {
         return strpos($parameterName, self::PARAMETER_NAME) === 0;
