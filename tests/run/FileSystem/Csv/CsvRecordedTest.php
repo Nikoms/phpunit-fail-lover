@@ -55,9 +55,7 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
     {
         $filePath = $this->root->url() . '/empty_file.csv';
         $recorder = new CsvRecorder($filePath);
-        $testCase = new FilterTestMock('testSimple');
-
-        $recorder->add($testCase);
+        $recorder->add(new FilterTestMock('testSimple'));
 
         $this->assertFileEquals($this->root->url() . '/empty_file_after_add_one_line.csv', $filePath);
     }
@@ -67,10 +65,8 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $filePath = $this->root->url() . '/empty_file.csv';
         $recorder = new CsvRecorder($filePath);
 
-        $testCase = new FilterTestMock('testSimple');
-        $recorder->add($testCase);
-        $testCase = new FilterTestMock('testToRun');
-        $recorder->add($testCase);
+        $recorder->add(new FilterTestMock('testSimple'));
+        $recorder->add(new FilterTestMock('testToRun'));
 
         $this->assertFileEquals($this->root->url() . '/empty_file_after_add_two_lines.csv', $filePath);
     }
