@@ -39,7 +39,9 @@ class CsvRecorder implements RecorderInterface
      */
     public function add(\PHPUnit_Framework_TestCase $testCase)
     {
-        $fp = fopen($this->filePath, 'a');
+        if(($fp = fopen($this->filePath, 'a')) === false){
+            return false;
+        }
         $added = false !== fputcsv($fp, $this->getColumns($testCase));
         fclose($fp);
         return $added;
