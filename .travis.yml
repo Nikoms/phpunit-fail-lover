@@ -1,0 +1,26 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - hhvm
+
+env:
+- PHPUNIT_VERSION=3.7.*
+- PHPUNIT_VERSION=4.1.*
+- PHPUNIT_VERSION=4.2.*
+- PHPUNIT_VERSION=4.3.*@dev
+
+cache:
+  directories:
+    - $COMPOSER_CACHE_DIR
+
+before_script:
+  - composer require --prefer-source --dev phpunit/phpunit:${PHPUNIT_VERSION}
+
+script: phpunit --coverage-clover=coverage.clover
+
+after_script:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
