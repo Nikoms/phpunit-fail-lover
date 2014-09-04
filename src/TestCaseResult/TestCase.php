@@ -4,7 +4,8 @@
 namespace Nikoms\FailLover\TestCaseResult;
 
 
-class TestCase implements TestCaseInterface{
+class TestCase implements TestCaseInterface
+{
 
     private $className;
     private $method;
@@ -30,7 +31,7 @@ class TestCase implements TestCaseInterface{
      */
     private function getName()
     {
-        return $this->className.'::'.$this->method . $this->getSuffix();
+        return $this->className . '::' . $this->method . $this->getSuffix();
     }
 
     /**
@@ -39,7 +40,7 @@ class TestCase implements TestCaseInterface{
      */
     public function getFilter($separator = '/')
     {
-        return '^'.preg_quote($this->getName(), $separator).'$';
+        return '^' . preg_quote($this->getName(), $separator) . '$';
     }
 
 
@@ -48,13 +49,13 @@ class TestCase implements TestCaseInterface{
      */
     private function getSuffix()
     {
-        if($this->dataName === null){
+        if ($this->dataName === null) {
             return '';
         }
-        if(is_numeric($this->dataName)){
-            return ' with data set #'.$this->dataName;
-        }else{
-            return ' with data set "'.$this->dataName.'"';
+        if (is_numeric($this->dataName)) {
+            return ' with data set #' . $this->dataName;
+        } else {
+            return ' with data set "' . $this->dataName . '"';
         }
     }
 

@@ -22,13 +22,13 @@ class CsvRecorder implements RecorderInterface
      */
     public function __construct($filePath)
     {
-        $filePath = (string) $filePath;
-        if($filePath === '' || is_dir($filePath)){
+        $filePath = (string)$filePath;
+        if ($filePath === '' || is_dir($filePath)) {
             throw new \InvalidArgumentException();
         }
         $this->filePath = $filePath;
         if (!file_exists($this->filePath)) {
-            if(@file_put_contents($this->filePath, '') === false){
+            if (@file_put_contents($this->filePath, '') === false) {
                 throw new FileNotCreatedException();
             }
         }
@@ -40,11 +40,12 @@ class CsvRecorder implements RecorderInterface
      */
     public function add(\PHPUnit_Framework_TestCase $testCase)
     {
-        if(($fp = fopen($this->filePath, 'a')) === false){
+        if (($fp = fopen($this->filePath, 'a')) === false) {
             return false;
         }
         $added = false !== fputcsv($fp, $this->getColumns($testCase));
         fclose($fp);
+
         return $added;
     }
 
@@ -63,6 +64,7 @@ class CsvRecorder implements RecorderInterface
             Columns::DATA => $testCase->getData()
         );
         ksort($columns);
+
         return $columns;
     }
-} 
+}

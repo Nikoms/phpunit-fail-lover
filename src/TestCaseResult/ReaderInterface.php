@@ -4,9 +4,10 @@
 namespace Nikoms\FailLover\TestCaseResult;
 
 
-interface ReaderInterface {
+interface ReaderInterface
+{
     /**
      * @return TestCase[]
      */
     public function getList();
-} 
+}

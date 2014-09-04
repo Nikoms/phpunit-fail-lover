@@ -11,4 +11,4 @@ interface RecorderInterface
      * @return bool
      */
     public function add(\PHPUnit_Framework_TestCase $testCase);
-} 
+}

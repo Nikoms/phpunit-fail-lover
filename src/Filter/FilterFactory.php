@@ -4,7 +4,8 @@
 namespace Nikoms\FailLover\Filter;
 
 
-class FilterFactory {
+class FilterFactory
+{
 
     /**
      * @param Filter $filter
@@ -17,6 +18,7 @@ class FilterFactory {
             new \ReflectionClass('PHPUnit_Runner_Filter_Test'),
             $filter
         );
+
         return $filterFactory;
     }
-} 
+}

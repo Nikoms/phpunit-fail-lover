@@ -32,6 +32,7 @@ class ArgumentParser
                 $actions[] = $this->getAtIndex($i);
             }
         }
+
         return $actions;
     }
 

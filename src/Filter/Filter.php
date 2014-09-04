@@ -6,14 +6,16 @@ namespace Nikoms\FailLover\Filter;
 
 use Nikoms\FailLover\TestCaseResult\ReaderInterface;
 
-class Filter {
+class Filter
+{
 
     /**
      * @var ReaderInterface
      */
     private $reader;
 
-    public function __construct(ReaderInterface $reader){
+    public function __construct(ReaderInterface $reader)
+    {
         $this->reader = $reader;
     }
 
@@ -26,6 +28,7 @@ class Filter {
         foreach ($this->reader->getList() as $testCase) {
             $filters[] = $testCase->getFilter();
         }
+
         return implode('|', $filters);
     }
-} 
+}

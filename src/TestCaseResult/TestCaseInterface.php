@@ -4,7 +4,8 @@
 namespace Nikoms\FailLover\TestCaseResult;
 
 
-interface TestCaseInterface {
+interface TestCaseInterface
+{
     /**
      * @param string $separator
      * @return string
@@ -31,4 +32,4 @@ interface TestCaseInterface {
      * @return string
      */
     public function getMethod();
-} 
+}

@@ -42,4 +42,4 @@ class TestCaseFactory
     {
         return ($dataName[0] === '#') ? substr($dataName, 1) : substr($dataName, 1, -1);
     }
-} 
+}

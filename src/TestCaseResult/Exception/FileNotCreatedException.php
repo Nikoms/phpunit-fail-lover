@@ -4,6 +4,7 @@
 namespace Nikoms\FailLover\TestCaseResult\Exception;
 
 
-class FileNotCreatedException extends \Exception{
+class FileNotCreatedException extends \Exception
+{
 
-} 
+}
