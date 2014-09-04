@@ -27,16 +27,6 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param \PHPUnit_Framework_TestSuite $suite
-     */
-    private function addFilterOnSuite(\PHPUnit_Framework_TestSuite $suite)
-    {
-        $filterFactory = new FilterFactory();
-        $suite->injectFilter($filterFactory->createFactory(new Filter($this->reader)));
-    }
-
-
-    /**
      * @return \PHPUnit_Framework_TestSuite
      */
     private function createSuiteWithTests()
@@ -44,7 +34,8 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         $suite = new \PHPUnit_Framework_TestSuite('Test');
         foreach (func_get_args() as $test) {
             if (is_array($test)) {
-                $mock = new FilterTestMock($test['testName'], array('faked data'), $test['dataName']);
+                $name = key($test);
+                $mock = new FilterTestMock($name, array('faked data'), $test[$name]);
             } else {
                 $mock = new FilterTestMock($test);
             }
@@ -53,104 +44,103 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         return $suite;
     }
 
+    private function filterTests()
+    {
+        $values = array();
+        foreach (func_get_args() as $testToRun) {
+            $dataName = null;
+            if (is_array($testToRun)) {
+                $method = key($testToRun);
+                $dataName = $testToRun[$method];
+            } else {
+                $method = (string)$testToRun;
+            }
+
+            $values[] = new TestCase('Nikoms\FailLover\Tests\FilterTestMock', $method, $dataName);
+        }
+
+        $this->reader->expects($this->any())->method('getList')->will($this->returnValue($values));
+    }
+
     /**
      * @param \PHPUnit_Framework_TestSuite $suite
-     * @param array $tests
+     * @param array $expectedTestsNames
      */
-    private function assertSuiteExecuteTests(\PHPUnit_Framework_TestSuite $suite, array $tests)
+    private function assertSuiteExecutesTests(\PHPUnit_Framework_TestSuite $suite, array $expectedTestsNames)
     {
         $this->addFilterOnSuite($suite);
-        $this->assertCount(count($tests), $suite);
+        $this->assertCount(count($expectedTestsNames), $suite);
         $i = 0;
         foreach ($suite as $test) {
-            $this->assertSame($tests[$i], $test->getName(true));
+            $this->assertSame($expectedTestsNames[$i], $test->getName(true));
             $i++;
         }
+    }
+
+    /**
+     * @param \PHPUnit_Framework_TestSuite $suite
+     */
+    private function addFilterOnSuite(\PHPUnit_Framework_TestSuite $suite)
+    {
+        $filterFactory = new FilterFactory();
+        $suite->injectFilter($filterFactory->createFactory(new Filter($this->reader)));
     }
 
     public function testFilter_WhenASingleFilterIsSet_OnlyOneTestIsRunning()
     {
         $suite = $this->createSuiteWithTests('testSimple', 'testToRun', 'testThatWontBeExecuted');
-        $this->reader->expects($this->any())->method('getList')->willReturn(
-            array(
-                new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testSimple')
-            )
-        );
-
-        $this->addFilterOnSuite($suite);
-        $this->assertCount(1, $suite);
-        foreach ($suite as $test) {
-            $this->assertSame('testSimple', $test->getName(true));
-        }
+        $this->filterTests('testSimple');
+        $this->assertSuiteExecutesTests($suite, array('testSimple'));
     }
 
     public function testFilter_WhenTwoFiltersAreSet_TwoTestsAreRunning()
     {
         $suite = $this->createSuiteWithTests('testSimple', 'testToRun', 'testThatWontBeExecuted');
-        $this->reader->expects($this->any())->method('getList')->willReturn(
-            array(
-                new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testSimple'),
-                new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testToRun')
-            )
-        );
-
-        $this->assertSuiteExecuteTests($suite, array('testSimple', 'testToRun'));
+        $this->filterTests('testSimple', 'testToRun');
+        $this->assertSuiteExecutesTests($suite, array('testSimple', 'testToRun'));
     }
 
     public function testFilter_WhenAFilterContainsTheNameOfAnother_TheLongTestIsNotTaken()
     {
         $suite = $this->createSuiteWithTests('testContains', 'testContainsFull');
-        $this->reader->expects($this->any())->method('getList')->willReturn(
-            array(
-                new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testContains'),
-            )
-        );
-
-        $this->assertSuiteExecuteTests($suite, array('testContains'));
+        $this->filterTests('testContains');
+        $this->assertSuiteExecutesTests($suite, array('testContains'));
     }
 
     public function testFilter_WhenAFilterHasIndexedData_OnlyTheSpecifiedIndexedTestIsRunning()
     {
         $suite = $this->createSuiteWithTests(
-            array('testName' => 'testWithData', 'dataName' => 0),
-            array('testName' => 'testWithData', 'dataName' => 1)
-        );
-        $this->reader->expects($this->any())->method('getList')->willReturn(
-            array(
-                new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testWithData', 0),
-            )
+            array('testWithData' => 0),
+            array('testWithData' => 1)
         );
 
-        $this->assertSuiteExecuteTests($suite, array('testWithData with data set #0'));
+        $this->filterTests(array("testWithData" => 0));
+
+        $this->assertSuiteExecutesTests($suite, array('testWithData with data set #0'));
     }
 
     public function testFilter_WhenAFilterHasNamedData_OnlyTheSpecifiedNamedTestIsRunning()
     {
         $suite = $this->createSuiteWithTests(
-            array('testName' => 'testWithData', 'dataName' => 'runMe'),
-            array('testName' => 'testWithData', 'dataName' => 'forgetMe')
-        );
-        $this->reader->expects($this->any())->method('getList')->willReturn(
-            array(
-                new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testWithData', 'runMe'),
-            )
+            array('testWithData' => 'runMe'),
+            array('testWithData' => 'forgetMe')
         );
 
-        $this->assertSuiteExecuteTests($suite, array('testWithData with data set "runMe"'));
+        $this->filterTests(array("testWithData" => 'runMe'));
+
+        $this->assertSuiteExecutesTests($suite, array('testWithData with data set "runMe"'));
     }
+
     public function testFilter_WhenAFilterHasDoubleQuoteNamedData_OnlyTheSpecifiedNamedTestIsRunning()
     {
         $suite = $this->createSuiteWithTests(
-            array('testName' => 'testWithData', 'dataName' => '"runMe"'),
-            array('testName' => 'testWithData', 'dataName' => '"forgetMe"')
-        );
-        $this->reader->expects($this->any())->method('getList')->willReturn(
-            array(
-                new TestCase('Nikoms\FailLover\Tests\FilterTestMock', 'testWithData', '"runMe"'),
-            )
+            array('testWithData' => '"runMe"'),
+            array('testWithData' => '"forgetMe"')
         );
 
-        $this->assertSuiteExecuteTests($suite, array('testWithData with data set ""runMe""'));
+        $this->filterTests(array("testWithData" => '"runMe"'));
+
+        $this->assertSuiteExecutesTests($suite, array('testWithData with data set ""runMe""'));
     }
 
 } 
