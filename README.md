@@ -64,7 +64,6 @@ TODO
 ----
 
 * Now that we have logged, add the functionality to replay the given error file :)
-* Only create a file, if there is at least one test that has failed
 * If the file already exists, empty it! (If it's the same as the replay functionality, make sure to read it before delete it)
 * Simplify the use the listener by giving only a file in the phpunit.xml file. Or by managing some new parameters in the command line?
 * Give the possibility to give vars in the name of the file (like the date, now, LAST_ERRORS_IN:path, etc...)
