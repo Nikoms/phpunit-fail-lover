@@ -9,15 +9,15 @@ class LoggerListenerTest extends \PHPUnit_Framework_TestCase
 {
     public function testAddFailure_WhenLogIsActive_RecorderIsCalled()
     {
-        $this->assertInvocationWithParameters(array('-d', 'fail-lover=log'), $this->once());
+        $this->assertRecorderInvocationWithParameters(array('-d', 'fail-lover=log'), $this->once());
     }
 
     public function testAddFailure_WhenLogIsNotActive_RecorderIsNotCalled()
     {
-        $this->assertInvocationWithParameters(array(), $this->never());
+        $this->assertRecorderInvocationWithParameters(array(), $this->never());
     }
 
-    private function assertInvocationWithParameters(
+    private function assertRecorderInvocationWithParameters(
         array $arguments,
         \PHPUnit_Framework_MockObject_Matcher_Invocation $invocation
     ) {
@@ -27,5 +27,7 @@ class LoggerListenerTest extends \PHPUnit_Framework_TestCase
         $listener = new LoggerListener($recorder);
         $listener->addFailure(new FilterTestMock('testSimple'), new \PHPUnit_Framework_AssertionFailedError(), 0);
     }
+
+
 }
  
