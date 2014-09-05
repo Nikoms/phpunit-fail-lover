@@ -31,7 +31,7 @@ To activate the plugin. Add the listener to your phpunit.xml(.dist) file:
 <phpunit>
     ...
     <listeners>
-        <listener class="Nikoms\FailLover\Listener\FailLoverListener" file="vendor/nikoms/phpunit-fail-lover/src/Listener/FailLoverListener.php">
+        <listener class="Nikoms\FailLover\Listener\LoggerListener" file="vendor/nikoms/phpunit-fail-lover/src/Listener/LoggerListener.php">
             <arguments>
                 <object class="Nikoms\FailLover\FileSystem\Csv\CsvRecorder">
                     <arguments>

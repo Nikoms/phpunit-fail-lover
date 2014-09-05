@@ -5,7 +5,7 @@ namespace Nikoms\FailLover\Listener;
 
 use Nikoms\FailLover\Tests\FilterTestMock;
 
-class FailLoverListenerTest extends \PHPUnit_Framework_TestCase
+class LoggerListenerTest extends \PHPUnit_Framework_TestCase
 {
     public function testAddFailure_WhenLogIsActive_RecorderIsCalled()
     {
@@ -24,7 +24,7 @@ class FailLoverListenerTest extends \PHPUnit_Framework_TestCase
         $_SERVER['argv'] = $arguments;
         $recorder = $this->getMock('Nikoms\FailLover\TestCaseResult\RecorderInterface', array('add'));
         $recorder->expects($invocation)->method('add');
-        $listener = new FailLoverListener($recorder);
+        $listener = new LoggerListener($recorder);
         $listener->addFailure(new FilterTestMock('testSimple'), new \PHPUnit_Framework_AssertionFailedError(), 0);
     }
 }

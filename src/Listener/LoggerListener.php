@@ -9,7 +9,7 @@ use PHPUnit_Framework_AssertionFailedError;
 use PHPUnit_Framework_Test;
 
 
-class FailLoverListener extends \PHPUnit_Framework_BaseTestListener
+class LoggerListener extends \PHPUnit_Framework_BaseTestListener
 {
 
     /**
