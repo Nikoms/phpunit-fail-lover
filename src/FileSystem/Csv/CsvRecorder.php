@@ -23,15 +23,20 @@ class CsvRecorder implements RecorderInterface
     public function __construct($filePath)
     {
         $filePath = (string)$filePath;
-        if ($filePath === '' || is_dir($filePath)) {
+        if ($filePath === '') {
             throw new \InvalidArgumentException();
         }
-        $this->filePath = $filePath;
-        if (!file_exists($this->filePath)) {
-            if (@file_put_contents($this->filePath, '') === false) {
+        if (!file_exists($filePath)) {
+            if (@file_put_contents($filePath, '') === false) {
                 throw new FileNotCreatedException();
             }
+        } else {
+            if (is_dir($filePath)) {
+                throw new \InvalidArgumentException();
+            }
         }
+
+        $this->filePath = $filePath;
     }
 
     /**
