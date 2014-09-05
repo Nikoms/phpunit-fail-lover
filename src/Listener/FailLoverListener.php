@@ -20,7 +20,7 @@ class FailLoverListener extends \PHPUnit_Framework_BaseTestListener
      */
     private $recorder;
 
-    function __construct(RecorderInterface $recorder)
+    public function __construct(RecorderInterface $recorder)
     {
         $this->recorder = $recorder;
         $this->parser = new ArgumentParser($_SERVER['argv']);
