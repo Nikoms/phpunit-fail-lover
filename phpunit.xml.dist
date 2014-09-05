@@ -24,7 +24,15 @@
             </exclude>
         </whitelist>
     </filter>
-    <!--<listeners>-->
-    <!--<listener class="Nikoms\FailLover\Listener\FailLoverListener" file="src/Listener/FailLoverListener.php" />-->
-    <!--</listeners>-->
+    <listeners>
+        <listener class="Nikoms\FailLover\Listener\FailLoverListener" file="src/Listener/FailLoverListener.php">
+            <arguments>
+                <object class="Nikoms\FailLover\FileSystem\Csv\CsvRecorder">
+                    <arguments>
+                        <string>output/failed-tests.csv</string>
+                    </arguments>
+                </object>
+            </arguments>
+        </listener>
+    </listeners>
 </phpunit>
