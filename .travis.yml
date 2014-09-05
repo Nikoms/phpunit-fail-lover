@@ -9,7 +9,7 @@ php:
 env:
 - PHPUNIT_VERSION=4.1.*
 - PHPUNIT_VERSION=4.2.*
-- PHPUNIT_VERSION=4.3.*@dev
+#- PHPUNIT_VERSION=4.3.*@dev => Not for the moment
 
 cache:
   directories:
