@@ -16,7 +16,7 @@ class FilterFactory
         $filterFactory = new \PHPUnit_Runner_Filter_Factory();
         $filterFactory->addFilter(
             new \ReflectionClass('PHPUnit_Runner_Filter_Test'),
-            $filter
+            (string)$filter
         );
 
         return $filterFactory;
