@@ -31,15 +31,28 @@ To activate the plugin. Add the listener to your phpunit.xml(.dist) file:
 <phpunit>
     ...
     <listeners>
-        <listener class="Nikoms\FailLover\Listener\FailLoverListener" file="vendor/nikoms/phpunit-fail-lover/src/Listener/FailLoverListener.php" />
+        <listener class="Nikoms\FailLover\Listener\FailLoverListener" file="vendor/nikoms/phpunit-fail-lover/src/Listener/FailLoverListener.php">
+            <arguments>
+                <object class="Nikoms\FailLover\FileSystem\Csv\CsvRecorder">
+                    <arguments>
+                        <string>failed-tests.csv</string>
+                    </arguments>
+                </object>
+            </arguments>
+        </listener>
     </listeners>
 </phpunit>
 ```
 
+If the file `failed-tests.csv` doesn't exist, it will be created. A good practice is to give a path where you already create files, like code coverage. Be careful that it won't create any folder for you.
+
+
 Usage
 -----
 
-mORE to cOme
+To record failing tests:
+
+`./vendor/bin/phpunit -d fail-lover=log`
 
 Customize
 ---------
