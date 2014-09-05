@@ -4,7 +4,7 @@
 namespace Nikoms\FailLover\FileSystem\Csv;
 
 
-use Nikoms\FailLover\TestCaseResult\Exception\FileNotCreatedException;
+use Nikoms\FailLover\TestCaseResult\Exception\OutputNotAvailableException;
 use Nikoms\FailLover\TestCaseResult\RecorderInterface;
 use Nikoms\FailLover\TestCaseResult\TestCaseFactory;
 
@@ -17,23 +17,17 @@ class CsvRecorder implements RecorderInterface
 
     /**
      * @param $filePath
-     * @throws FileNotCreatedException
      * @throws \InvalidArgumentException
      */
     public function __construct($filePath)
     {
         $filePath = (string)$filePath;
+
         if ($filePath === '') {
             throw new \InvalidArgumentException();
         }
-        if (!file_exists($filePath)) {
-            if (@file_put_contents($filePath, '') === false) {
-                throw new FileNotCreatedException();
-            }
-        } else {
-            if (is_dir($filePath)) {
-                throw new \InvalidArgumentException();
-            }
+        if (file_exists($filePath) && is_dir($filePath)) {
+            throw new \InvalidArgumentException();
         }
 
         $this->filePath = $filePath;
@@ -42,11 +36,12 @@ class CsvRecorder implements RecorderInterface
     /**
      * @param \PHPUnit_Framework_TestCase $testCase
      * @return bool
+     * @throws OutputNotAvailableException
      */
     public function add(\PHPUnit_Framework_TestCase $testCase)
     {
-        if (($fp = fopen($this->filePath, 'a')) === false) {
-            return false;
+        if (($fp = @fopen($this->filePath, 'a+')) === false) {
+            throw new OutputNotAvailableException();
         }
         $added = false !== fputcsv($fp, $this->getColumns($testCase));
         fclose($fp);
