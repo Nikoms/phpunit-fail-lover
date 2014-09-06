@@ -46,12 +46,13 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
      * @param array $methodsToTest
      * @return \PHPUnit_Framework_TestSuite
      */
-    private function getSuite($methodsToTest)
+    private function getSuite(array $methodsToTest)
     {
-        $testCases = array(new FilterTestMock($methodsToTest[0]), new FilterTestMock($methodsToTest[1]));
         $suite = new \PHPUnit_Framework_TestSuite('MySuite');
-        $suite->addTest($testCases[0]);
-        $suite->addTest($testCases[1]);
+        foreach ($methodsToTest as $methodToTest) {
+            $suite->addTest(new FilterTestMock($methodToTest));
+        }
+
         return $suite;
     }
 
