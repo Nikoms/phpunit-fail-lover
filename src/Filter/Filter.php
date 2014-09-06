@@ -6,7 +6,7 @@ namespace Nikoms\FailLover\Filter;
 
 use Nikoms\FailLover\TestCaseResult\ReaderInterface;
 
-class Filter
+class Filter implements FilterInterface
 {
 
     /**

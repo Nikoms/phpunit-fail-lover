@@ -8,10 +8,10 @@ class FilterFactory
 {
 
     /**
-     * @param Filter $filter
+     * @param FilterInterface $filter
      * @return \PHPUnit_Runner_Filter_Factory
      */
-    public function createFactory(Filter $filter)
+    public function createFactory(FilterInterface $filter)
     {
         $filterFactory = new \PHPUnit_Runner_Filter_Factory();
         $filterFactory->addFilter(
