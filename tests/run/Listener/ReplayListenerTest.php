@@ -36,8 +36,9 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
             $testCasesToFilter[] = $testCaseFactory->createTestCase(new FilterTestMock($testName));
         }
 
-        $reader = $this->getMock('Nikoms\FailLover\TestCaseResult\ReaderInterface', array('getList'));
+        $reader = $this->getMock('Nikoms\FailLover\TestCaseResult\ReaderInterface', array('getList','isEmpty'));
         $reader->expects($this->any())->method('getList')->will($this->returnValue($testCasesToFilter));
+        $reader->expects($this->any())->method('isEmpty')->will($this->returnValue(empty($testCasesToFilter)));
         return $reader;
     }
 

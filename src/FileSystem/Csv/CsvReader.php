@@ -16,6 +16,12 @@ class CsvReader implements ReaderInterface
     private $fileName;
 
     /**
+     * @var array
+     */
+    private $list;
+
+
+    /**
      * @param string $fileName
      */
     public function __construct($fileName)
@@ -28,14 +34,18 @@ class CsvReader implements ReaderInterface
      */
     public function getList()
     {
+        if ($this->list !== null) {
+            return $this->list;
+        }
+
         if (!file_exists($this->fileName)) {
             return array();
         }
 
-        $list = array();
+        $this->list = array();
         if (($handle = fopen($this->fileName, "r")) !== false) {
             while (($data = fgetcsv($handle, 1000, ",")) !== false) {
-                $list[] = new TestCase(
+                $this->list[] = new TestCase(
                     $data[Columns::CLASS_NAME],
                     $data[Columns::METHOD_NAME],
                     $data[Columns::DATA_NAME],
@@ -45,6 +55,17 @@ class CsvReader implements ReaderInterface
             fclose($handle);
         }
 
-        return $list;
+        return $this->list;
     }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        $list = $this->getList();
+        return empty($list);
+    }
+
+
 }

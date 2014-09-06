@@ -22,7 +22,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->reader = $this->getMockBuilder('Nikoms\FailLover\TestCaseResult\ReaderInterface')
-            ->setMethods(array('getList'))
+            ->setMethods(array('getList','isEmpty'))
             ->getMock();
     }
 
@@ -59,6 +59,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->reader->expects($this->any())->method('getList')->will($this->returnValue($values));
+        $this->reader->expects($this->any())->method('isEmpty')->will($this->returnValue(empty($values)));
     }
 
     /**
