@@ -54,7 +54,7 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
         return $suite;
     }
 
-    public function testStartTestSuite_WhenTheListIsEmpty_NoTestWillRun()
+    public function testStartTestSuite_WhenTheFilterListIsEmpty_NoTestWillRun()
     {
         $this->assertTestsCountAfterFilter(array('testToRun', 'testToNotRun'), array(), 0);
     }
@@ -69,9 +69,9 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
         $this->assertTestsCountAfterFilter(array('testToRun', 'testAnotherOne'), array('testToRun', 'testAnotherOne'), 2);
     }
 
-    public function testStartTestSuite_WhenAFilterIsNotInTheList_NoTestWillRun()
+    public function testStartTestSuite_WhenNoneOfTheFilterAreInTheList_NoTestWillRun()
     {
-        $this->assertTestsCountAfterFilter(array('testToRun', 'testAnotherOne'), array('testUndefinedTest'), 0);
+        $this->assertTestsCountAfterFilter(array('testToRun', 'testAnotherOne'), array('testUndefinedTest', 'testUndefined2Test'), 0);
     }
 
 } 
