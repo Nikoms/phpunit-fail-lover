@@ -32,4 +32,4 @@ class ReplayListener extends \PHPUnit_Framework_BaseTestListener
             $suite->injectFilter($filterFactory->createFactory(new EmptyFilter()));
         }
     }
-} 
+}

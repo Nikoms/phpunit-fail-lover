@@ -12,4 +12,4 @@ class EmptyFilter implements FilterInterface{
         return 'EmptyFilter\Class::function';
     }
 
-} 
+}

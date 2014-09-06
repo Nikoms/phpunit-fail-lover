@@ -23,7 +23,7 @@ class TestCaseFactory
      */
     private function getDataName(\PHPUnit_Framework_TestCase $testCase)
     {
-        if ($this->HasTestCaseDataSet($testCase)) {
+        if ($this->hasTestCaseDataSet($testCase)) {
             return null;
         }
 
@@ -45,7 +45,7 @@ class TestCaseFactory
      * @param \PHPUnit_Framework_TestCase $testCase
      * @return bool
      */
-    private function HasTestCaseDataSet(\PHPUnit_Framework_TestCase $testCase)
+    private function hasTestCaseDataSet(\PHPUnit_Framework_TestCase $testCase)
     {
         return $testCase->getName(false) === $testCase->getName(true);
     }
