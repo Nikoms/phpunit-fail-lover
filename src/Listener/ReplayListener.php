@@ -25,8 +25,7 @@ class ReplayListener extends \PHPUnit_Framework_BaseTestListener
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         $filterFactory = new FilterFactory();
-        $testsToRun = $this->reader->getList();
-        if(!empty($testsToRun)){
+        if(!$this->reader->isEmpty()){
             $suite->injectFilter($filterFactory->createFactory(new Filter($this->reader)));
         }else{
             $suite->injectFilter($filterFactory->createFactory(new EmptyFilter()));
