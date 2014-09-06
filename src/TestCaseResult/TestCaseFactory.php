@@ -23,15 +23,13 @@ class TestCaseFactory
      */
     private function getDataName(\PHPUnit_Framework_TestCase $testCase)
     {
-        $dataName = '';
-        if ($testCase->getName(false) !== $testCase->getName(true)) {
-            $dataName = substr($testCase->getName(true), strlen($testCase->getName(false)));
-            $dataName = str_replace('with data set', '', $dataName);
-            $dataName = $this->removeDataNameDecoration(trim($dataName));
-
-            return $dataName;
+        if ($this->HasTestCaseDataSet($testCase)) {
+            return null;
         }
-        return $dataName;
+
+        $dataName = substr($testCase->getName(true), strlen($testCase->getName(false)));
+        $dataName = str_replace('with data set', '', $dataName);
+        return $this->removeDataNameDecoration(trim($dataName));
     }
 
     /**
@@ -41,5 +39,14 @@ class TestCaseFactory
     private function removeDataNameDecoration($dataName)
     {
         return ($dataName[0] === '#') ? substr($dataName, 1) : substr($dataName, 1, -1);
+    }
+
+    /**
+     * @param \PHPUnit_Framework_TestCase $testCase
+     * @return bool
+     */
+    private function HasTestCaseDataSet(\PHPUnit_Framework_TestCase $testCase)
+    {
+        return $testCase->getName(false) === $testCase->getName(true);
     }
 }
