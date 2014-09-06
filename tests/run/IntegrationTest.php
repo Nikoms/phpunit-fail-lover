@@ -34,8 +34,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         $suite = new \PHPUnit_Framework_TestSuite('Test');
         foreach (func_get_args() as $test) {
             if (is_array($test)) {
-                $name = key($test);
-                $mock = new FilterTestMock($name, array('faked data'), $test[$name]);
+                $mock = new FilterTestMock(key($test), array('faked data'), current($test));
             } else {
                 $mock = new FilterTestMock($test);
             }
