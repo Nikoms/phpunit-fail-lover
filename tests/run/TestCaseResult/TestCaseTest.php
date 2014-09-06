@@ -29,5 +29,11 @@ class TestCaseTest extends \PHPUnit_Framework_TestCase
         $testCase = new TestCase('TestNamespace\TestCaseClass','testMethod', 'my named data');
         $this->assertSame('^TestNamespace\\\\TestCaseClass\:\:testMethod with data set "my named data"$', $testCase->getFilter());
     }
+
+    public function testGetFilterWithEmptyNamedData()
+    {
+        $testCase = new TestCase('TestNamespace\TestCaseClass','testMethod', '');
+        $this->assertSame('^TestNamespace\\\\TestCaseClass\:\:testMethod$', $testCase->getFilter());
+    }
 }
  

@@ -49,7 +49,7 @@ class TestCase implements TestCaseInterface
      */
     private function getSuffix()
     {
-        if ($this->dataName === null) {
+        if ($this->dataName === null || $this->dataName === '') {
             return '';
         }
         if (is_numeric($this->dataName)) {
