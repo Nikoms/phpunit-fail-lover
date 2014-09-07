@@ -56,5 +56,10 @@ class LoggerListenerTest extends \PHPUnit_Framework_TestCase
         $this->assertRecorderInvocationWithParametersOnFailure('', $this->never());
         $this->assertRecorderInvocationWithParametersOnError('', $this->never());
     }
+
+    public function tearDown()
+    {
+        $_SERVER['argv'] = array();
+    }
 }
  
