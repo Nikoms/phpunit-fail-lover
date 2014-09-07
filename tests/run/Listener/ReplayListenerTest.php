@@ -19,16 +19,17 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
     private function assertTestsCountAfterFilter($methodsOfSuite, $methodsToFilter, $count)
     {
         $suite = $this->getSuite($methodsOfSuite);
-        $listener = new ReplayListener($this->getReader($methodsToFilter));
+        $listener = new ReplayListener($this->getReader($methodsToFilter, $this->any()));
         $listener->startTestSuite($suite);
         $this->assertCount($count, $suite);
     }
 
     /**
      * @param array $methodsToFilter
+     * @param \PHPUnit_Framework_MockObject_Matcher_Invocation $invocation
      * @return \PHPUnit_Framework_MockObject_MockObject|ReaderInterface
      */
-    private function getReader($methodsToFilter)
+    private function getReader($methodsToFilter, \PHPUnit_Framework_MockObject_Matcher_Invocation $invocation)
     {
         $testCaseFactory = new TestCaseFactory();
         $testCasesToFilter = array();
@@ -37,8 +38,8 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
         }
 
         $reader = $this->getMock('Nikoms\FailLover\TestCaseResult\ReaderInterface', array('getList', 'isEmpty'));
-        $reader->expects($this->any())->method('getList')->will($this->returnValue($testCasesToFilter));
-        $reader->expects($this->any())->method('isEmpty')->will($this->returnValue(empty($testCasesToFilter)));
+        $reader->expects($invocation)->method('getList')->will($this->returnValue($testCasesToFilter));
+        $reader->expects($invocation)->method('isEmpty')->will($this->returnValue(empty($testCasesToFilter)));
         return $reader;
     }
 
@@ -88,8 +89,16 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testStartTestSuite_WhenNoArgumentIsSet_TheFilterIsNotCalled()
+    {
+        $suite = $this->getSuite(array('testToRun'));
+        $listener = new ReplayListener($this->getReader(array(), $this->never()));
+        $listener->startTestSuite($suite);
+        $this->assertCount(1, $suite);
+    }
+
     public function tearDown()
     {
         $_SERVER['argv'] = array();
     }
-} 
+}
