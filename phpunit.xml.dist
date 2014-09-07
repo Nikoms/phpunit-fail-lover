@@ -25,11 +25,20 @@
         </whitelist>
     </filter>
     <listeners>
+        <listener class="Nikoms\FailLover\Listener\ReplayListener" file="src/Listener/ReplayListener.php">
+            <arguments>
+                <object class="Nikoms\FailLover\FileSystem\Csv\CsvReader">
+                    <arguments>
+                        <string>output/tests-that-failed-before.csv</string>
+                    </arguments>
+                </object>
+            </arguments>
+        </listener>
         <listener class="Nikoms\FailLover\Listener\LoggerListener" file="src/Listener/LoggerListener.php">
             <arguments>
                 <object class="Nikoms\FailLover\FileSystem\Csv\CsvRecorder">
                     <arguments>
-                        <string>output/failed-tests.csv</string>
+                        <string>output/tests-that-failed-again.csv</string>
                     </arguments>
                 </object>
             </arguments>
