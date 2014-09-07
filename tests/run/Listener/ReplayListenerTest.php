@@ -36,7 +36,7 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
             $testCasesToFilter[] = $testCaseFactory->createTestCase(new FilterTestMock($testName));
         }
 
-        $reader = $this->getMock('Nikoms\FailLover\TestCaseResult\ReaderInterface', array('getList','isEmpty'));
+        $reader = $this->getMock('Nikoms\FailLover\TestCaseResult\ReaderInterface', array('getList', 'isEmpty'));
         $reader->expects($this->any())->method('getList')->will($this->returnValue($testCasesToFilter));
         $reader->expects($this->any())->method('isEmpty')->will($this->returnValue(empty($testCasesToFilter)));
         return $reader;
@@ -58,22 +58,38 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testStartTestSuite_WhenTheFilterListIsEmpty_NoTestWillRun()
     {
+        $_SERVER['argv'] = array('-d', 'fail-lover=replay');
         $this->assertTestsCountAfterFilter(array('testToRun', 'testToNotRun'), array(), 0);
     }
 
     public function testStartTestSuite_WhenAFilterIsInTheTestsList_OnlyOneTestWillRun()
     {
+        $_SERVER['argv'] = array('-d', 'fail-lover=replay');
         $this->assertTestsCountAfterFilter(array('testToRun', 'testToNotRun'), array('testToRun'), 1);
     }
 
     public function testStartTestSuite_WhenAllFiltersAreInTheTestsList_AllTestsWillRun()
     {
-        $this->assertTestsCountAfterFilter(array('testToRun', 'testAnotherOne'), array('testToRun', 'testAnotherOne'), 2);
+        $_SERVER['argv'] = array('-d', 'fail-lover=replay');
+        $this->assertTestsCountAfterFilter(
+            array('testToRun', 'testAnotherOne'),
+            array('testToRun', 'testAnotherOne'),
+            2
+        );
     }
 
     public function testStartTestSuite_WhenNoneOfTheFilterAreInTheList_NoTestWillRun()
     {
-        $this->assertTestsCountAfterFilter(array('testToRun', 'testAnotherOne'), array('testUndefinedTest', 'testUndefined2Test'), 0);
+        $_SERVER['argv'] = array('-d', 'fail-lover=replay');
+        $this->assertTestsCountAfterFilter(
+            array('testToRun', 'testAnotherOne'),
+            array('testUndefinedTest', 'testUndefined2Test'),
+            0
+        );
     }
 
+    public function tearDown()
+    {
+        $_SERVER['argv'] = array();
+    }
 } 
