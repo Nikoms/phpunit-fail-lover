@@ -45,7 +45,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
 
     private function filterTests()
     {
-        $values = array();
+        $tests = array();
         foreach (func_get_args() as $testToRun) {
             $dataName = null;
             if (is_array($testToRun)) {
@@ -55,11 +55,11 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
                 $method = (string)$testToRun;
             }
 
-            $values[] = new TestCase('Nikoms\FailLover\Tests\FilterTestMock', $method, $dataName);
+            $tests[] = new TestCase('Nikoms\FailLover\Tests\FilterTestMock', $method, $dataName);
         }
 
-        $this->reader->expects($this->any())->method('getList')->will($this->returnValue($values));
-        $this->reader->expects($this->any())->method('isEmpty')->will($this->returnValue(empty($values)));
+        $this->reader->expects($this->any())->method('getList')->will($this->returnValue($tests));
+        $this->reader->expects($this->any())->method('isEmpty')->will($this->returnValue(empty($tests)));
     }
 
     /**
