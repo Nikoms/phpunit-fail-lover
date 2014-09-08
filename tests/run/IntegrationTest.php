@@ -3,9 +3,7 @@
 
 namespace Nikoms\FailLover;
 
-
-use Nikoms\FailLover\Filter\Filter;
-use Nikoms\FailLover\Filter\FilterFactory;
+use Nikoms\FailLover\Listener\ReplayListener;
 use Nikoms\FailLover\TestCaseResult\ReaderInterface;
 use Nikoms\FailLover\TestCaseResult\TestCase;
 use Nikoms\FailLover\Tests\FilterTestMock;
@@ -21,9 +19,15 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        $_SERVER['argv'] = array('-d', 'fail-lover=replay');
         $this->reader = $this->getMockBuilder('Nikoms\FailLover\TestCaseResult\ReaderInterface')
-            ->setMethods(array('getList','isEmpty'))
+            ->setMethods(array('getList', 'isEmpty'))
             ->getMock();
+    }
+
+    public function tearDown()
+    {
+        $_SERVER['argv'] = array();
     }
 
     /**
@@ -82,8 +86,8 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
      */
     private function addFilterOnSuite(\PHPUnit_Framework_TestSuite $suite)
     {
-        $filterFactory = new FilterFactory();
-        $suite->injectFilter($filterFactory->createFactory(new Filter($this->reader)));
+        $replayListener = new ReplayListener($this->reader);
+        $replayListener->startTestSuite($suite);
     }
 
     public function testFilter_WhenASingleFilterIsSet_OnlyOneTestIsRunning()
