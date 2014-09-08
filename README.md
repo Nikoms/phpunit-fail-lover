@@ -83,13 +83,11 @@ To replay failing tests:
 
 `phpunit -d fail-lover=replay`
 
-/!\ The `--exclude-group` option of phpunit won't be executed if you use replay.
+/!\ When you use the replay mode, filter options `--exclude-group`, `--group` and `--filter` will be **erased**. In two words, the new filter replace all of them because we inject a new one.
 
-Of course, you can combine the two:
+Of course, you can combine the two of them:
 
 `phpunit -d fail-lover=replay -d fail-lover=log`
-
-This will replay only supposed tests that failed AND log new tests that failed.
 
 Customize
 ---------
@@ -99,7 +97,5 @@ Yes, you will be able to do that!
 
 TODO
 ----
-
-* Replay: Find why the --exclude-group doesn't work with "replay"
 * Both: Simplify the use the listener by giving only a file in the phpunit.xml file. Or by managing some new parameters in the command line?
 * Both: Give the possibility to give vars in the name of the file (like the date, now, LAST_ERRORS_IN:path, etc...)
