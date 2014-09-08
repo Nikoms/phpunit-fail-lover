@@ -52,7 +52,7 @@ class LoggerListener extends \PHPUnit_Framework_BaseTestListener
 
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        if($this->mainSuiteName === null){
+        if($this->mainSuiteName === null && $this->parser->hasAction('log')){
             $this->recorder->clear();
             $this->mainSuiteName = $suite->getName();
         }

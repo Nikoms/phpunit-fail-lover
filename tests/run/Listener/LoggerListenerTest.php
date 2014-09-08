@@ -9,15 +9,16 @@ class LoggerListenerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @param string $arguments
-     * @param \PHPUnit_Framework_MockObject_Matcher_Invocation $invocation
+     * @param \PHPUnit_Framework_MockObject_Matcher_Invocation $addInvocation
+     * @param \PHPUnit_Framework_MockObject_Matcher_Invocation $clearInvocation
      * @return LoggerListener
      */
-    private function getListener($arguments, \PHPUnit_Framework_MockObject_Matcher_Invocation $invocation)
+    private function getListener($arguments, \PHPUnit_Framework_MockObject_Matcher_Invocation $addInvocation,  \PHPUnit_Framework_MockObject_Matcher_Invocation $clearInvocation)
     {
         $_SERVER['argv'] = explode(' ', $arguments);
         $recorder = $this->getMock('Nikoms\FailLover\TestCaseResult\RecorderInterface', array('add','clear'));
-        $recorder->expects($invocation)->method('add');
-        $recorder->expects($this->never())->method('clear');
+        $recorder->expects($addInvocation)->method('add');
+        $recorder->expects($clearInvocation)->method('clear');
         $listener = new LoggerListener($recorder);
         return $listener;
     }
@@ -30,7 +31,7 @@ class LoggerListenerTest extends \PHPUnit_Framework_TestCase
         $arguments,
         \PHPUnit_Framework_MockObject_Matcher_Invocation $invocation
     ) {
-        $listener = $this->getListener($arguments, $invocation);
+        $listener = $this->getListener($arguments, $invocation, $this->never());
         $listener->addFailure(new FilterTestMock('testSimple'), new \PHPUnit_Framework_AssertionFailedError(), 0);
     }
 
@@ -42,7 +43,7 @@ class LoggerListenerTest extends \PHPUnit_Framework_TestCase
         $arguments,
         \PHPUnit_Framework_MockObject_Matcher_Invocation $invocation
     ) {
-        $listener = $this->getListener($arguments, $invocation);
+        $listener = $this->getListener($arguments, $invocation, $this->never());
         $listener->addError(new FilterTestMock('testSimple'), new \Exception(), 0);
     }
 
@@ -56,6 +57,28 @@ class LoggerListenerTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertRecorderInvocationWithParametersOnFailure('', $this->never());
         $this->assertRecorderInvocationWithParametersOnError('', $this->never());
+    }
+
+    public function testStartTestSuite_WhenLogIsOn_ClearIsCalled()
+    {
+        $listener = $this->getListener('-d fail-lover=log', $this->never(), $this->once());
+        $suite = new \PHPUnit_Framework_TestSuite('MyTestSuite');
+        $listener->startTestSuite($suite);
+    }
+
+    public function testStartTestSuite_WhenLogIsOff_ClearIsNotCalled()
+    {
+        $listener = $this->getListener('', $this->never(), $this->never());
+        $suite = new \PHPUnit_Framework_TestSuite('MyTestSuite');
+        $listener->startTestSuite($suite);
+    }
+
+    public function testStartTestSuite_WhenCallTwice_ClearIsCalledOnlyOnce()
+    {
+        $listener = $this->getListener('-d fail-lover=log', $this->never(), $this->once());
+        $suite = new \PHPUnit_Framework_TestSuite('MyTestSuite');
+        $listener->startTestSuite($suite);
+        $listener->startTestSuite($suite);
     }
 
     public function tearDown()
