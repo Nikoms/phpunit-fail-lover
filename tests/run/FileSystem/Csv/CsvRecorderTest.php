@@ -30,10 +30,11 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
-    public function testConstruct_WhenTheFileIsNotEmpty_TheFileIsEmptied()
+    public function testClear()
     {
         $filePath = $this->root->url() . '/not_empty_file.csv';
-        new CsvRecorder($filePath);
+        $recorder = new CsvRecorder($filePath);
+        $recorder->clear();
         $this->assertFileEquals($this->root->url() . '/empty_file.csv', $filePath);
     }
 

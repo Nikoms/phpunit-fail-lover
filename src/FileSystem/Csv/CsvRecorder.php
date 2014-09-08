@@ -26,12 +26,8 @@ class CsvRecorder implements RecorderInterface
         if ($filePath === '') {
             throw new \InvalidArgumentException();
         }
-        if (file_exists($filePath)) {
-            if (is_dir($filePath)) {
-                throw new \InvalidArgumentException();
-            } else {
-                file_put_contents($filePath, '');
-            }
+        if (file_exists($filePath) && is_dir($filePath)) {
+            throw new \InvalidArgumentException();
         }
 
         $this->filePath = $filePath;
@@ -70,5 +66,12 @@ class CsvRecorder implements RecorderInterface
         ksort($columns);
 
         return $columns;
+    }
+
+    public function clear()
+    {
+        if (file_exists($this->filePath)) {
+            file_put_contents($this->filePath, '');
+        }
     }
 }

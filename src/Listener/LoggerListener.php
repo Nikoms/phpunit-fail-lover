@@ -7,6 +7,7 @@ use Nikoms\FailLover\Command\ArgumentParser;
 use Nikoms\FailLover\TestCaseResult\RecorderInterface;
 use PHPUnit_Framework_AssertionFailedError;
 use PHPUnit_Framework_Test;
+use PHPUnit_Framework_TestSuite;
 
 
 class LoggerListener extends \PHPUnit_Framework_BaseTestListener
@@ -20,6 +21,8 @@ class LoggerListener extends \PHPUnit_Framework_BaseTestListener
      * @var RecorderInterface
      */
     private $recorder;
+
+    private $mainSuiteName;
 
     public function __construct(RecorderInterface $recorder)
     {
@@ -44,6 +47,14 @@ class LoggerListener extends \PHPUnit_Framework_BaseTestListener
     {
         if ($this->parser->hasAction('log') && $test instanceof \PHPUnit_Framework_TestCase) {
             $this->recorder->add($test);
+        }
+    }
+
+    public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
+    {
+        if($this->mainSuiteName === null){
+            $this->recorder->clear();
+            $this->mainSuiteName = $suite->getName();
         }
     }
 }

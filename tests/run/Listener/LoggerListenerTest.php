@@ -15,8 +15,9 @@ class LoggerListenerTest extends \PHPUnit_Framework_TestCase
     private function getListener($arguments, \PHPUnit_Framework_MockObject_Matcher_Invocation $invocation)
     {
         $_SERVER['argv'] = explode(' ', $arguments);
-        $recorder = $this->getMock('Nikoms\FailLover\TestCaseResult\RecorderInterface', array('add'));
+        $recorder = $this->getMock('Nikoms\FailLover\TestCaseResult\RecorderInterface', array('add','clear'));
         $recorder->expects($invocation)->method('add');
+        $recorder->expects($this->never())->method('clear');
         $listener = new LoggerListener($recorder);
         return $listener;
     }

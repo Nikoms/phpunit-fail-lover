@@ -45,7 +45,7 @@ To activate the *log* plugin. Add the listener to your phpunit.xml(.dist) file:
 ```
 
 * If the file `failed-tests.csv` doesn't exist, it will be created. A good practice is to give a path where you already create files, like code coverage. Be careful that it won't create any folder for you.
-* If the file already exists, it is emptied.
+* If the file already exists, it is emptied before all tests start.
 
 
 To activate the *replay* plugin. Add the listener to your phpunit.xml(.dist) file:
@@ -70,7 +70,6 @@ To activate the *replay* plugin. Add the listener to your phpunit.xml(.dist) fil
 
 If the specified file doesn't exist, then none of the tests will be executed.
 
-/!\ If you use the same file for the **log** and the **replay**, you must set the ReplayListener **before** the LoggerListener. Indeed, the Logger empties the file.
 
 Usage
 -----
@@ -102,6 +101,5 @@ TODO
 ----
 
 * Replay: Find why the --exclude-group doesn't work with "replay"
-* Both: Try to find a way to avoid the importance of the listeners order (If they use the same filename)
 * Both: Simplify the use the listener by giving only a file in the phpunit.xml file. Or by managing some new parameters in the command line?
 * Both: Give the possibility to give vars in the name of the file (like the date, now, LAST_ERRORS_IN:path, etc...)
