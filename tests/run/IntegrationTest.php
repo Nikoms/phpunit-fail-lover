@@ -47,7 +47,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         return $suite;
     }
 
-    private function filterTests()
+    private function prepareReaderWithTests()
     {
         $tests = array();
         foreach (func_get_args() as $testToRun) {
@@ -93,21 +93,21 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
     public function testFilter_WhenASingleFilterIsSet_OnlyOneTestIsRunning()
     {
         $suite = $this->createSuiteWithTests('testSimple', 'testToRun', 'testThatWontBeExecuted');
-        $this->filterTests('testSimple');
+        $this->prepareReaderWithTests('testSimple');
         $this->assertSuiteExecutesTests($suite, array('testSimple'));
     }
 
     public function testFilter_WhenTwoFiltersAreSet_TwoTestsAreRunning()
     {
         $suite = $this->createSuiteWithTests('testSimple', 'testToRun', 'testThatWontBeExecuted');
-        $this->filterTests('testSimple', 'testToRun');
+        $this->prepareReaderWithTests('testSimple', 'testToRun');
         $this->assertSuiteExecutesTests($suite, array('testSimple', 'testToRun'));
     }
 
     public function testFilter_WhenAFilterContainsTheNameOfAnother_TheLongTestIsNotTaken()
     {
         $suite = $this->createSuiteWithTests('testContains', 'testContainsFull');
-        $this->filterTests('testContains');
+        $this->prepareReaderWithTests('testContains');
         $this->assertSuiteExecutesTests($suite, array('testContains'));
     }
 
@@ -118,7 +118,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
             array('testWithData' => 1)
         );
 
-        $this->filterTests(array("testWithData" => 0));
+        $this->prepareReaderWithTests(array("testWithData" => 0));
 
         $this->assertSuiteExecutesTests($suite, array('testWithData with data set #0'));
     }
@@ -130,7 +130,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
             array('testWithData' => 'forgetMe')
         );
 
-        $this->filterTests(array("testWithData" => 'runMe'));
+        $this->prepareReaderWithTests(array("testWithData" => 'runMe'));
 
         $this->assertSuiteExecutesTests($suite, array('testWithData with data set "runMe"'));
     }
@@ -142,7 +142,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
             array('testWithData' => '"forgetMe"')
         );
 
-        $this->filterTests(array("testWithData" => '"runMe"'));
+        $this->prepareReaderWithTests(array("testWithData" => '"runMe"'));
 
         $this->assertSuiteExecutesTests($suite, array('testWithData with data set ""runMe""'));
     }
