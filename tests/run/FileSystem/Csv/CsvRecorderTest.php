@@ -20,6 +20,7 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
     {
         $this->root = vfsStream::setup('root',null, array(
                 'empty_file.csv' => '',
+                'not_empty_file.csv' => 'This file is not empty',
                 'empty_file_after_add_one_line.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testSimple,,' . "\n",
                 'empty_file_after_add_two_lines.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testSimple,,' . "\n" . '"Nikoms\FailLover\Tests\FilterTestMock",testToRun,,' . "\n",
                 'empty_file_after_add_one_line_with_indexed_data_0.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testWithIndexedDataProvider,0,' . "\n",
@@ -27,6 +28,13 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
                 'empty_file_after_add_one_line_with_double_quote_index.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testWithIndexedDataProvider,"""myIndex""",' . "\n",
             )
         );
+    }
+
+    public function testConstruct_WhenTheFileIsNotEmpty_TheFileIsEmptied()
+    {
+        $filePath = $this->root->url() . '/not_empty_file.csv';
+        new CsvRecorder($filePath);
+        $this->assertFileEquals($this->root->url() . '/empty_file.csv', $filePath);
     }
 
     public function testAdd_WhenTheFileDoesNotExist_TheFileIsCreated()

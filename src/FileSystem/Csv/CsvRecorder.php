@@ -26,8 +26,12 @@ class CsvRecorder implements RecorderInterface
         if ($filePath === '') {
             throw new \InvalidArgumentException();
         }
-        if (file_exists($filePath) && is_dir($filePath)) {
-            throw new \InvalidArgumentException();
+        if (file_exists($filePath)) {
+            if (is_dir($filePath)) {
+                throw new \InvalidArgumentException();
+            } else {
+                file_put_contents($filePath, '');
+            }
         }
 
         $this->filePath = $filePath;

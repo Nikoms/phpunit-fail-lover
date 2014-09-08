@@ -27,6 +27,7 @@ class CsvReader implements ReaderInterface
     public function __construct($fileName)
     {
         $this->fileName = $fileName;
+        $this->initList(); //This need to be done here, otherwise, it's impossible to get the list, because "Recorder" empties the file in his constructor too
     }
 
     /**
@@ -34,15 +35,25 @@ class CsvReader implements ReaderInterface
      */
     public function getList()
     {
-        if ($this->list !== null) {
-            return $this->list;
-        }
+        return $this->list;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return empty($this->list);
+    }
+
+    private function initList()
+    {
+        $this->list = array();
 
         if (!file_exists($this->fileName)) {
-            return array();
+            return;
         }
 
-        $this->list = array();
         if (($handle = fopen($this->fileName, "r")) !== false) {
             while (($data = fgetcsv($handle, 1000, ",")) !== false) {
                 $this->list[] = new TestCase(
@@ -54,17 +65,6 @@ class CsvReader implements ReaderInterface
             }
             fclose($handle);
         }
-
-        return $this->list;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEmpty()
-    {
-        $list = $this->getList();
-        return empty($list);
     }
 
 
