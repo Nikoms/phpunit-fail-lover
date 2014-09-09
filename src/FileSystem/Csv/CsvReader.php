@@ -27,7 +27,7 @@ class CsvReader implements ReaderInterface
     public function __construct($fileName)
     {
         $this->fileName = $fileName;
-        $this->initList(); //This need to be done here, otherwise, it's impossible to get the list, because "Recorder" empties the file in his constructor too
+        $this->initList();
     }
 
     /**
