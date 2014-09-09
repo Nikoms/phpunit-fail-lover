@@ -45,16 +45,24 @@ class LoggerListener extends \PHPUnit_Framework_BaseTestListener
      */
     private function log(PHPUnit_Framework_Test $test)
     {
-        if ($this->parser->hasAction('log') && $test instanceof \PHPUnit_Framework_TestCase) {
+        if ($this->isLogActive() && $test instanceof \PHPUnit_Framework_TestCase) {
             $this->recorder->add($test);
         }
     }
 
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        if($this->mainSuiteName === null && $this->parser->hasAction('log')){
+        if($this->mainSuiteName === null && $this->isLogActive()){
             $this->recorder->clear();
             $this->mainSuiteName = $suite->getName();
         }
+    }
+
+    /**
+     * @return bool
+     */
+    private function isLogActive()
+    {
+        return $this->parser->hasAction('log');
     }
 }
