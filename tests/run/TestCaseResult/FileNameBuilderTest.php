@@ -36,5 +36,11 @@ class FileNameBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($folder . '/fail-lover.csv', $builder->create($folder));
     }
 
+    public function testCreate_WhenPatternHasDateTimePattern_ReplaceItByTheCurrentDateTime()
+    {
+        $builder = new FileNameBuilder();
+        $this->assertSame(date('Y-m-d-His').'.csv', $builder->create('{datetime}.csv'));
+    }
+
 }
  

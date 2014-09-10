@@ -11,12 +11,15 @@ class FileNameBuilder
 
     public function create($pattern)
     {
-        $pattern = trim((string)$pattern);
-        if ($pattern === '') {
+        $fileName = trim((string)$pattern);
+        if ($fileName === '') {
             return self::BASIC_CSV_FILENAME;
         }
-        if (file_exists($pattern) && is_dir($pattern)) {
-            return $pattern . '/' . self::BASIC_CSV_FILENAME;
+        if (file_exists($fileName) && is_dir($fileName)) {
+            return $fileName . '/' . self::BASIC_CSV_FILENAME;
         }
+
+        return str_replace('{datetime}', date('Y-m-d-His'), $fileName);
+
     }
 }
