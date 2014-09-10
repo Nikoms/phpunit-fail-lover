@@ -39,7 +39,14 @@ class FileNameBuilderTest extends \PHPUnit_Framework_TestCase
     public function testCreate_WhenPatternHasDateTimePattern_ReplaceItByTheCurrentDateTime()
     {
         $builder = new FileNameBuilder();
-        $this->assertSame(date('Y-m-d-His').'.csv', $builder->create('{datetime}.csv'));
+        $this->assertSame(date('Y-m-d-His') . '.csv', $builder->create('{datetime}.csv'));
+    }
+
+    public function testCreate_WhenPatternHasUniqId_ReplaceItByAUniqId()
+    {
+        $builder = new FileNameBuilder();
+        $this->assertNotEmpty($builder->create('{uniqId}'));
+        $this->assertNotSame('{uniqId}', $builder->create('{uniqId}'));
     }
 
 }

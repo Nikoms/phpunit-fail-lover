@@ -19,7 +19,10 @@ class FileNameBuilder
             return $fileName . '/' . self::BASIC_CSV_FILENAME;
         }
 
-        return str_replace('{datetime}', date('Y-m-d-His'), $fileName);
+        $newFileName = str_replace('{datetime}', date('Y-m-d-His'), $fileName);
+        $newFileName = str_replace('{uniqId}', uniqid(), $newFileName);
+
+        return $newFileName;
 
     }
 }
