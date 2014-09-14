@@ -49,5 +49,21 @@ class FileNameBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertNotSame('{uniqId}', $builder->create('{uniqId}'));
     }
 
+    public function testCreate_WhenPatternHasLast_ReplaceItByTheLastModifiedFile()
+    {
+        $builder = new FileNameBuilder();
+
+        vfsStream::newFile('first.csv')
+            ->at($this->root)
+            ->lastModified(100);
+        vfsStream::newFile('second.csv')
+            ->at($this->root)
+            ->lastModified(200);
+
+        $folder = $this->root->url();
+
+        $this->assertSame($folder . '/second.csv', $builder->create('{' . $folder . ':last}'));
+        $this->assertSame($folder . '/second.csv', $builder->create('{' . $folder . '/:last}'));
+    }
 }
  
