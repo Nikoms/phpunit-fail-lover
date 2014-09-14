@@ -65,5 +65,24 @@ class FileNameBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($folder . '/second.csv', $builder->create('{' . $folder . ':last}'));
         $this->assertSame($folder . '/second.csv', $builder->create('{' . $folder . '/:last}'));
     }
+
+    public function testCreate_WhenPatternHasLastAndFolderDoesntExist_ThrowsException()
+    {
+        $builder = new FileNameBuilder();
+        $unknownFolder = $this->root->url() . '/unknown_folder';
+        $this->setExpectedException('\InvalidArgumentException');
+        $builder->create('{' . $unknownFolder . ':last}');
+    }
+
+    public function testCreate_WhenPatternHasLastOnFile_ThrowsException()
+    {
+        $builder = new FileNameBuilder();
+        vfsStream::newFile('file.csv')
+            ->at($this->root);
+
+        $pathToFile = $this->root->url() . '/file.csv';
+        $this->setExpectedException('\InvalidArgumentException');
+        $builder->create('{' . $pathToFile . ':last}');
+    }
 }
  

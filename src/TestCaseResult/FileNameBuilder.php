@@ -9,6 +9,11 @@ class FileNameBuilder
 
     const BASIC_CSV_FILENAME = 'fail-lover.csv';
 
+    /**
+     * @param string $pattern
+     * @return string
+     * @throw \InvalidArgumentException
+     */
     public function create($pattern)
     {
         $fileName = trim((string)$pattern);
@@ -29,33 +34,39 @@ class FileNameBuilder
     }
 
     /**
-     * @param $filePath
-     * @return mixed
+     * @param string $filePath
+     * @return string
+     * @throw \InvalidArgumentException
      */
     private function replaceLastModifiedFile($filePath)
     {
-        return preg_replace_callback('#\{([\w\/:]*):last\}#',function($matches){
+        return preg_replace_callback(
+            '#\{([\w\/\.:]*):last\}#',
+            function ($matches) {
                 $dir = rtrim($matches[1], '/') . '/';
                 $lastFile = self::BASIC_CSV_FILENAME;
                 $lastModifiedTime = 0;
 
-                if (is_dir($dir)) {
+                if (file_exists($dir) && is_dir($dir)) {
                     if ($dh = opendir($dir)) {
                         while (($file = readdir($dh)) !== false) {
-                            $filePath = $dir . $file;
-                            if(is_file($filePath)){
-                                $modifiedTime = filemtime($filePath);
-                                if($lastModifiedTime < $modifiedTime){
+                            $currentFilePath = $dir . $file;
+                            if (is_file($currentFilePath)) {
+                                if ($lastModifiedTime < filemtime($currentFilePath)) {
                                     $lastFile = $file;
-                                    $lastModifiedTime = $modifiedTime;
+                                    $lastModifiedTime = filemtime($currentFilePath);
                                 }
                             }
                         }
                         closedir($dh);
                     }
+                } else {
+                    throw new \InvalidArgumentException($dir . ' is not a valid folder');
                 }
                 return $dir . $lastFile;
 
-            }, $filePath);
+            },
+            $filePath
+        );
     }
 }
