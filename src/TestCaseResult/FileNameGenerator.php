@@ -4,7 +4,7 @@
 namespace Nikoms\FailLover\TestCaseResult;
 
 
-class FileNameBuilder
+class FileNameGenerator
 {
 
     const BASIC_CSV_FILENAME = 'fail-lover.csv';

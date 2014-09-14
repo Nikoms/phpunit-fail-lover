@@ -7,7 +7,7 @@ namespace Nikoms\FailLover\TestCaseResult;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 
-class FileNameBuilderTest extends \PHPUnit_Framework_TestCase
+class FileNameGeneratorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var vfsStreamDirectory
@@ -25,33 +25,33 @@ class FileNameBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testCreate_WhenPatternIsEmpty_ReturnAStaticFileName()
     {
-        $builder = new FileNameBuilder();
+        $builder = new FileNameGenerator();
         $this->assertSame('fail-lover.csv', $builder->create(''));
     }
 
     public function testCreate_WhenPatternIsAFolder_ReturnTheFolderWithTheStaticFileName()
     {
-        $builder = new FileNameBuilder();
+        $builder = new FileNameGenerator();
         $folder = $this->root->url();
         $this->assertSame($folder . '/fail-lover.csv', $builder->create($folder));
     }
 
     public function testCreate_WhenPatternHasDateTimePattern_ReplaceItByTheCurrentDateTime()
     {
-        $builder = new FileNameBuilder();
+        $builder = new FileNameGenerator();
         $this->assertSame(date('Y-m-d-His') . '.csv', $builder->create('{datetime}.csv'));
     }
 
     public function testCreate_WhenPatternHasUniqId_ReplaceItByAUniqId()
     {
-        $builder = new FileNameBuilder();
+        $builder = new FileNameGenerator();
         $this->assertNotEmpty($builder->create('{uniqId}'));
         $this->assertNotSame('{uniqId}', $builder->create('{uniqId}'));
     }
 
     public function testCreate_WhenPatternHasLast_ReplaceItByTheLastModifiedFile()
     {
-        $builder = new FileNameBuilder();
+        $builder = new FileNameGenerator();
 
         vfsStream::newFile('first.csv')
             ->at($this->root)
@@ -68,7 +68,7 @@ class FileNameBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testCreate_WhenPatternHasLastAndFolderDoesntExist_ThrowsException()
     {
-        $builder = new FileNameBuilder();
+        $builder = new FileNameGenerator();
         $unknownFolder = $this->root->url() . '/unknown_folder';
         $this->setExpectedException('\InvalidArgumentException');
         $builder->create('{' . $unknownFolder . ':last}');
@@ -76,7 +76,7 @@ class FileNameBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testCreate_WhenPatternHasLastOnFile_ThrowsException()
     {
-        $builder = new FileNameBuilder();
+        $builder = new FileNameGenerator();
         vfsStream::newFile('file.csv')
             ->at($this->root);
 
