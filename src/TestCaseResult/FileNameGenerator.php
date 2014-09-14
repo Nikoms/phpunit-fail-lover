@@ -44,7 +44,7 @@ class FileNameGenerator
             '#\{([\w\/\.:]*):last\}#',
             function ($matches) {
                 $dir = rtrim($matches[1], '/') . '/';
-                $lastFile = self::BASIC_CSV_FILENAME;
+                $lastFile = FileNameGenerator::BASIC_CSV_FILENAME;
                 $lastModifiedTime = 0;
 
                 if (file_exists($dir) && is_dir($dir)) {
