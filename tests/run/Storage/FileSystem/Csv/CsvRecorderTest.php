@@ -114,5 +114,20 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('data 1'), '"myIndex"')));
         $this->assertFileEquals($this->root->url() . '/empty_file_after_add_one_line_with_double_quote_index.csv', $filePath);
     }
+
+    public function testRemove_WhenAFileExists_TheFileIsRemoved()
+    {
+        $filePath = $this->root->url() . '/empty_file.csv';
+        $recorder = new CsvRecorder($filePath);
+        $this->assertTrue($recorder->remove());
+        $this->assertFileNotExists($filePath);
+    }
+
+    public function testRemove_WhenAFileDoesNotExist_ItReturnsTrue()
+    {
+        $filePath = $this->root->url() . '/unknown_file.csv';
+        $recorder = new CsvRecorder($filePath);
+        $this->assertTrue($recorder->remove());
+    }
 }
  

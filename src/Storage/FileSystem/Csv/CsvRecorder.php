@@ -74,4 +74,15 @@ class CsvRecorder implements RecorderInterface
             file_put_contents($this->filePath, '');
         }
     }
+
+    /**
+     * @return bool
+     */
+    public function remove()
+    {
+        if (file_exists($this->filePath)) {
+            return unlink($this->filePath);
+        }
+        return true;
+    }
 }
