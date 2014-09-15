@@ -11,6 +11,11 @@ use Nikoms\FailLover\Tests\FilterTestMock;
 class ReplayListenerTest extends \PHPUnit_Framework_TestCase
 {
 
+    public function tearDown()
+    {
+        $_SERVER['argv'] = array();
+    }
+
     /**
      * @param array $methodsOfSuite
      * @param array $methodsToFilter
@@ -27,9 +32,10 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array $methodsToFilter
      * @param \PHPUnit_Framework_MockObject_Matcher_Invocation $invocation
+     * @param bool $isValid
      * @return \PHPUnit_Framework_MockObject_MockObject|ReaderInterface
      */
-    private function getReader($methodsToFilter, \PHPUnit_Framework_MockObject_Matcher_Invocation $invocation)
+    private function getReader($methodsToFilter, \PHPUnit_Framework_MockObject_Matcher_Invocation $invocation, $isValid = true)
     {
         $testCaseFactory = new TestCaseFactory();
         $testCasesToFilter = array();
@@ -40,7 +46,7 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
         $reader = $this->getMock('Nikoms\FailLover\TestCaseResult\Storage\ReaderInterface', array('getList', 'isEmpty', 'isValid'));
         $reader->expects($invocation)->method('getList')->will($this->returnValue($testCasesToFilter));
         $reader->expects($invocation)->method('isEmpty')->will($this->returnValue(empty($testCasesToFilter)));
-        $reader->expects($invocation)->method('isValid')->will($this->returnValue(true));
+        $reader->expects($invocation)->method('isValid')->will($this->returnValue($isValid));
         return $reader;
     }
 
@@ -98,8 +104,12 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $suite);
     }
 
-    public function tearDown()
+    public function testStartTestSuite_WhenReaderIsNotValid_TheFilterIsNotCalled()
     {
-        $_SERVER['argv'] = array();
+        $_SERVER['argv'] = array('-d', 'fail-lover=replay');
+        $suite = $this->getSuite(array('testToRun', 'testAnotherOne'));
+        $listener = new ReplayListener($this->getReader(array(), $this->any(), false));
+        $listener->startTestSuite($suite);
+        $this->assertCount(2, $suite);
     }
 }

@@ -64,6 +64,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
 
         $this->reader->expects($this->any())->method('getList')->will($this->returnValue($tests));
         $this->reader->expects($this->any())->method('isEmpty')->will($this->returnValue(empty($tests)));
+        $this->reader->expects($this->any())->method('isValid')->will($this->returnValue(true));
     }
 
     /**

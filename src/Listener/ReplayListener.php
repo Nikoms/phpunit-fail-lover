@@ -30,7 +30,7 @@ class ReplayListener extends \PHPUnit_Framework_BaseTestListener
 
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        if (!$this->parser->hasAction('replay')) {
+        if (!$this->parser->hasAction('replay') || !$this->reader->isValid()) {
             return;
         }
 
