@@ -46,11 +46,11 @@ class FileNameGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(date('Y-m-d-His') . '.csv', $builder->create('{datetime}.csv'));
     }
 
-    public function testCreate_WhenPatternHasUniqId_ReplaceItByAUniqId()
+    public function testCreate_WhenPatternHasUniqIdWithFolder_ReplaceItByAUniqId()
     {
         $builder = new FileNameGenerator();
-        $fileName = $builder->create('{uniqId}');
-        $this->assertSame('xoxoSuperUniqId', $fileName);
+        $pattern = sprintf('{%s:uniqId}', $this->root->url());
+        $this->assertSame($this->root->url() . '/xoxoSuperUniqId', $builder->create($pattern));
     }
 
     public function testCreate_WhenPatternHasLast_ReplaceItByTheLastModifiedFile()

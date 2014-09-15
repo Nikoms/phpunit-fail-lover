@@ -25,7 +25,7 @@ class FileNameGenerator
         }
 
         $newFileName = str_replace('{datetime}', date('Y-m-d-His'), $fileName);
-        $newFileName = str_replace('{uniqId}', uniqid(), $newFileName);
+        $newFileName = $this->replaceUniqId($newFileName);
 
         $newFileName = $this->replaceLastModifiedFile($newFileName);
 
@@ -41,7 +41,7 @@ class FileNameGenerator
     private function replaceLastModifiedFile($filePath)
     {
         return preg_replace_callback(
-            '#\{([\w\/\.:]*):last\}#',
+            $this->getParameterizedPathRegex('last'),
             function ($matches) {
                 $dir = rtrim($matches[1], '/') . '/';
                 $lastFile = FileNameGenerator::BASIC_FILENAME;
@@ -70,5 +70,32 @@ class FileNameGenerator
             },
             $filePath
         );
+    }
+
+    /**
+     * @param string $filePath
+     * @return string
+     */
+    public function replaceUniqId($filePath)
+    {
+        return preg_replace_callback(
+            $this->getParameterizedPathRegex('uniqId'),
+            function($matches){
+                $dir = rtrim($matches[1], '/') . '/';
+                return $dir . uniqid();
+            },
+            $filePath
+        );
+
+//        return str_replace('{uniqId}', uniqid(), $filePath);
+    }
+
+    /**
+     * @param $str
+     * @return string
+     */
+    public function getParameterizedPathRegex($str)
+    {
+        return '#\{([\w\/\.:]*):' . $str . '\}#';
     }
 }
