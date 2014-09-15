@@ -49,7 +49,7 @@ class FileNameGeneratorTest extends \PHPUnit_Framework_TestCase
     public function testCreate_WhenPatternHasUniqId_ReplaceItByAUniqId()
     {
         $builder = new FileNameGenerator();
-        $pattern = sprintf('{%s:uniqId}', $this->root->url());
+        $pattern = sprintf('%s:uniqId', $this->root->url());
         $this->assertSame($this->root->url() . '/xoxoSuperUniqId', $builder->create($pattern));
     }
 
@@ -59,7 +59,7 @@ class FileNameGeneratorTest extends \PHPUnit_Framework_TestCase
             ->at($this->root);
 
         $builder = new FileNameGenerator();
-        $pattern = sprintf('{%s:uniqId}', $this->root->url());
+        $pattern = sprintf('%s:uniqId', $this->root->url());
         $this->assertSame($this->root->url() . '/xoxoSuperUniqId_1', $builder->create($pattern));
     }
 
@@ -76,8 +76,8 @@ class FileNameGeneratorTest extends \PHPUnit_Framework_TestCase
 
         $folder = $this->root->url();
 
-        $this->assertSame($folder . '/second.csv', $builder->create('{' . $folder . ':last}'));
-        $this->assertSame($folder . '/second.csv', $builder->create('{' . $folder . '/:last}'));
+        $this->assertSame($folder . '/second.csv', $builder->create($folder . ':last'));
+        $this->assertSame($folder . '/second.csv', $builder->create($folder . '/:last'));
     }
 
     public function testCreate_WhenPatternHasLastAndThereIsNoFile_ReplaceItByTheDefaultFile()
@@ -85,7 +85,7 @@ class FileNameGeneratorTest extends \PHPUnit_Framework_TestCase
         $builder = new FileNameGenerator();
         $this->assertSame(
             $this->root->url() . '/' . FileNameGenerator::BASIC_FILENAME,
-            $builder->create('{' . $this->root->url() . ':last}')
+            $builder->create($this->root->url() . ':last')
         );
     }
 
@@ -94,7 +94,7 @@ class FileNameGeneratorTest extends \PHPUnit_Framework_TestCase
         $builder = new FileNameGenerator();
         $unknownFolder = $this->root->url() . '/unknown_folder';
         $this->setExpectedException('\InvalidArgumentException');
-        $builder->create('{' . $unknownFolder . ':last}');
+        $builder->create($unknownFolder . ':last');
     }
 
     public function testCreate_WhenPatternHasLastOnFile_ThrowsException()
@@ -105,6 +105,6 @@ class FileNameGeneratorTest extends \PHPUnit_Framework_TestCase
 
         $pathToFile = $this->root->url() . '/file.csv';
         $this->setExpectedException('\InvalidArgumentException');
-        $builder->create('{' . $pathToFile . ':last}');
+        $builder->create($pathToFile . ':last');
     }
 }

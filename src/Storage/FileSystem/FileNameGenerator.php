@@ -122,7 +122,7 @@ class FileNameGenerator
     private function replaceWithCallBack($filePath, $param, $function)
     {
         return preg_replace_callback(
-            '#\{([\w\/\.:]*):' . $param . '\}#',
+            '#([\w\/\.:]*):' . $param . '#',
             $function,
             $filePath
         );
