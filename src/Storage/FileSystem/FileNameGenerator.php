@@ -10,49 +10,9 @@ class FileNameGenerator
     const BASIC_FILENAME = 'fail-lover.txt';
 
     /**
-     * @param string $pattern
+     * @param string $dir
      * @return string
-     * @throw \InvalidArgumentException
      */
-    public function create($pattern)
-    {
-        $fileName = trim((string)$pattern);
-        if ($fileName === '') {
-            return self::BASIC_FILENAME;
-        }
-        if (file_exists($fileName) && is_dir($fileName)) {
-            return $fileName . '/' . self::BASIC_FILENAME;
-        }
-
-        $newFileName = str_replace('{datetime}', date('Y-m-d-His'), $fileName);
-        $newFileName = $this->replaceUniqId($newFileName);
-        $newFileName = $this->replaceLastModifiedFile($newFileName);
-
-        return $newFileName;
-    }
-
-    /**
-     * @param string $filePath
-     * @return string
-     * @throw \InvalidArgumentException
-     */
-    private function replaceLastModifiedFile($filePath)
-    {
-        return $this->replaceWithCallBack(
-            $filePath,
-            'last',
-            function ($matches) {
-                $dir = FileNameGenerator::addRightSlash($matches[1]);
-                $lastModifiedFile = FileNameGenerator::getLastModifiedFile($dir);
-                if (empty($lastModifiedFile)) {
-                    $lastModifiedFile = FileNameGenerator::BASIC_FILENAME;
-                }
-
-                return $dir . $lastModifiedFile;
-            }
-        );
-    }
-
     public static function addRightSlash($dir)
     {
         return rtrim($dir, '/') . '/';
@@ -89,15 +49,58 @@ class FileNameGenerator
         }
     }
 
+    /**
+     * @param string $pattern
+     * @return string
+     * @throw \InvalidArgumentException
+     */
+    public function create($pattern)
+    {
+        $fileName = trim((string)$pattern);
+        if ($fileName === '') {
+            return self::BASIC_FILENAME;
+        }
+        if (file_exists($fileName) && is_dir($fileName)) {
+            return $fileName . '/' . self::BASIC_FILENAME;
+        }
+
+        $newFileName = $this->replaceDateTime($fileName);
+        $newFileName = $this->replaceUniqId($newFileName);
+        $newFileName = $this->replaceLastModifiedFile($newFileName);
+
+        return $newFileName;
+    }
 
     /**
-     * @param string $filePath
+     * @param string $fileName
      * @return string
+     * @throw \InvalidArgumentException
      */
-    private function replaceUniqId($filePath)
+    private function replaceLastModifiedFile($fileName)
     {
         return $this->replaceWithCallBack(
-            $filePath,
+            $fileName,
+            'last',
+            function ($matches) {
+                $dir = FileNameGenerator::addRightSlash($matches[1]);
+                $lastModifiedFile = FileNameGenerator::getLastModifiedFile($dir);
+                if (empty($lastModifiedFile)) {
+                    $lastModifiedFile = FileNameGenerator::BASIC_FILENAME;
+                }
+
+                return $dir . $lastModifiedFile;
+            }
+        );
+    }
+
+    /**
+     * @param string $fileName
+     * @return string
+     */
+    private function replaceUniqId($fileName)
+    {
+        return $this->replaceWithCallBack(
+            $fileName,
             'uniqId',
             function ($matches) {
                 $dir = rtrim($matches[1], '/') . '/';
@@ -114,17 +117,32 @@ class FileNameGenerator
     }
 
     /**
-     * @param $filePath
+     * @param $fileName
      * @param $param
      * @param $function
      * @return mixed
      */
-    private function replaceWithCallBack($filePath, $param, $function)
+    private function replaceWithCallBack($fileName, $param, $function)
     {
         return preg_replace_callback(
             '#([\w\/\.:]*):' . $param . '#',
             $function,
-            $filePath
+            $fileName
+        );
+    }
+
+    /**
+     * @param $fileName
+     * @return mixed
+     */
+    private function replaceDateTime($fileName)
+    {
+        return $this->replaceWithCallBack(
+            $fileName,
+            'datetime',
+            function ($matches) {
+                return FileNameGenerator::addRightSlash($matches[1]) . date('Y-m-d-His');
+            }
         );
     }
 }
