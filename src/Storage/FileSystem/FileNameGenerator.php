@@ -44,7 +44,7 @@ class FileNameGenerator
             function ($matches) {
                 $dir = FileNameGenerator::addRightSlash($matches[1]);
                 $lastModifiedFile = FileNameGenerator::getLastModifiedFile($dir);
-                if(empty($lastModifiedFile)){
+                if (empty($lastModifiedFile)) {
                     $lastModifiedFile = FileNameGenerator::BASIC_FILENAME;
                 }
 
@@ -100,7 +100,15 @@ class FileNameGenerator
             $filePath,
             'uniqId',
             function ($matches) {
-                return rtrim($matches[1], '/') . '/' . uniqid();
+                $dir = rtrim($matches[1], '/') . '/';
+                $uniqId = uniqid();
+                $fileName = $uniqId;
+                $i = 1;
+                while (file_exists($dir . $fileName)) {
+                    $fileName = $uniqId . '_' . $i;
+                    $i++;
+                }
+                return $dir . $fileName;
             }
         );
     }
