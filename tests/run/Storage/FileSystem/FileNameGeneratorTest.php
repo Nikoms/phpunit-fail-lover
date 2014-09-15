@@ -7,6 +7,12 @@ use org\bovigo\vfs\vfsStreamDirectory;
 
 class FileNameGeneratorTest extends \PHPUnit_Framework_TestCase
 {
+    public static function setUpBeforeClass()
+    {
+        include __DIR__ . '/uniqIdMock.php';
+    }
+
+
     /**
      * @var vfsStreamDirectory
      */
@@ -43,8 +49,8 @@ class FileNameGeneratorTest extends \PHPUnit_Framework_TestCase
     public function testCreate_WhenPatternHasUniqId_ReplaceItByAUniqId()
     {
         $builder = new FileNameGenerator();
-        $this->assertNotEmpty($builder->create('{uniqId}'));
-        $this->assertNotSame('{uniqId}', $builder->create('{uniqId}'));
+        $fileName = $builder->create('{uniqId}');
+        $this->assertSame('xoxoSuperUniqId', $fileName);
     }
 
     public function testCreate_WhenPatternHasLast_ReplaceItByTheLastModifiedFile()
@@ -83,4 +89,3 @@ class FileNameGeneratorTest extends \PHPUnit_Framework_TestCase
         $builder->create('{' . $pathToFile . ':last}');
     }
 }
- 
