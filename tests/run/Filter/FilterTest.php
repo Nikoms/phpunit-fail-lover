@@ -17,7 +17,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->reader = $this->getMockBuilder('Nikoms\FailLover\TestCaseResult\Storage\ReaderInterface')
-            ->setMethods(array('getList', 'isEmpty'))
+            ->setMethods(array('getList', 'isEmpty', 'isValid'))
             ->getMock();
     }
 

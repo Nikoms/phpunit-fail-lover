@@ -20,6 +20,11 @@ class CsvReader implements ReaderInterface
      */
     private $list;
 
+    /**
+     * @var bool
+     */
+    private $isValid;
+
 
     /**
      * @param string $fileName
@@ -27,7 +32,7 @@ class CsvReader implements ReaderInterface
     public function __construct($fileName)
     {
         $this->fileName = $fileName;
-        $this->initList();
+        $this->init();
     }
 
     /**
@@ -46,11 +51,12 @@ class CsvReader implements ReaderInterface
         return empty($this->list);
     }
 
-    private function initList()
+    private function init()
     {
         $this->list = array();
+        $this->isValid = file_exists($this->fileName);
 
-        if (!file_exists($this->fileName)) {
+        if (!$this->isValid) {
             return;
         }
 
@@ -65,6 +71,14 @@ class CsvReader implements ReaderInterface
             }
             fclose($handle);
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValid()
+    {
+        return $this->isValid;
     }
 
 

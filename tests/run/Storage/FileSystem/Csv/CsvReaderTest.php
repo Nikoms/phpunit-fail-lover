@@ -62,5 +62,17 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase {
         $reader = new CsvReader($this->root->url() . '/empty_file.csv');
         $this->assertTrue($reader->isEmpty());
     }
+
+    public function testIsValid_WhenFileDoesNotExist_TheReaderIsNotValid()
+    {
+        $reader = new CsvReader($this->root->url() . '/unknow_file.csv');
+        $this->assertFalse($reader->isValid());
+    }
+
+    public function testIsValid_WhenFileExists_TheReaderIsValid()
+    {
+        $reader = new CsvReader($this->root->url() . '/one_line.csv');
+        $this->assertTrue($reader->isValid());
+    }
 }
  

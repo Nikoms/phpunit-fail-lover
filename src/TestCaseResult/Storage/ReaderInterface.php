@@ -17,4 +17,9 @@ interface ReaderInterface
      * @return bool
      */
     public function isEmpty();
+
+    /**
+     * @return bool
+     */
+    public function isValid();
 }
