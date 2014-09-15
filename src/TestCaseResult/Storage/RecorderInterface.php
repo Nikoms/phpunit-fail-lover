@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Nikoms\FailLover\TestCaseResult;
+namespace Nikoms\FailLover\TestCaseResult\Storage;
 
 
 interface RecorderInterface

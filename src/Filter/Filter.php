@@ -4,7 +4,7 @@
 namespace Nikoms\FailLover\Filter;
 
 
-use Nikoms\FailLover\TestCaseResult\ReaderInterface;
+use Nikoms\FailLover\TestCaseResult\Storage\ReaderInterface;
 
 class Filter implements FilterInterface
 {

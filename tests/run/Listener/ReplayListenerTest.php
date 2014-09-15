@@ -4,7 +4,7 @@
 namespace Nikoms\FailLover\Listener;
 
 
-use Nikoms\FailLover\TestCaseResult\ReaderInterface;
+use Nikoms\FailLover\TestCaseResult\Storage\ReaderInterface;
 use Nikoms\FailLover\TestCaseResult\TestCaseFactory;
 use Nikoms\FailLover\Tests\FilterTestMock;
 
@@ -37,7 +37,7 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
             $testCasesToFilter[] = $testCaseFactory->createTestCase(new FilterTestMock($testName));
         }
 
-        $reader = $this->getMock('Nikoms\FailLover\TestCaseResult\ReaderInterface', array('getList', 'isEmpty'));
+        $reader = $this->getMock('Nikoms\FailLover\TestCaseResult\Storage\ReaderInterface', array('getList', 'isEmpty'));
         $reader->expects($invocation)->method('getList')->will($this->returnValue($testCasesToFilter));
         $reader->expects($invocation)->method('isEmpty')->will($this->returnValue(empty($testCasesToFilter)));
         return $reader;

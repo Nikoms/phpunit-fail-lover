@@ -4,7 +4,7 @@ namespace Nikoms\FailLover\Listener;
 
 use Exception;
 use Nikoms\FailLover\Command\ArgumentParser;
-use Nikoms\FailLover\TestCaseResult\RecorderInterface;
+use Nikoms\FailLover\TestCaseResult\Storage\RecorderInterface;
 use PHPUnit_Framework_AssertionFailedError;
 use PHPUnit_Framework_Test;
 use PHPUnit_Framework_TestSuite;

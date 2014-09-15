@@ -4,7 +4,7 @@
 namespace Nikoms\FailLover;
 
 use Nikoms\FailLover\Listener\ReplayListener;
-use Nikoms\FailLover\TestCaseResult\ReaderInterface;
+use Nikoms\FailLover\TestCaseResult\Storage\ReaderInterface;
 use Nikoms\FailLover\TestCaseResult\TestCase;
 use Nikoms\FailLover\Tests\FilterTestMock;
 
@@ -20,7 +20,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $_SERVER['argv'] = array('-d', 'fail-lover=replay');
-        $this->reader = $this->getMockBuilder('Nikoms\FailLover\TestCaseResult\ReaderInterface')
+        $this->reader = $this->getMockBuilder('Nikoms\FailLover\TestCaseResult\Storage\ReaderInterface')
             ->setMethods(array('getList', 'isEmpty'))
             ->getMock();
     }

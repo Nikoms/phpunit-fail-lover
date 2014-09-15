@@ -8,7 +8,7 @@ use Nikoms\FailLover\Command\ArgumentParser;
 use Nikoms\FailLover\Filter\EmptyFilter;
 use Nikoms\FailLover\Filter\Filter;
 use Nikoms\FailLover\Filter\FilterFactory;
-use Nikoms\FailLover\TestCaseResult\ReaderInterface;
+use Nikoms\FailLover\TestCaseResult\Storage\ReaderInterface;
 use PHPUnit_Framework_TestSuite;
 
 class ReplayListener extends \PHPUnit_Framework_BaseTestListener

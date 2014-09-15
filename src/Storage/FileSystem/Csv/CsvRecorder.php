@@ -5,7 +5,7 @@ namespace Nikoms\FailLover\Storage\FileSystem\Csv;
 
 
 use Nikoms\FailLover\TestCaseResult\Exception\OutputNotAvailableException;
-use Nikoms\FailLover\TestCaseResult\RecorderInterface;
+use Nikoms\FailLover\TestCaseResult\Storage\RecorderInterface;
 use Nikoms\FailLover\TestCaseResult\TestCaseFactory;
 
 class CsvRecorder implements RecorderInterface

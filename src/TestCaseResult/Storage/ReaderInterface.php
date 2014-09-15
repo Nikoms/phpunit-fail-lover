@@ -1,8 +1,10 @@
 <?php
 
 
-namespace Nikoms\FailLover\TestCaseResult;
+namespace Nikoms\FailLover\TestCaseResult\Storage;
 
+
+use Nikoms\FailLover\TestCaseResult\TestCase;
 
 interface ReaderInterface
 {

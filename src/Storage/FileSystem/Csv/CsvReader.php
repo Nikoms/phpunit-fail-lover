@@ -4,7 +4,7 @@
 namespace Nikoms\FailLover\Storage\FileSystem\Csv;
 
 
-use Nikoms\FailLover\TestCaseResult\ReaderInterface;
+use Nikoms\FailLover\TestCaseResult\Storage\ReaderInterface;
 use Nikoms\FailLover\TestCaseResult\TestCase;
 
 class CsvReader implements ReaderInterface
