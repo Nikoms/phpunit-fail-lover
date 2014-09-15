@@ -47,22 +47,24 @@ class FileNameGenerator
                 $lastFile = FileNameGenerator::BASIC_FILENAME;
                 $lastModifiedTime = 0;
 
-                if (file_exists($dir) && is_dir($dir)) {
-                    if ($dh = opendir($dir)) {
-                        while (($file = readdir($dh)) !== false) {
-                            $currentFilePath = $dir . $file;
-                            if (is_file($currentFilePath)) {
-                                if ($lastModifiedTime < filemtime($currentFilePath)) {
-                                    $lastFile = $file;
-                                    $lastModifiedTime = filemtime($currentFilePath);
-                                }
-                            }
+                if (file_exists($dir) && is_dir($dir) && $dh = opendir($dir)) {
+                    while (($file = readdir($dh)) !== false) {
+                        $currentFilePath = $dir . $file;
+                        if (
+                            $currentFilePath != '..'
+                            && $currentFilePath != '.'
+                            && is_file($currentFilePath)
+                            && $lastModifiedTime < filemtime($currentFilePath)
+                        ) {
+                            $lastFile = $file;
+                            $lastModifiedTime = filemtime($currentFilePath);
                         }
-                        closedir($dh);
                     }
+                    closedir($dh);
                 } else {
                     throw new \InvalidArgumentException($dir . ' is not a valid folder');
                 }
+
                 return $dir . $lastFile;
 
             },
