@@ -24,14 +24,14 @@ class FileNameGeneratorTest extends \PHPUnit_Framework_TestCase
     public function testCreate_WhenPatternIsEmpty_ReturnAStaticFileName()
     {
         $builder = new FileNameGenerator();
-        $this->assertSame('fail-lover.csv', $builder->create(''));
+        $this->assertSame(FileNameGenerator::BASIC_FILENAME, $builder->create(''));
     }
 
     public function testCreate_WhenPatternIsAFolder_ReturnTheFolderWithTheStaticFileName()
     {
         $builder = new FileNameGenerator();
         $folder = $this->root->url();
-        $this->assertSame($folder . '/fail-lover.csv', $builder->create($folder));
+        $this->assertSame($folder . '/' . FileNameGenerator::BASIC_FILENAME, $builder->create($folder));
     }
 
     public function testCreate_WhenPatternHasDateTimePattern_ReplaceItByTheCurrentDateTime()

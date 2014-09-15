@@ -7,7 +7,7 @@ namespace Nikoms\FailLover\Storage\FileSystem;
 class FileNameGenerator
 {
 
-    const BASIC_CSV_FILENAME = 'fail-lover.csv';
+    const BASIC_FILENAME = 'fail-lover.txt';
 
     /**
      * @param string $pattern
@@ -18,10 +18,10 @@ class FileNameGenerator
     {
         $fileName = trim((string)$pattern);
         if ($fileName === '') {
-            return self::BASIC_CSV_FILENAME;
+            return self::BASIC_FILENAME;
         }
         if (file_exists($fileName) && is_dir($fileName)) {
-            return $fileName . '/' . self::BASIC_CSV_FILENAME;
+            return $fileName . '/' . self::BASIC_FILENAME;
         }
 
         $newFileName = str_replace('{datetime}', date('Y-m-d-His'), $fileName);
@@ -44,7 +44,7 @@ class FileNameGenerator
             '#\{([\w\/\.:]*):last\}#',
             function ($matches) {
                 $dir = rtrim($matches[1], '/') . '/';
-                $lastFile = FileNameGenerator::BASIC_CSV_FILENAME;
+                $lastFile = FileNameGenerator::BASIC_FILENAME;
                 $lastModifiedTime = 0;
 
                 if (file_exists($dir) && is_dir($dir)) {
