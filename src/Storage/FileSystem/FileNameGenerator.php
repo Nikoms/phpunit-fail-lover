@@ -43,8 +43,12 @@ class FileNameGenerator
             'last',
             function ($matches) {
                 $dir = FileNameGenerator::addRightSlash($matches[1]);
+                $lastModifiedFile = FileNameGenerator::getLastModifiedFile($dir);
+                if(empty($lastModifiedFile)){
+                    $lastModifiedFile = FileNameGenerator::BASIC_FILENAME;
+                }
 
-                return $dir . FileNameGenerator::getLastModifiedFile($dir);
+                return $dir . $lastModifiedFile;
             }
         );
     }

@@ -70,6 +70,15 @@ class FileNameGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($folder . '/second.csv', $builder->create('{' . $folder . '/:last}'));
     }
 
+    public function testCreate_WhenPatternHasLastAndThereIsNoFile_ReplaceItByTheDefaultFile()
+    {
+        $builder = new FileNameGenerator();
+        $this->assertSame(
+            $this->root->url() . '/' . FileNameGenerator::BASIC_FILENAME,
+            $builder->create('{' . $this->root->url() . ':last}')
+        );
+    }
+
     public function testCreate_WhenPatternHasLastAndFolderDoesntExist_ThrowsException()
     {
         $builder = new FileNameGenerator();
