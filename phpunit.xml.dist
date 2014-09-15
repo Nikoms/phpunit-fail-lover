@@ -25,23 +25,28 @@
         </whitelist>
     </filter>
     <listeners>
-        <listener class="Nikoms\FailLover\Listener\LoggerListener" file="src/Listener/LoggerListener.php">
+        <listener class="Nikoms\FailLover\Listener\FailLoverListener" file="src/Listener/FailLoverListener.php">
             <arguments>
-                <object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvRecorder">
-                    <arguments>
-                        <string>output/tests-that-failed.csv</string>
-                    </arguments>
-                </object>
+                <string>output/only-one-fail-lover-file.csv</string>
             </arguments>
         </listener>
-        <listener class="Nikoms\FailLover\Listener\ReplayListener" file="src/Listener/ReplayListener.php">
-            <arguments>
-                <object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvReader">
-                    <arguments>
-                        <string>output/tests-that-failed.csv</string>
-                    </arguments>
-                </object>
-            </arguments>
-        </listener>
+        <!--<listener class="Nikoms\FailLover\Listener\LoggerListener" file="src/Listener/LoggerListener.php">-->
+            <!--<arguments>-->
+                <!--<object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvRecorder">-->
+                    <!--<arguments>-->
+                        <!--<string>output/tests-that-failed.csv</string>-->
+                    <!--</arguments>-->
+                <!--</object>-->
+            <!--</arguments>-->
+        <!--</listener>-->
+        <!--<listener class="Nikoms\FailLover\Listener\ReplayListener" file="src/Listener/ReplayListener.php">-->
+            <!--<arguments>-->
+                <!--<object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvReader">-->
+                    <!--<arguments>-->
+                        <!--<string>output/tests-that-failed.csv</string>-->
+                    <!--</arguments>-->
+                <!--</object>-->
+            <!--</arguments>-->
+        <!--</listener>-->
     </listeners>
 </phpunit>
