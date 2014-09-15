@@ -27,7 +27,7 @@
     <listeners>
         <listener class="Nikoms\FailLover\Listener\LoggerListener" file="src/Listener/LoggerListener.php">
             <arguments>
-                <object class="Nikoms\FailLover\FileSystem\Csv\CsvRecorder">
+                <object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvRecorder">
                     <arguments>
                         <string>output/tests-that-failed.csv</string>
                     </arguments>
@@ -36,7 +36,7 @@
         </listener>
         <listener class="Nikoms\FailLover\Listener\ReplayListener" file="src/Listener/ReplayListener.php">
             <arguments>
-                <object class="Nikoms\FailLover\FileSystem\Csv\CsvReader">
+                <object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvReader">
                     <arguments>
                         <string>output/tests-that-failed.csv</string>
                     </arguments>

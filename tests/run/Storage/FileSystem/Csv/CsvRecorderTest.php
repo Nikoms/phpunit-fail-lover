@@ -4,7 +4,7 @@
 namespace Nikoms\FailLover\TestCaseResult;
 
 
-use Nikoms\FailLover\FileSystem\Csv\CsvRecorder;
+use Nikoms\FailLover\Storage\FileSystem\Csv\CsvRecorder;
 use Nikoms\FailLover\Tests\FilterTestMock;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;

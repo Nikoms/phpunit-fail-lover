@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Nikoms\FailLover\FileSystem\Csv;
+namespace Nikoms\FailLover\Storage\FileSystem\Csv;
 
 
 use Nikoms\FailLover\TestCaseResult\Exception\OutputNotAvailableException;

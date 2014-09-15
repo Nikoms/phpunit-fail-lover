@@ -33,7 +33,7 @@ To activate the *log* plugin. Add the listener to your phpunit.xml(.dist) file:
     <listeners>
         <listener class="Nikoms\FailLover\Listener\LoggerListener" file="vendor/nikoms/phpunit-fail-lover/src/Listener/LoggerListener.php">
             <arguments>
-                <object class="Nikoms\FailLover\FileSystem\Csv\CsvRecorder">
+                <object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvRecorder">
                     <arguments>
                         <string>tests-that-failed-again.csv</string>
                     </arguments>
@@ -57,7 +57,7 @@ To activate the *replay* plugin. Add the listener to your phpunit.xml(.dist) fil
     <listeners>
         <listener class="Nikoms\FailLover\Listener\ReplayListener" file="src/Listener/ReplayListener.php">
             <arguments>
-                <object class="Nikoms\FailLover\FileSystem\Csv\CsvReader">
+                <object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvReader">
                     <arguments>
                         <string>tests-that-failed-before.csv</string>
                     </arguments>
