@@ -1,9 +1,7 @@
 <?php
 
 
-namespace Nikoms\FailLover\TestCaseResult;
-
-
+use Nikoms\FailLover\Storage\FileSystem\FileNameGenerator;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 

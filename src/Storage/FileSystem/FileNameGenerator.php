@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Nikoms\FailLover\TestCaseResult;
+namespace Nikoms\FailLover\Storage\FileSystem;
 
 
 class FileNameGenerator
