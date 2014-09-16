@@ -1,6 +1,6 @@
 {
     "name": "nikoms/phpunit-fail-lover",
-    "description": "mORE to cOme.",
+    "description": "Plugin to rerun only tests that failed",
     "minimum-stability": "stable",
     "license": "MIT",
     "authors": [
