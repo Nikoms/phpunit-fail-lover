@@ -30,8 +30,8 @@ class FailLoverListener extends \PHPUnit_Framework_BaseTestListener
 
     public function __construct($filePattern)
     {
-        $fileGenerator = new FileNameGenerator();
-        $fileName = $fileGenerator->create($filePattern);
+        $fileGenerator = new FileNameGenerator($filePattern);
+        $fileName = $fileGenerator->getGeneratedFileName();
         $this->loggerListener = new LoggerListener(new CsvRecorder($fileName));
         $this->replayListener = new ReplayListener(new CsvReader($fileName));
     }

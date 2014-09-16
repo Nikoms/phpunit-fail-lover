@@ -10,6 +10,11 @@ class FileNameGenerator
     const BASIC_FILENAME = 'fail-lover.txt';
 
     /**
+     * @var string
+     */
+    private $fileName;
+
+    /**
      * @param string $dir
      * @return string
      */
@@ -50,26 +55,13 @@ class FileNameGenerator
     }
 
     /**
-     * @param string $pattern
-     * @return string
-     * @throw \InvalidArgumentException
+     * @param string $fileName
      */
-    public function create($pattern)
+    public function __construct($fileName)
     {
-        $fileName = trim((string)$pattern);
-        if ($fileName === '') {
-            return self::BASIC_FILENAME;
-        }
-        if (file_exists($fileName) && is_dir($fileName)) {
-            return $fileName . '/' . self::BASIC_FILENAME;
-        }
-
-        $newFileName = $this->replaceDateTime($fileName);
-        $newFileName = $this->replaceUniqId($newFileName);
-        $newFileName = $this->replaceLastModifiedFile($newFileName);
-
-        return $newFileName;
+        $this->fileName = $fileName;
     }
+
 
     /**
      * @param string $fileName
@@ -111,6 +103,7 @@ class FileNameGenerator
                     $fileName = $uniqId . '_' . $i;
                     $i++;
                 }
+
                 return $dir . $fileName;
             }
         );
@@ -144,6 +137,22 @@ class FileNameGenerator
                 return FileNameGenerator::addRightSlash($matches[1]) . date('Y-m-d-His');
             }
         );
+    }
+
+    public function getGeneratedFileName()
+    {
+        if ($this->fileName === '') {
+            return self::BASIC_FILENAME;
+        }
+        if (file_exists($this->fileName) && is_dir($this->fileName)) {
+            return $this->fileName . '/' . self::BASIC_FILENAME;
+        }
+
+        $newFileName = $this->replaceDateTime($this->fileName);
+        $newFileName = $this->replaceUniqId($newFileName);
+        $newFileName = $this->replaceLastModifiedFile($newFileName);
+
+        return $newFileName;
     }
 }
 
