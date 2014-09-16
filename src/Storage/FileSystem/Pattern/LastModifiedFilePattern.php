@@ -11,18 +11,9 @@ namespace Nikoms\FailLover\Storage\FileSystem\Pattern;
 
 use Nikoms\FailLover\Storage\FileSystem\FileNamePattern;
 
-class LastModifiedFilePattern implements PatternInterface
+class LastModifiedFilePattern extends RegexPattern implements PatternInterface
 {
 
-    /**
-     * @var
-     */
-    private $pattern;
-
-    public function __construct($pattern)
-    {
-        $this->pattern = $pattern;
-    }
 
     /**
      * @return string
@@ -30,7 +21,7 @@ class LastModifiedFilePattern implements PatternInterface
     public function getGeneratedFileName()
     {
         return $this->replaceWithCallBack(
-            $this->pattern,
+            $this->getPattern(),
             'last',
             function ($matches) {
                 $dir = FileNamePattern::addRightSlash($matches[1]);
@@ -43,22 +34,6 @@ class LastModifiedFilePattern implements PatternInterface
             }
         );
     }
-
-    /**
-     * @param string $fileName
-     * @param string $param
-     * @param \Closure $function
-     * @return mixed
-     */
-    private function replaceWithCallBack($fileName, $param, $function)
-    {
-        return preg_replace_callback(
-            '#([\w\/\.:]*):' . $param . '#',
-            $function,
-            $fileName
-        );
-    }
-
 
     /**
      * @param string $dir
