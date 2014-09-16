@@ -32,8 +32,8 @@ class FileNameGenerator
             while (($file = readdir($dh)) !== false) {
                 $currentFilePath = $dir . $file;
                 if (
-                    $currentFilePath != '..'
-                    && $currentFilePath != '.'
+                    $file != '..'
+                    && $file != '.'
                     && is_file($currentFilePath)
                     && $lastModifiedTime < filemtime($currentFilePath)
                 ) {
