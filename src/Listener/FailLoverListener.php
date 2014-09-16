@@ -24,7 +24,7 @@ class FailLoverListener extends \PHPUnit_Framework_BaseTestListener
      */
     private $loggerListener;
     /**
-     * @var LoggerListener
+     * @var ReplayListener
      */
     private $replayListener;
 
