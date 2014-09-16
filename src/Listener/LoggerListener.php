@@ -24,8 +24,11 @@ class LoggerListener extends \PHPUnit_Framework_BaseTestListener
 
     private $mainSuiteName;
 
+    private $linesAdded;
+
     public function __construct(RecorderInterface $recorder)
     {
+        $this->linesAdded = 0;
         $this->recorder = $recorder;
         $this->parser = new ArgumentParser($_SERVER['argv']);
     }
@@ -47,16 +50,25 @@ class LoggerListener extends \PHPUnit_Framework_BaseTestListener
     {
         if ($this->isLogActive() && $test instanceof \PHPUnit_Framework_TestCase) {
             $this->recorder->add($test);
+            $this->linesAdded++;
         }
     }
 
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        if($this->mainSuiteName === null && $this->isLogActive()){
+        if ($this->mainSuiteName === null && $this->isLogActive()) {
             $this->recorder->clear();
             $this->mainSuiteName = $suite->getName();
         }
     }
+
+    public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
+    {
+        if ($this->linesAdded === 0) {
+            $this->recorder->remove();
+        }
+    }
+
 
     /**
      * @return bool
