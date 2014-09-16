@@ -17,6 +17,19 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param $arguments
+     */
+    private function initCommandArguments($arguments)
+    {
+        $_SERVER['argv'] = explode(' ', $arguments);
+    }
+
+    private function disableListener()
+    {
+        $this->initCommandArguments('-d fail-lover=replay-disabled');
+    }
+
+    /**
      * @param array $methodsOfSuite
      * @param array $methodsToFilter
      * @param int $count
@@ -35,18 +48,25 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
      * @param bool $isValid
      * @return \PHPUnit_Framework_MockObject_MockObject|ReaderInterface
      */
-    private function getReader($methodsToFilter, \PHPUnit_Framework_MockObject_Matcher_Invocation $invocation, $isValid = true)
-    {
+    private function getReader(
+        $methodsToFilter,
+        \PHPUnit_Framework_MockObject_Matcher_Invocation $invocation,
+        $isValid = true
+    ) {
         $testCaseFactory = new TestCaseFactory();
         $testCasesToFilter = array();
         foreach ($methodsToFilter as $testName) {
             $testCasesToFilter[] = $testCaseFactory->createTestCase(new FilterTestMock($testName));
         }
 
-        $reader = $this->getMock('Nikoms\FailLover\TestCaseResult\Storage\ReaderInterface', array('getList', 'isEmpty', 'isValid'));
+        $reader = $this->getMock(
+            'Nikoms\FailLover\TestCaseResult\Storage\ReaderInterface',
+            array('getList', 'isEmpty', 'isValid')
+        );
         $reader->expects($invocation)->method('getList')->will($this->returnValue($testCasesToFilter));
         $reader->expects($invocation)->method('isEmpty')->will($this->returnValue(empty($testCasesToFilter)));
         $reader->expects($invocation)->method('isValid')->will($this->returnValue($isValid));
+
         return $reader;
     }
 
@@ -66,19 +86,16 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testStartTestSuite_WhenTheFilterListIsEmpty_NoTestWillRun()
     {
-        $_SERVER['argv'] = array('-d', 'fail-lover=replay');
         $this->assertTestsCountAfterFilter(array('testToRun', 'testToNotRun'), array(), 0);
     }
 
     public function testStartTestSuite_WhenAFilterIsInTheTestsList_OnlyOneTestWillRun()
     {
-        $_SERVER['argv'] = array('-d', 'fail-lover=replay');
         $this->assertTestsCountAfterFilter(array('testToRun', 'testToNotRun'), array('testToRun'), 1);
     }
 
     public function testStartTestSuite_WhenAllFiltersAreInTheTestsList_AllTestsWillRun()
     {
-        $_SERVER['argv'] = array('-d', 'fail-lover=replay');
         $this->assertTestsCountAfterFilter(
             array('testToRun', 'testAnotherOne'),
             array('testToRun', 'testAnotherOne'),
@@ -88,7 +105,6 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testStartTestSuite_WhenNoneOfTheFilterAreInTheList_NoTestWillRun()
     {
-        $_SERVER['argv'] = array('-d', 'fail-lover=replay');
         $this->assertTestsCountAfterFilter(
             array('testToRun', 'testAnotherOne'),
             array('testUndefinedTest', 'testUndefined2Test'),
@@ -96,8 +112,9 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testStartTestSuite_WhenNoArgumentIsSet_TheFilterIsNotCalled()
+    public function testStartTestSuite_WhenListenerIsDisabled_TheFilterIsNotCalled()
     {
+        $this->disableListener();
         $suite = $this->getSuite(array('testToRun'));
         $listener = new ReplayListener($this->getReader(array(), $this->never()));
         $listener->startTestSuite($suite);
@@ -106,7 +123,6 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testStartTestSuite_WhenReaderIsNotValid_TheFilterIsNotCalled()
     {
-        $_SERVER['argv'] = array('-d', 'fail-lover=replay');
         $suite = $this->getSuite(array('testToRun', 'testAnotherOne'));
         $listener = new ReplayListener($this->getReader(array(), $this->any(), false));
         $listener->startTestSuite($suite);

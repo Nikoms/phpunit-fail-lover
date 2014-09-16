@@ -49,9 +49,7 @@ If the specified file doesn't exist, it will be created. A good practice is to g
 
 ### Main usage
 
-To use this plugin, simply run this command:
-
-`phpunit -d fail-lover=replay`
+To use this plugin, simply run the phpunit command `phpunit`.
 
 What does it do?
 
@@ -60,78 +58,24 @@ What does it do?
 * Continue to call the command until the very last test passes. At the end, your file will be deleted and you will be able to run the entire suite again.
 
 
-### Partial usage
-
-To temporary disabling your the logging plugin, add the `-d fail-lover=log-disabled` to your phpunit command:
-
-`phpunit -d fail-lover=log-disabled`
-
-
-To only replay tests from the specified file:
-
-`phpunit -d fail-lover=replay`
-
-
-### Important note about "replay" mode
-
-
-When you use the *replay* mode, filter options like `--exclude-group`, `--group` and `--filter` will be **erased**. The new filter replace all of them.
-
 ## Customize
 
-### Separate logger and replay
+### Temporary disable listener
 
-You can use a different file for the *log* and the *replay* by using the specific listeners. In fact, the basic `FailLoverListener` seen above is just a shortcut to these two listeners.
+You can temporary disable the *log* or *replay* plugin by simply add argumentx to the `phpunit` command:
 
-#### Log only
+* To disable *log*, use `-d fail-lover=log-disabled`
+* To disable *replay*, use `-d fail-lover=replay-disabled`
 
-To activate the *log* plugin. Add the listener to your phpunit.xml(.dist) file:
+Of course you can disable both:
+`phpunit -d fail-lover=log-disabled -d fail-lover=replay-disabled`
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<phpunit>
-    ...
-    <listeners>
-        <listener class="Nikoms\FailLover\Listener\LoggerListener" file="vendor/nikoms/phpunit-fail-lover/src/Listener/LoggerListener.php">
-            <arguments>
-                <object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvRecorder">
-                    <arguments>
-                        <string>tests-that-failed-again.csv</string>
-                    </arguments>
-                </object>
-            </arguments>
-        </listener>
-    </listeners>
-</phpunit>
-```
 
-#### Replay only
-
-To activate the *replay* plugin. Add the listener to your phpunit.xml(.dist) file:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<phpunit>
-    ...
-    <listeners>
-        <listener class="Nikoms\FailLover\Listener\ReplayListener" file="src/Listener/ReplayListener.php">
-            <arguments>
-                <object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvReader">
-                    <arguments>
-                        <string>tests-that-failed-before.csv</string>
-                    </arguments>
-                </object>
-            </arguments>
-        </listener>
-    </listeners>
-</phpunit>
-```
-
-Don't forget to run `phpunit -d fail-lover=replay` to use it.
+**Important note about "replay" mode: ** When the *replay* mode is used, filter options like `--exclude-group`, `--group` and `--filter` will be **removed**.
 
 ### File name helper
 
-Sometimes, you may want to generate an alternative/dynamic file name. These are 3 patterns that you can use (only with the basic *FailLoverListener* for the moment):
+Sometimes, you may want to generate an alternative/dynamic file name. These are 3 patterns that you can use:
 
 #### datetime
 
@@ -187,6 +131,56 @@ This will generate the file `path/to/ouput/folder/54177f8845685`.
 
 
 This will only re-use the last modified file in the folder `path/to/ouput/folder`. If the folder is empty, it creates the file `fail-lover.txt`.
+
+
+
+### Separate logger and replay
+
+You can use a different file for the *log* and the *replay* by using separated listeners. In fact, the basic `FailLoverListener` seen above is just a shortcut to these two listeners.
+
+#### Log only
+
+To activate the *log* plugin. Add the listener to your phpunit.xml(.dist) file:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit>
+    ...
+    <listeners>
+        <listener class="Nikoms\FailLover\Listener\LoggerListener" file="vendor/nikoms/phpunit-fail-lover/src/Listener/LoggerListener.php">
+            <arguments>
+                <object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvRecorder">
+                    <arguments>
+                        <string>tests-that-failed-again.csv</string>
+                    </arguments>
+                </object>
+            </arguments>
+        </listener>
+    </listeners>
+</phpunit>
+```
+
+#### Replay only
+
+To activate the *replay* plugin. Add the listener to your phpunit.xml(.dist) file:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit>
+    ...
+    <listeners>
+        <listener class="Nikoms\FailLover\Listener\ReplayListener" file="src/Listener/ReplayListener.php">
+            <arguments>
+                <object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvReader">
+                    <arguments>
+                        <string>tests-that-failed-before.csv</string>
+                    </arguments>
+                </object>
+            </arguments>
+        </listener>
+    </listeners>
+</phpunit>
+```
 
 
 ## TODO

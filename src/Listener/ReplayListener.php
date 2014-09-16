@@ -30,7 +30,7 @@ class ReplayListener extends \PHPUnit_Framework_BaseTestListener
 
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        if (!$this->parser->hasAction('replay') || !$this->reader->isValid()) {
+        if (!$this->isReplayActive() || !$this->reader->isValid()) {
             return;
         }
 
@@ -40,5 +40,13 @@ class ReplayListener extends \PHPUnit_Framework_BaseTestListener
         } else {
             $suite->injectFilter($filterFactory->createFactory(new EmptyFilter()));
         }
+    }
+
+    /**
+     * @return bool
+     */
+    private function isReplayActive()
+    {
+        return !$this->parser->hasAction('replay-disabled');
     }
 }
