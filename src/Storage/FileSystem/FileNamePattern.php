@@ -5,6 +5,7 @@ namespace Nikoms\FailLover\Storage\FileSystem;
 
 
 use Nikoms\FailLover\Storage\FileSystem\Pattern\DateTimePattern;
+use Nikoms\FailLover\Storage\FileSystem\Pattern\LastModifiedFilePattern;
 
 class FileNamePattern
 {
@@ -25,36 +26,6 @@ class FileNamePattern
         return rtrim($dir, '/') . '/';
     }
 
-    /**
-     * @param string $dir
-     * @throws \InvalidArgumentException
-     * @return string
-     */
-    public static function getLastModifiedFile($dir)
-    {
-        $lastFile = '';
-        $lastModifiedTime = 0;
-
-        if (file_exists($dir) && is_dir($dir) && $dh = opendir($dir)) {
-            while (($file = readdir($dh)) !== false) {
-                $currentFilePath = $dir . $file;
-                if (
-                    $file != '..'
-                    && $file != '.'
-                    && is_file($currentFilePath)
-                    && $lastModifiedTime < filemtime($currentFilePath)
-                ) {
-                    $lastFile = $file;
-                    $lastModifiedTime = filemtime($currentFilePath);
-                }
-            }
-            closedir($dh);
-
-            return $lastFile;
-        } else {
-            throw new \InvalidArgumentException($dir . ' is not a valid folder');
-        }
-    }
 
     /**
      * @param string $pattern
@@ -72,19 +43,8 @@ class FileNamePattern
      */
     private function replaceLastModifiedFile($fileName)
     {
-        return $this->replaceWithCallBack(
-            $fileName,
-            'last',
-            function ($matches) {
-                $dir = FileNamePattern::addRightSlash($matches[1]);
-                $lastModifiedFile = FileNamePattern::getLastModifiedFile($dir);
-                if (empty($lastModifiedFile)) {
-                    $lastModifiedFile = FileNamePattern::BASIC_FILENAME;
-                }
-
-                return $dir . $lastModifiedFile;
-            }
-        );
+        $dateTimePattern = new LastModifiedFilePattern($fileName);
+        return $dateTimePattern->getGeneratedFileName();
     }
 
     /**
