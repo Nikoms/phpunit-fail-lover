@@ -25,9 +25,9 @@ Simply add this to your `composer.json` file:
 
 Then run `php composer.phar install`
 
-## Basic configuration
+## Quick configuration
 
-Here is the basic configuration for the plugin. Add the listener to your phpunit.xml(.dist) file:
+Here is a configuration for the plugin. Add the listener to your phpunit.xml(.dist) file:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -51,7 +51,7 @@ If the specified file doesn't exist, it will be created. A good practice is to g
 
 To use this plugin, simply run this command:
 
-`phpunit -d fail-lover=replay -d fail-lover=log`
+`phpunit -d fail-lover=replay`
 
 What does it do?
 
@@ -62,9 +62,9 @@ What does it do?
 
 ### Partial usage
 
-To only record failing tests in the specified file:
+To temporary disabling your the logging plugin, add the `-d fail-lover=log-disabled` to your phpunit command:
 
-`phpunit -d fail-lover=log`
+`phpunit -d fail-lover=log-disabled`
 
 
 To only replay tests from the specified file:
@@ -104,8 +104,6 @@ To activate the *log* plugin. Add the listener to your phpunit.xml(.dist) file:
     </listeners>
 </phpunit>
 ```
-
-Don't forget to run `phpunit -d fail-lover=log` to use it.
 
 #### Replay only
 

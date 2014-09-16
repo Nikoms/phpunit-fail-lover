@@ -75,6 +75,6 @@ class LoggerListener extends \PHPUnit_Framework_BaseTestListener
      */
     private function isLogActive()
     {
-        return $this->parser->hasAction('log');
+        return !$this->parser->hasAction('log-disabled');
     }
 }
