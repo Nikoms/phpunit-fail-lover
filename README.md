@@ -193,5 +193,5 @@ This will only re-use the last modified file in the folder `path/to/ouput/folder
 
 ## TODO
 
-* Create a interface for the FileNameGenerator
-* Give the FileNameGenerator as the second argument of listener
+* Create a interface for the FileNameGenerator. Maybe just give the path in the constructor and have a __toString method? It should be easier to use in phpunit.xml
+* Give the possibility to use file name generator in specific listeners
