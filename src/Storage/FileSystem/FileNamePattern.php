@@ -4,6 +4,8 @@
 namespace Nikoms\FailLover\Storage\FileSystem;
 
 
+use Nikoms\FailLover\Storage\FileSystem\Pattern\DateTimePattern;
+
 class FileNamePattern
 {
 
@@ -130,13 +132,8 @@ class FileNamePattern
      */
     private function replaceDateTime($fileName)
     {
-        return $this->replaceWithCallBack(
-            $fileName,
-            'datetime',
-            function ($matches) {
-                return FileNamePattern::addRightSlash($matches[1]) . date('Y-m-d-His');
-            }
-        );
+        $dateTimePattern = new DateTimePattern($fileName);
+        return $dateTimePattern->getGeneratedFileName();
     }
 
     public function getGeneratedFileName()
