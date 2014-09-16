@@ -43,7 +43,7 @@ If the specified file doesn't exist, it will be created. A good practice is to g
 
 ## Usage
 
-### Full usage
+### Main usage
 
 To use this plugin, simply run this command:
 
@@ -58,12 +58,12 @@ What does it do?
 
 ### Partial usage
 
-To record failing tests:
+To only record failing tests in the specified file:
 
 `phpunit -d fail-lover=log`
 
 
-To replay failing tests:
+To only replay tests from the specified file:
 
 `phpunit -d fail-lover=replay`
 
@@ -77,7 +77,7 @@ When you use the *replay* mode, filter options like `--exclude-group`, `--group`
 
 ### Separate logger and replay
 
-You may want to only activate one of the two plugin or use another file for each of them. You can do that by using a specific listener.
+You can use a different file for the *log* and the *replay* by using the specific listeners. In fact, the basic `FailLoverListener` seen above is just a shortcut to these two listeners.
 
 #### Log only
 
@@ -101,6 +101,8 @@ To activate the *log* plugin. Add the listener to your phpunit.xml(.dist) file:
 </phpunit>
 ```
 
+Don't forget to run `phpunit -d fail-lover=log` to use it.
+
 #### Replay only
 
 To activate the *replay* plugin. Add the listener to your phpunit.xml(.dist) file:
@@ -123,9 +125,11 @@ To activate the *replay* plugin. Add the listener to your phpunit.xml(.dist) fil
 </phpunit>
 ```
 
+Don't forget to run `phpunit -d fail-lover=replay` to use it.
+
 ### File name helper
 
-Sometimes, you may want to generate an alternative file name for each of your test. These are 3 patterns that you can use (only with the *FailLoverListener* for the moment):
+Sometimes, you may want to generate an alternative/dynamic file name. These are 3 patterns that you can use (only with the basic *FailLoverListener* for the moment):
 
 #### datetime
 
@@ -180,7 +184,7 @@ This will generate the file `path/to/ouput/folder/54177f8845685`.
 ```
 
 
-This will only re-use the last modified file in the folder `path/to/ouput/folder`. If no file are present, it creates the file `fail-lover.txt`.
+This will only re-use the last modified file in the folder `path/to/ouput/folder`. If the folder is empty, it creates the file `fail-lover.txt`.
 
 
 ## TODO
