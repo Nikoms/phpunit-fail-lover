@@ -6,7 +6,11 @@
 
 # Fail Lover <3
 
-This PHPUnit plugin allows you to re-run only tests that failed :) More info to come. Stay tuned because this lib is under construction.
+* You have tests that failed?
+* You want to run them without running the tons of (selenium?) tests that take hours to execute?
+* You don't want to add a special debug `@group` annotation for all of them?
+
+No problem! This plugin allows you to **rerun only tests that failed**!
 
 ## Installation
 
