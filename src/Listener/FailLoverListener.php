@@ -51,4 +51,11 @@ class FailLoverListener extends \PHPUnit_Framework_BaseTestListener
     {
         $this->loggerListener->addFailure($test, $e, $time);
     }
+
+    public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
+    {
+        $this->loggerListener->endTestSuite($suite);
+    }
+
+
 }
