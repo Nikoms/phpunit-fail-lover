@@ -6,6 +6,7 @@ namespace Nikoms\FailLover\Storage\FileSystem;
 
 use Nikoms\FailLover\Storage\FileSystem\Pattern\DateTimePattern;
 use Nikoms\FailLover\Storage\FileSystem\Pattern\LastModifiedFilePattern;
+use Nikoms\FailLover\Storage\FileSystem\Pattern\UniqIdPattern;
 
 class FileNamePattern
 {
@@ -53,38 +54,10 @@ class FileNamePattern
      */
     private function replaceUniqId($fileName)
     {
-        return $this->replaceWithCallBack(
-            $fileName,
-            'uniqId',
-            function ($matches) {
-                $dir = rtrim($matches[1], '/') . '/';
-                $uniqId = uniqid();
-                $fileName = $uniqId;
-                $i = 1;
-                while (file_exists($dir . $fileName)) {
-                    $fileName = $uniqId . '_' . $i;
-                    $i++;
-                }
-
-                return $dir . $fileName;
-            }
-        );
+        $dateTimePattern = new UniqIdPattern($fileName);
+        return $dateTimePattern->getGeneratedFileName();
     }
 
-    /**
-     * @param string $fileName
-     * @param string $param
-     * @param \Closure $function
-     * @return mixed
-     */
-    private function replaceWithCallBack($fileName, $param, $function)
-    {
-        return preg_replace_callback(
-            '#([\w\/\.:]*):' . $param . '#',
-            $function,
-            $fileName
-        );
-    }
 
     /**
      * @param string $fileName
