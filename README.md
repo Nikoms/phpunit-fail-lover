@@ -185,5 +185,5 @@ To activate the *replay* plugin. Add the listener to your phpunit.xml(.dist) fil
 
 ## TODO
 
-* Create a interface for the FileNameGenerator. Maybe just give the path in the constructor and have a __toString method? It should be easier to use in phpunit.xml
+* Create a interface for the FileNamePattern. Maybe just give the path in the constructor and have a __toString method? It should be easier to use in phpunit.xml
 * Give the possibility to use file name generator in specific listeners

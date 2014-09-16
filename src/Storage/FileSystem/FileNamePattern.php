@@ -4,7 +4,7 @@
 namespace Nikoms\FailLover\Storage\FileSystem;
 
 
-class FileNameGenerator
+class FileNamePattern
 {
 
     const BASIC_FILENAME = 'fail-lover.txt';
@@ -12,7 +12,7 @@ class FileNameGenerator
     /**
      * @var string
      */
-    private $fileName;
+    private $pattern;
 
     /**
      * @param string $dir
@@ -55,11 +55,11 @@ class FileNameGenerator
     }
 
     /**
-     * @param string $fileName
+     * @param string $pattern
      */
-    public function __construct($fileName)
+    public function __construct($pattern)
     {
-        $this->fileName = $fileName;
+        $this->pattern = $pattern;
     }
 
 
@@ -74,10 +74,10 @@ class FileNameGenerator
             $fileName,
             'last',
             function ($matches) {
-                $dir = FileNameGenerator::addRightSlash($matches[1]);
-                $lastModifiedFile = FileNameGenerator::getLastModifiedFile($dir);
+                $dir = FileNamePattern::addRightSlash($matches[1]);
+                $lastModifiedFile = FileNamePattern::getLastModifiedFile($dir);
                 if (empty($lastModifiedFile)) {
-                    $lastModifiedFile = FileNameGenerator::BASIC_FILENAME;
+                    $lastModifiedFile = FileNamePattern::BASIC_FILENAME;
                 }
 
                 return $dir . $lastModifiedFile;
@@ -134,21 +134,21 @@ class FileNameGenerator
             $fileName,
             'datetime',
             function ($matches) {
-                return FileNameGenerator::addRightSlash($matches[1]) . date('Y-m-d-His');
+                return FileNamePattern::addRightSlash($matches[1]) . date('Y-m-d-His');
             }
         );
     }
 
     public function getGeneratedFileName()
     {
-        if ($this->fileName === '') {
+        if ($this->pattern === '') {
             return self::BASIC_FILENAME;
         }
-        if (file_exists($this->fileName) && is_dir($this->fileName)) {
-            return $this->fileName . '/' . self::BASIC_FILENAME;
+        if (file_exists($this->pattern) && is_dir($this->pattern)) {
+            return $this->pattern . '/' . self::BASIC_FILENAME;
         }
 
-        $newFileName = $this->replaceDateTime($this->fileName);
+        $newFileName = $this->replaceDateTime($this->pattern);
         $newFileName = $this->replaceUniqId($newFileName);
         $newFileName = $this->replaceLastModifiedFile($newFileName);
 
