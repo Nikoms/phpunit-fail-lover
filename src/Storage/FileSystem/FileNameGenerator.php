@@ -19,7 +19,7 @@ class FileNameGenerator
     }
 
     /**
-     * @param $dir
+     * @param string $dir
      * @throws \InvalidArgumentException
      * @return string
      */
@@ -117,9 +117,9 @@ class FileNameGenerator
     }
 
     /**
-     * @param $fileName
-     * @param $param
-     * @param $function
+     * @param string $fileName
+     * @param string $param
+     * @param \Closure $function
      * @return mixed
      */
     private function replaceWithCallBack($fileName, $param, $function)
@@ -132,8 +132,8 @@ class FileNameGenerator
     }
 
     /**
-     * @param $fileName
-     * @return mixed
+     * @param string $fileName
+     * @return string
      */
     private function replaceDateTime($fileName)
     {

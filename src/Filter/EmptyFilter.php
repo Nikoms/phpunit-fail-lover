@@ -4,7 +4,8 @@
 namespace Nikoms\FailLover\Filter;
 
 
-class EmptyFilter implements FilterInterface{
+class EmptyFilter implements FilterInterface
+{
 
     public function __toString()
     {

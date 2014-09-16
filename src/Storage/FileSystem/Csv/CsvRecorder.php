@@ -16,7 +16,7 @@ class CsvRecorder implements RecorderInterface
     private $filePath;
 
     /**
-     * @param $filePath
+     * @param string $filePath
      * @throws \InvalidArgumentException
      */
     public function __construct($filePath)

@@ -33,7 +33,7 @@ class TestCaseFactory
     }
 
     /**
-     * @param $dataName
+     * @param string $dataName
      * @return string
      */
     private function removeDataNameDecoration($dataName)
