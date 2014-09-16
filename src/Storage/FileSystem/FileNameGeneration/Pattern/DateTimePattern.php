@@ -6,7 +6,7 @@
  * Time: 01:41
  */
 
-namespace Nikoms\FailLover\Storage\FileSystem\Pattern;
+namespace Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern;
 
 
 use Nikoms\FailLover\Storage\FileSystem\FileNamePattern;

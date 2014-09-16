@@ -4,9 +4,9 @@
 namespace Nikoms\FailLover\Storage\FileSystem;
 
 
-use Nikoms\FailLover\Storage\FileSystem\Pattern\DateTimePattern;
-use Nikoms\FailLover\Storage\FileSystem\Pattern\LastModifiedFilePattern;
-use Nikoms\FailLover\Storage\FileSystem\Pattern\UniqIdPattern;
+use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern\DateTimePattern;
+use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern\LastModifiedFilePattern;
+use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern\UniqIdPattern;
 
 class FileNamePattern
 {

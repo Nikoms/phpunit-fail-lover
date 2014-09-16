@@ -6,7 +6,7 @@
  * Time: 01:51
  */
 
-namespace Nikoms\FailLover\Storage\FileSystem\Pattern;
+namespace Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern;
 
 
 class UniqIdPattern  extends RegexPattern implements PatternInterface

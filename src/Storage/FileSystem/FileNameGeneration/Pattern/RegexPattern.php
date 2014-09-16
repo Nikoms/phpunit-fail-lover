@@ -6,7 +6,7 @@
  * Time: 01:49
  */
 
-namespace Nikoms\FailLover\Storage\FileSystem\Pattern;
+namespace Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern;
 
 
 abstract class RegexPattern

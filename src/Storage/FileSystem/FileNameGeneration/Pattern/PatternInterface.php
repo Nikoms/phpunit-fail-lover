@@ -6,7 +6,7 @@
  * Time: 01:45
  */
 
-namespace Nikoms\FailLover\Storage\FileSystem\Pattern;
+namespace Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern;
 
 
 interface PatternInterface {
