@@ -11,8 +11,9 @@ namespace Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern;
 
 
 use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\FileNameGenerator;
+use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\FileNameGeneratorInterface;
 
-class LastModifiedFilePattern extends RegexPattern implements PatternInterface
+class LastModifiedFilePattern extends RegexPattern implements FileNameGeneratorInterface
 {
 
 

@@ -6,10 +6,9 @@ namespace Nikoms\FailLover\Storage\FileSystem\FileNameGeneration;
 
 use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern\DateTimePattern;
 use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern\LastModifiedFilePattern;
-use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern\PatternInterface;
 use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern\UniqIdPattern;
 
-class FileNameGenerator implements PatternInterface
+class FileNameGenerator implements FileNameGeneratorInterface
 {
 
     const BASIC_FILENAME = 'fail-lover.txt';

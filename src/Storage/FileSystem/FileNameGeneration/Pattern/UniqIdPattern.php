@@ -9,7 +9,9 @@
 namespace Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern;
 
 
-class UniqIdPattern  extends RegexPattern implements PatternInterface
+use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\FileNameGeneratorInterface;
+
+class UniqIdPattern  extends RegexPattern implements FileNameGeneratorInterface
 {
 
     /**

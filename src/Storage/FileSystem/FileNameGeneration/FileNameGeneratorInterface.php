@@ -6,10 +6,11 @@
  * Time: 01:45
  */
 
-namespace Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern;
+namespace Nikoms\FailLover\Storage\FileSystem\FileNameGeneration;
 
 
-interface PatternInterface {
+interface FileNameGeneratorInterface
+{
     /**
      * @return string
      */
