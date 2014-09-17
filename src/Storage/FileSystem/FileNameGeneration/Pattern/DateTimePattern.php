@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Nikoms
- * Date: 17/09/2014
- * Time: 01:41
- */
-
 namespace Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern;
 
 

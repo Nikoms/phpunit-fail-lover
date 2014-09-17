@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Nikoms
- * Date: 16/09/2014
- * Time: 00:51
- */
 
 namespace Nikoms\FailLover\Listener;
 
