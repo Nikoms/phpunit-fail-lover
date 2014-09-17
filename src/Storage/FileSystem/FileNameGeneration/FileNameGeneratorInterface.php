@@ -9,4 +9,4 @@ interface FileNameGeneratorInterface
      * @return string
      */
     public function getGeneratedFileName();
-} 
+}

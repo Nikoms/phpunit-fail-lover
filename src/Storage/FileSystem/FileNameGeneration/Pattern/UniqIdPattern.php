@@ -30,5 +30,4 @@ class UniqIdPattern  extends RegexPattern implements FileNameGeneratorInterface
             }
         );
     }
-
-} 
+}

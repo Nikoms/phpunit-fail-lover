@@ -61,4 +61,4 @@ class LastModifiedFilePattern extends RegexPattern implements FileNameGeneratorI
             throw new \InvalidArgumentException($dir . ' is not a valid folder');
         }
     }
-} 
+}

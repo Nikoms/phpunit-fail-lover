@@ -38,4 +38,4 @@ abstract class RegexPattern
             $fileName
         );
     }
-} 
+}
