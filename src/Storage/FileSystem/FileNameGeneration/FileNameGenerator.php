@@ -6,9 +6,10 @@ namespace Nikoms\FailLover\Storage\FileSystem\FileNameGeneration;
 
 use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern\DateTimePattern;
 use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern\LastModifiedFilePattern;
+use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern\PatternInterface;
 use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern\UniqIdPattern;
 
-class FileNameGenerator
+class FileNameGenerator implements PatternInterface
 {
 
     const BASIC_FILENAME = 'fail-lover.txt';
@@ -69,6 +70,9 @@ class FileNameGenerator
         return $dateTimePattern->getGeneratedFileName();
     }
 
+    /**
+     * @return string
+     */
     public function getGeneratedFileName()
     {
         if ($this->pattern === '') {
