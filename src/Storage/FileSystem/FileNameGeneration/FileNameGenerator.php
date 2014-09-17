@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Nikoms\FailLover\Storage\FileSystem;
+namespace Nikoms\FailLover\Storage\FileSystem\FileNameGeneration;
 
 
 use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern\DateTimePattern;
 use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern\LastModifiedFilePattern;
 use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern\UniqIdPattern;
 
-class FileNamePattern
+class FileNameGenerator
 {
 
     const BASIC_FILENAME = 'fail-lover.txt';

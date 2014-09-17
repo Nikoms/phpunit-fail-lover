@@ -1,11 +1,11 @@
 <?php
 
 
-use Nikoms\FailLover\Storage\FileSystem\FileNamePattern;
+use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\FileNameGenerator;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 
-class FileNamePatternTest extends \PHPUnit_Framework_TestCase
+class FileNameGeneratorTest extends \PHPUnit_Framework_TestCase
 {
 
     public static function setUpBeforeClass()
@@ -31,34 +31,34 @@ class FileNamePatternTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string$fileName
-     * @return FileNamePattern
+     * @return FileNameGenerator
      */
-    private function getFileNamePattern($fileName)
+    private function getFileNameGenerator($fileName)
     {
-        return new FileNamePattern($fileName);
+        return new FileNameGenerator($fileName);
     }
 
     public function testCreate_WhenPatternIsEmpty_ReturnAStaticFileName()
     {
-        $this->assertSame(FileNamePattern::BASIC_FILENAME, $this->getFileNamePattern('')->getGeneratedFileName());
+        $this->assertSame(FileNameGenerator::BASIC_FILENAME, $this->getFileNameGenerator('')->getGeneratedFileName());
     }
 
     public function testCreate_WhenPatternIsAFolder_ReturnTheFolderWithTheStaticFileName()
     {
         $folder = $this->root->url();
-        $this->assertSame($folder . '/' . FileNamePattern::BASIC_FILENAME, $this->getFileNamePattern($folder)->getGeneratedFileName());
+        $this->assertSame($folder . '/' . FileNameGenerator::BASIC_FILENAME, $this->getFileNameGenerator($folder)->getGeneratedFileName());
     }
 
     public function testCreate_WhenPatternHasDateTimePattern_ReplaceItByTheCurrentDateTime()
     {
         $pattern = sprintf('%s:datetime', $this->root->url());
-        $this->assertSame($this->root->url() . '/' . date('Y-m-d-His'), $this->getFileNamePattern($pattern)->getGeneratedFileName());
+        $this->assertSame($this->root->url() . '/' . date('Y-m-d-His'), $this->getFileNameGenerator($pattern)->getGeneratedFileName());
     }
 
     public function testCreate_WhenPatternHasUniqId_ReplaceItByAUniqId()
     {
         $pattern = sprintf('%s:uniqId', $this->root->url());
-        $this->assertSame($this->root->url() . '/xoxoSuperUniqId', $this->getFileNamePattern($pattern)->getGeneratedFileName());
+        $this->assertSame($this->root->url() . '/xoxoSuperUniqId', $this->getFileNameGenerator($pattern)->getGeneratedFileName());
     }
 
     public function testCreate_WhenPatternHasUniqIdAlreadyTaken_FindTheNextUniqId()
@@ -67,7 +67,7 @@ class FileNamePatternTest extends \PHPUnit_Framework_TestCase
             ->at($this->root);
 
         $pattern = sprintf('%s:uniqId', $this->root->url());
-        $this->assertSame($this->root->url() . '/xoxoSuperUniqId_1', $this->getFileNamePattern($pattern)->getGeneratedFileName());
+        $this->assertSame($this->root->url() . '/xoxoSuperUniqId_1', $this->getFileNameGenerator($pattern)->getGeneratedFileName());
     }
 
     public function testCreate_WhenPatternHasLast_ReplaceItByTheLastModifiedFile()
@@ -81,15 +81,15 @@ class FileNamePatternTest extends \PHPUnit_Framework_TestCase
 
         $folder = $this->root->url();
 
-        $this->assertSame($folder . '/second.csv', $this->getFileNamePattern($folder . ':last')->getGeneratedFileName());
-        $this->assertSame($folder . '/second.csv', $this->getFileNamePattern($folder . '/:last')->getGeneratedFileName());
+        $this->assertSame($folder . '/second.csv', $this->getFileNameGenerator($folder . ':last')->getGeneratedFileName());
+        $this->assertSame($folder . '/second.csv', $this->getFileNameGenerator($folder . '/:last')->getGeneratedFileName());
     }
 
     public function testCreate_WhenPatternHasLastAndThereIsNoFile_ReplaceItByTheDefaultFile()
     {
         $this->assertSame(
-            $this->root->url() . '/' . FileNamePattern::BASIC_FILENAME,
-            $this->getFileNamePattern($this->root->url() . ':last')->getGeneratedFileName()
+            $this->root->url() . '/' . FileNameGenerator::BASIC_FILENAME,
+            $this->getFileNameGenerator($this->root->url() . ':last')->getGeneratedFileName()
         );
     }
 
@@ -97,7 +97,7 @@ class FileNamePatternTest extends \PHPUnit_Framework_TestCase
     {
         $unknownFolder = $this->root->url() . '/unknown_folder';
         $this->setExpectedException('\InvalidArgumentException');
-        $this->getFileNamePattern($unknownFolder . ':last')->getGeneratedFileName();
+        $this->getFileNameGenerator($unknownFolder . ':last')->getGeneratedFileName();
     }
 
     public function testCreate_WhenPatternHasLastOnFile_ThrowsException()
@@ -107,6 +107,6 @@ class FileNamePatternTest extends \PHPUnit_Framework_TestCase
 
         $pathToFile = $this->root->url() . '/file.csv';
         $this->setExpectedException('\InvalidArgumentException');
-        $this->getFileNamePattern($pathToFile . ':last')->getGeneratedFileName();
+        $this->getFileNameGenerator($pathToFile . ':last')->getGeneratedFileName();
     }
 }

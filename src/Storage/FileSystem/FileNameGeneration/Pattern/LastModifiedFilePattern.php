@@ -9,7 +9,8 @@
 namespace Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern;
 
 
-use Nikoms\FailLover\Storage\FileSystem\FileNamePattern;
+
+use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\FileNameGenerator;
 
 class LastModifiedFilePattern extends RegexPattern implements PatternInterface
 {
@@ -24,10 +25,10 @@ class LastModifiedFilePattern extends RegexPattern implements PatternInterface
             $this->getPattern(),
             'last',
             function ($matches) {
-                $dir = FileNamePattern::addRightSlash($matches[1]);
+                $dir = FileNameGenerator::addRightSlash($matches[1]);
                 $lastModifiedFile = LastModifiedFilePattern::getLastModifiedFile($dir);
                 if (empty($lastModifiedFile)) {
-                    $lastModifiedFile = FileNamePattern::BASIC_FILENAME;
+                    $lastModifiedFile = FileNameGenerator::BASIC_FILENAME;
                 }
 
                 return $dir . $lastModifiedFile;

@@ -9,7 +9,8 @@
 namespace Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\Pattern;
 
 
-use Nikoms\FailLover\Storage\FileSystem\FileNamePattern;
+
+use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\FileNameGenerator;
 
 class DateTimePattern extends RegexPattern implements PatternInterface
 {
@@ -23,7 +24,7 @@ class DateTimePattern extends RegexPattern implements PatternInterface
             $this->getPattern(),
             'datetime',
             function ($matches) {
-                return FileNamePattern::addRightSlash($matches[1]) . date('Y-m-d-His');
+                return FileNameGenerator::addRightSlash($matches[1]) . date('Y-m-d-His');
             }
         );
     }

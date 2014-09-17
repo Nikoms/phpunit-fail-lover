@@ -12,7 +12,7 @@ namespace Nikoms\FailLover\Listener;
 use Exception;
 use Nikoms\FailLover\Storage\FileSystem\Csv\CsvReader;
 use Nikoms\FailLover\Storage\FileSystem\Csv\CsvRecorder;
-use Nikoms\FailLover\Storage\FileSystem\FileNamePattern;
+use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\FileNameGenerator;
 use PHPUnit_Framework_AssertionFailedError;
 use PHPUnit_Framework_Test;
 use PHPUnit_Framework_TestSuite;
@@ -30,7 +30,7 @@ class FailLoverListener extends \PHPUnit_Framework_BaseTestListener
 
     public function __construct($filePattern)
     {
-        $fileGenerator = new FileNamePattern($filePattern);
+        $fileGenerator = new FileNameGenerator($filePattern);
         $fileName = $fileGenerator->getGeneratedFileName();
         $this->loggerListener = new LoggerListener(new CsvRecorder($fileName));
         $this->replayListener = new ReplayListener(new CsvReader($fileName));
