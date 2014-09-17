@@ -46,7 +46,7 @@ class LoggerListenerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param \PHPUnit_Framework_MockObject_Matcher_Invocation $invocation
      */
-    private function assertRecorderInvocationWithParametersOnFailure(
+    private function assertRecorderInvocationOnFailure(
         \PHPUnit_Framework_MockObject_Matcher_Invocation $invocation
     ) {
         $listener = $this->getListener($invocation, $this->never(), $this->never());
@@ -56,7 +56,7 @@ class LoggerListenerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param \PHPUnit_Framework_MockObject_Matcher_Invocation $invocation
      */
-    private function assertRecorderInvocationWithParametersOnError(
+    private function assertRecorderInvocationOnError(
         \PHPUnit_Framework_MockObject_Matcher_Invocation $invocation
     ) {
         $listener = $this->getListener($invocation, $this->never(), $this->never());
@@ -65,15 +65,15 @@ class LoggerListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testFailingTests_WhenLogIsActive_RecorderIsCalled()
     {
-        $this->assertRecorderInvocationWithParametersOnFailure($this->once());
-        $this->assertRecorderInvocationWithParametersOnError($this->once());
+        $this->assertRecorderInvocationOnFailure($this->once());
+        $this->assertRecorderInvocationOnError($this->once());
     }
 
     public function testFailingTests_WhenLogIsNotDisabled_RecorderIsNotCalled()
     {
         $this->disableLog();
-        $this->assertRecorderInvocationWithParametersOnFailure($this->never());
-        $this->assertRecorderInvocationWithParametersOnError($this->never());
+        $this->assertRecorderInvocationOnFailure($this->never());
+        $this->assertRecorderInvocationOnError($this->never());
     }
 
     public function testStartTestSuite_WhenLogIsOn_ClearIsCalled()
