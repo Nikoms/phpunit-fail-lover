@@ -43,7 +43,7 @@ Here is a configuration for the plugin. Add the listener to your phpunit.xml(.di
 </phpunit>
 ```
 
-If the specified file doesn't exist, it will be created. A good practice is to give a path where you already create files, like "code coverage" for example. Be careful that it **won't create any folder** for you.
+If the specified file/folder doesn't exist, it will be created. A good practice is to give a path where you already create files, like "code coverage" for example.
 
 ## Usage
 

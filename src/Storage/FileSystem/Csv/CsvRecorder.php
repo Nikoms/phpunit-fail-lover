@@ -40,7 +40,8 @@ class CsvRecorder implements RecorderInterface
      */
     public function add(\PHPUnit_Framework_TestCase $testCase)
     {
-        if (($fp = @fopen($this->filePath, 'a+')) === false) {
+        $this->createRecordFile();
+        if (($fp = @fopen($this->filePath, 'a')) === false) {
             throw new OutputNotAvailableException();
         }
         $added = false !== fputcsv($fp, $this->getColumns($testCase));
@@ -84,5 +85,17 @@ class CsvRecorder implements RecorderInterface
             return unlink($this->filePath);
         }
         return true;
+    }
+
+    private function createRecordFile()
+    {
+        if (!file_exists($this->filePath)) {
+            $pathInfo = pathinfo($this->filePath);
+            $folderPath = $pathInfo['dirname'];
+            if (!file_exists($folderPath)) {
+                mkdir($folderPath, 0777, true);
+            }
+            file_put_contents($this->filePath, '');
+        }
     }
 }

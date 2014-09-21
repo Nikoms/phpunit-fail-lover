@@ -47,6 +47,14 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $this->assertFileExists($filePath);
     }
 
+    public function testConstruct_WhenTheFolderDoesNotExists_TheFolderIsCreated()
+    {
+        $filePath = $this->root->url() . '/unknown_dir/unknown_file.csv';
+        $recorder = new CsvRecorder($filePath);
+        $recorder->add(new FilterTestMock('testSimple'));
+        $this->assertFileExists($filePath);
+    }
+
     public function testConstruct_WhenTheFileIsEmpty_AnExceptionOccur()
     {
         $this->setExpectedException('\InvalidArgumentException');
@@ -57,14 +65,6 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
     {
         $this->setExpectedException('\InvalidArgumentException');
         new CsvRecorder($this->root->url());
-    }
-
-    public function testConstruct_WhenTheFolderDoesNotExists_AnExceptionOccur()
-    {
-        $recorder = new CsvRecorder($this->root->url() . '/unknown_dir/unknown_file.csv');
-
-        $this->setExpectedException('Nikoms\FailLover\TestCaseResult\Exception\OutputNotAvailableException');
-        $recorder->add(new FilterTestMock('testSimple'));
     }
 
     public function testAdd_WhenTheFileIsEmpty_OneLineIsAdded()
