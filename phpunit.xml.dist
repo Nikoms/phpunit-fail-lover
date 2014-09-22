@@ -25,11 +25,7 @@
         </whitelist>
     </filter>
     <listeners>
-        <listener class="Nikoms\FailLover\Listener\FailLoverListener" file="src/Listener/FailLoverListener.php">
-            <arguments>
-                <string>output/only-one-fail-lover-file.csv</string>
-            </arguments>
-        </listener>
+        <listener class="Nikoms\FailLover\Listener\FailLoverListener" file="src/Listener/FailLoverListener.php" />
         <!--<listener class="Nikoms\FailLover\Listener\LoggerListener" file="src/Listener/LoggerListener.php">-->
             <!--<arguments>-->
                 <!--<object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvRecorder">-->

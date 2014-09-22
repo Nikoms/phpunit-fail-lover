@@ -27,23 +27,17 @@ Then run `php composer.phar install`
 
 ## Quick configuration
 
-Here is a configuration for the plugin. Add the listener to your phpunit.xml(.dist) file:
+Just add the listener to your phpunit.xml(.dist) file:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit>
     ...
     <listeners>
-        <listener class="Nikoms\FailLover\Listener\FailLoverListener" file="src/Listener/FailLoverListener.php">
-            <arguments>
-                <string>output/only-one-fail-lover-file.csv</string>
-            </arguments>
-        </listener>
+        <listener class="Nikoms\FailLover\Listener\FailLoverListener" file="src/Listener/FailLoverListener.php" />
     </listeners>
 </phpunit>
 ```
-
-If the specified file/folder doesn't exist, it will be created. A good practice is to give a path where you already create files, like "code coverage" for example.
 
 ## Usage
 
@@ -62,7 +56,7 @@ What does it do?
 
 ### Temporary disable listener
 
-You can temporary disable the *log* or *replay* plugin by simply add argumentx to the `phpunit` command:
+You can temporary disable the *log* or *replay* plugin by simply add argument to the `phpunit` command:
 
 * To disable *log*, use `-d fail-lover=log-disabled`
 * To disable *replay*, use `-d fail-lover=replay-disabled`
@@ -72,6 +66,28 @@ Of course you can disable both:
 
 
 **Important note about "replay" mode: ** When the *replay* mode is used, filter options like `--exclude-group`, `--group` and `--filter` will be **removed**.
+
+### Input/Output
+
+By default, the listener use `output/fail-lover.csv` to read and write the tests that failed. You can customize it by changing the listener this way:
+
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit>
+    ...
+    <listeners>
+        <listener class="Nikoms\FailLover\Listener\FailLoverListener" file="src/Listener/FailLoverListener.php">
+            <arguments>
+                <string>any/folder/myFile.whatever</string>
+            </arguments>
+        </listener>
+    </listeners>
+</phpunit>
+```
+
+If the specified file and folder don't exist, they will be created. A good practice is to give a path where you already create files, like "code coverage" for example.
+
 
 ### File name helper
 
