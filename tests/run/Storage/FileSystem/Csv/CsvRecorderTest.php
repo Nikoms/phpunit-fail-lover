@@ -55,19 +55,19 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $this->assertFileExists($filePath);
     }
 
-    public function testConstruct_WhenTheFileIsEmpty_AnExceptionOccur()
+    public function testConstruct_WhenThePathIsEmpty_AnExceptionOccur()
     {
         $this->setExpectedException('\InvalidArgumentException');
         new CsvRecorder('');
     }
 
-    public function testConstruct_WhenTheFileIsAFolder_AnExceptionOccur()
+    public function testConstruct_WhenThePathIsAFolder_AnExceptionOccur()
     {
         $this->setExpectedException('\InvalidArgumentException');
         new CsvRecorder($this->root->url());
     }
 
-    public function testAdd_WhenTheFileIsEmpty_OneLineIsAdded()
+    public function testAdd_WhenTheGivenFileIsEmpty_OneLineIsAdded()
     {
         $filePath = $this->root->url() . '/empty_file.csv';
         $recorder = new CsvRecorder($filePath);
