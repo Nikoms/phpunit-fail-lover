@@ -59,10 +59,10 @@ What does it do?
 You can temporary disable the *log* or *replay* plugin by simply add argument to the `phpunit` command:
 
 * To disable *log*, use `-d fail-lover=log:disabled`
-* To disable *replay*, use `-d fail-lover=replay-disabled`
+* To disable *replay*, use `-d fail-lover=replay:disabled`
 
 Of course you can disable both:
-`phpunit -d fail-lover=log:disabled -d fail-lover=replay-disabled`
+`phpunit -d fail-lover=log:disabled -d fail-lover=replay:disabled`
 
 
 **Important note about "replay" mode: ** When the *replay* mode is used, filter options like `--exclude-group`, `--group` and `--filter` will be **removed**.

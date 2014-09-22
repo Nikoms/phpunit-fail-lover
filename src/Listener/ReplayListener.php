@@ -47,6 +47,6 @@ class ReplayListener extends \PHPUnit_Framework_BaseTestListener
      */
     private function isReplayActive()
     {
-        return !$this->parser->hasAction('replay-disabled');
+        return !$this->parser->hasAction('replay:disabled');
     }
 }

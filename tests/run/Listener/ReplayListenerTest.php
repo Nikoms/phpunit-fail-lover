@@ -26,7 +26,7 @@ class ReplayListenerTest extends \PHPUnit_Framework_TestCase
 
     private function disableListener()
     {
-        $this->initCommandArguments('-d fail-lover=replay-disabled');
+        $this->initCommandArguments('-d fail-lover=replay:disabled');
     }
 
     /**
