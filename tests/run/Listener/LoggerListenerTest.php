@@ -116,7 +116,7 @@ class LoggerListenerTest extends \PHPUnit_Framework_TestCase
 
     private function disableLog()
     {
-        $this->initCommandArguments('-d fail-lover=log-disabled');
+        $this->initCommandArguments('-d fail-lover=log:disabled');
     }
 }
  
