@@ -109,7 +109,8 @@ Sometimes, you may want to generate an alternative/dynamic file name. These are 
 </phpunit>
 ```
 
-This will generate the file `path/to/ouput/folder/2014-09-16-225536`.
+**Log**: It will log tests that failed in the file `path/to/ouput/folder/2014-09-16-225536`.
+**Replay**: All tests will be launch.
 
 #### uniqId
 
@@ -127,7 +128,8 @@ This will generate the file `path/to/ouput/folder/2014-09-16-225536`.
 </phpunit>
 ```
 
-This will generate the file `path/to/ouput/folder/54177f8845685`.
+**Log**: It will log test that failed in a unique file name like `path/to/ouput/folder/54177f8845685`.
+**Replay**: All tests will be launch.
 
 #### last
 
@@ -145,8 +147,9 @@ This will generate the file `path/to/ouput/folder/54177f8845685`.
 </phpunit>
 ```
 
+**Log**: It will write tests that failed in the last modified file of the folder `path/to/ouput/folder`. If the folder is empty and at least one test fails, it creates the file `fail-lover.txt`.
+**Replay**: It will only launch tests from the last modified file in the folder `path/to/ouput/folder`. If the folder is empty, all tests will be executed.
 
-This will only re-use the last modified file in the folder `path/to/ouput/folder`. If the folder is empty, it creates the file `fail-lover.txt`.
 
 
 
@@ -156,7 +159,7 @@ You can use a different file for the *log* and the *replay* by using separated l
 
 #### Log only
 
-To activate the *log* plugin. Add the listener to your phpunit.xml(.dist) file:
+If you just want to activate the *log* plugin because you just want to keep an history of failing tests. Add the listener to your phpunit.xml(.dist) file:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -167,7 +170,7 @@ To activate the *log* plugin. Add the listener to your phpunit.xml(.dist) file:
             <arguments>
                 <object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvRecorder">
                     <arguments>
-                        <string>tests-that-failed-again.csv</string>
+                        <string>tests-that-failed.csv</string>
                     </arguments>
                 </object>
             </arguments>
@@ -178,7 +181,7 @@ To activate the *log* plugin. Add the listener to your phpunit.xml(.dist) file:
 
 #### Replay only
 
-To activate the *replay* plugin. Add the listener to your phpunit.xml(.dist) file:
+If you just want to activate the *replay* plugin because you only want to launch some tests broken before. Add the listener to your phpunit.xml(.dist) file:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
