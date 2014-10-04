@@ -21,11 +21,11 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $this->root = vfsStream::setup('root',null, array(
                 'empty_file.csv' => '',
                 'not_empty_file.csv' => 'This file is not empty',
-                'empty_file_after_add_one_line.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testSimple,,' . "\n",
-                'empty_file_after_add_two_lines.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testSimple,,' . "\n" . '"Nikoms\FailLover\Tests\FilterTestMock",testToRun,,' . "\n",
-                'empty_file_after_add_one_line_with_indexed_data_0.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testWithIndexedDataProvider,0,' . "\n",
-                'empty_file_after_add_two_lines_with_indexed_data.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testWithIndexedDataProvider,0,' . "\n" . '"Nikoms\FailLover\Tests\FilterTestMock",testWithIndexedDataProvider,myIndex,' . "\n",
-                'empty_file_after_add_one_line_with_double_quote_index.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testWithIndexedDataProvider,"""myIndex""",' . "\n",
+                'one_line.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testSimple,,' . "\n",
+                'two_lines.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testSimple,,' . "\n" . '"Nikoms\FailLover\Tests\FilterTestMock",testToRun,,' . "\n",
+                'one_line_with_indexed_data_0.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testWithIndexedDataProvider,0,' . "\n",
+                'two_lines_with_indexed_data.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testWithIndexedDataProvider,0,' . "\n" . '"Nikoms\FailLover\Tests\FilterTestMock",testWithIndexedDataProvider,myIndex,' . "\n",
+                'one_line_with_double_quote_index.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testWithIndexedDataProvider,"""myIndex""",' . "\n",
             )
         );
     }
@@ -73,7 +73,7 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $recorder = new CsvRecorder($filePath);
         $this->assertTrue($recorder->add(new FilterTestMock('testSimple')));
 
-        $this->assertFileEquals($this->root->url() . '/empty_file_after_add_one_line.csv', $filePath);
+        $this->assertFileEquals($this->root->url() . '/one_line.csv', $filePath);
     }
 
     public function testAdd_WhenAddIsCalledTwice_TwoLinesAreAdded()
@@ -84,7 +84,7 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($recorder->add(new FilterTestMock('testSimple')));
         $this->assertTrue($recorder->add(new FilterTestMock('testToRun')));
 
-        $this->assertFileEquals($this->root->url() . '/empty_file_after_add_two_lines.csv', $filePath);
+        $this->assertFileEquals($this->root->url() . '/two_lines.csv', $filePath);
     }
 
     public function testAdd_WhenAddAIndexedDataName_TheDataNameIsInAColumn()
@@ -93,7 +93,7 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $recorder = new CsvRecorder($filePath);
 
         $this->assertTrue($recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('no empty data'), '0')));
-        $this->assertFileEquals($this->root->url() . '/empty_file_after_add_one_line_with_indexed_data_0.csv', $filePath);
+        $this->assertFileEquals($this->root->url() . '/one_line_with_indexed_data_0.csv', $filePath);
     }
 
     public function testAdd_WhenAddTwoIndexedDataName_TwoLinesWithDataNameAreAdded()
@@ -103,7 +103,7 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertTrue($recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('data 0'), 0)));
         $this->assertTrue($recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('data 1'), 'myIndex')));
-        $this->assertFileEquals($this->root->url() . '/empty_file_after_add_two_lines_with_indexed_data.csv', $filePath);
+        $this->assertFileEquals($this->root->url() . '/two_lines_with_indexed_data.csv', $filePath);
     }
 
     public function testAdd_WhenAddAnIndexDataNameSurroundedByDoubleQuote_DoubleQuotesArePresent()
@@ -112,7 +112,7 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $recorder = new CsvRecorder($filePath);
 
         $this->assertTrue($recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('data 1'), '"myIndex"')));
-        $this->assertFileEquals($this->root->url() . '/empty_file_after_add_one_line_with_double_quote_index.csv', $filePath);
+        $this->assertFileEquals($this->root->url() . '/one_line_with_double_quote_index.csv', $filePath);
     }
 
     public function testRemove_WhenAFileExists_TheFileIsRemoved()
