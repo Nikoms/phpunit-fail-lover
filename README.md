@@ -34,7 +34,7 @@ Just add the listener to your phpunit.xml(.dist) file:
 <phpunit>
     ...
     <listeners>
-        <listener class="Nikoms\FailLover\Listener\FailLoverListener" file="src/Listener/FailLoverListener.php" />
+        <listener class="Nikoms\FailLover\Listener\FailLoverListener" />
     </listeners>
 </phpunit>
 ```
@@ -77,7 +77,7 @@ By default, the listener use `output/fail-lover.csv` to read and write the tests
 <phpunit>
     ...
     <listeners>
-        <listener class="Nikoms\FailLover\Listener\FailLoverListener" file="src/Listener/FailLoverListener.php">
+        <listener class="Nikoms\FailLover\Listener\FailLoverListener">
             <arguments>
                 <string>any/folder/myFile.whatever</string>
             </arguments>
@@ -100,7 +100,7 @@ Sometimes, you may want to generate an alternative/dynamic file name. These are 
 <phpunit>
     ...
     <listeners>
-        <listener class="Nikoms\FailLover\Listener\FailLoverListener" file="src/Listener/FailLoverListener.php">
+        <listener class="Nikoms\FailLover\Listener\FailLoverListener">
             <arguments>
                 <string>path/to/ouput/folder:datetime</string>
             </arguments>
@@ -109,7 +109,7 @@ Sometimes, you may want to generate an alternative/dynamic file name. These are 
 </phpunit>
 ```
 
-**Log**: It will log tests that failed in the file `path/to/ouput/folder/2014-09-16-225536`.
+**Log**: It will log tests that failed in the file name by the current time. Ex: `path/to/ouput/folder/2014-09-16-225536`.
 **Replay**: All tests will be launch.
 
 #### uniqId
@@ -119,7 +119,7 @@ Sometimes, you may want to generate an alternative/dynamic file name. These are 
 <phpunit>
     ...
     <listeners>
-        <listener class="Nikoms\FailLover\Listener\FailLoverListener" file="src/Listener/FailLoverListener.php">
+        <listener class="Nikoms\FailLover\Listener\FailLoverListener">
             <arguments>
                 <string>path/to/ouput/folder:uniqId</string>
             </arguments>
@@ -138,7 +138,7 @@ Sometimes, you may want to generate an alternative/dynamic file name. These are 
 <phpunit>
     ...
     <listeners>
-        <listener class="Nikoms\FailLover\Listener\FailLoverListener" file="src/Listener/FailLoverListener.php">
+        <listener class="Nikoms\FailLover\Listener\FailLoverListener">
             <arguments>
                 <string>path/to/ouput/folder:last</string>
             </arguments>
@@ -152,10 +152,9 @@ Sometimes, you may want to generate an alternative/dynamic file name. These are 
 
 
 
-
 ### Separate logger and replay
 
-You can use a different file for the *log* and the *replay* by using separated listeners. In fact, the basic `FailLoverListener` seen above is just a shortcut to these two listeners.
+You can use a different file for the *log* and the *replay* by using separated listeners. In fact, the `FailLoverListener` seen above is just a shortcut that uses these two listeners.
 
 #### Log only
 
@@ -166,7 +165,7 @@ If you just want to activate the *log* plugin because you just want to keep an h
 <phpunit>
     ...
     <listeners>
-        <listener class="Nikoms\FailLover\Listener\LoggerListener" file="vendor/nikoms/phpunit-fail-lover/src/Listener/LoggerListener.php">
+        <listener class="Nikoms\FailLover\Listener\LoggerListener">
             <arguments>
                 <object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvRecorder">
                     <arguments>
@@ -179,16 +178,36 @@ If you just want to activate the *log* plugin because you just want to keep an h
 </phpunit>
 ```
 
+You can specify a dynamic file instead of a static one by changing the parameter of the `Nikoms\FailLover\Storage\FileSystem\Csv\CsvRecorder`. Indeed, it accepts a string or an object implementing `Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\FileNameGeneratorInterface`.
+
+Here is a example that will log tests that failed in a new file named with the datetime:
+
+```
+<listener class="Nikoms\FailLover\Listener\LoggerListener">
+    <arguments>
+        <object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvRecorder">
+            <arguments>
+                <object class="Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\FileNameGenerator">
+                    <arguments>
+                        <string>output:datetime</string>
+                    </arguments>
+                </object>
+            </arguments>
+        </object>
+    </arguments>
+</listener>
+```
+
 #### Replay only
 
-If you just want to activate the *replay* plugin because you only want to launch some tests broken before. Add the listener to your phpunit.xml(.dist) file:
+If you just want to activate the *replay* plugin because you only want to launch some broken tests. Add the listener to your phpunit.xml(.dist) file:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit>
     ...
     <listeners>
-        <listener class="Nikoms\FailLover\Listener\ReplayListener" file="src/Listener/ReplayListener.php">
+        <listener class="Nikoms\FailLover\Listener\ReplayListener">
             <arguments>
                 <object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvReader">
                     <arguments>
@@ -201,7 +220,22 @@ If you just want to activate the *replay* plugin because you only want to launch
 </phpunit>
 ```
 
+You can also specify a dynamic path because the class `Nikoms\FailLover\Storage\FileSystem\Csv\CsvReader` also accepts a string or an object implementing `Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\FileNameGeneratorInterface`.
 
-## TODO
+Here is a example that will replay tests from the last modified file:
 
-* Give the possibility to use file name generator in specific listeners
+```
+<listener class="Nikoms\FailLover\Listener\ReplayListener">
+    <arguments>
+        <object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvReader">
+            <arguments>
+                <object class="Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\FileNameGenerator">
+                    <arguments>
+                        <string>output:last</string>
+                    </arguments>
+                </object>
+            </arguments>
+        </object>
+    </arguments>
+</listener>
+```
