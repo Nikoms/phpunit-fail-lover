@@ -4,6 +4,7 @@
 namespace Nikoms\FailLover\Storage\FileSystem\Csv;
 
 
+use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\FileNameGenerator;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 
@@ -19,9 +20,18 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase {
         $this->root = vfsStream::setup('root',null, array(
                 'empty_file.csv',
                 'one_line.csv' => '"className","method","dataName","data"',
-                'two_lines.csv' => '"className1","method1","dataName1","data1"'.PHP_EOL.'"className2","method2","dataName2","data2"',
+                'folderWithOneFile' => array(
+                    'two_lines.csv' => '"className1","method1","dataName1","data1"'.PHP_EOL.'"className2","method2","dataName2","data2"',
+                )
             )
         );
+    }
+
+    public function testGetList_WhenFileIsAFileNameGenerator_ItIsConvertedToString()
+    {
+        $fileNameGenerator = new FileNameGenerator($this->root->url().'/folderWithOneFile:last');
+        $reader = new CsvReader($fileNameGenerator);
+        $this->assertCount(2, $reader->getList());
     }
 
     public function testGetList_WhenFileDoesNotExist_TheListIsEmpty()
@@ -46,7 +56,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetList_WhenFileHasTwoLines_ThereIsTwoTests()
     {
-        $reader = new CsvReader($this->root->url() . '/two_lines.csv');
+        $reader = new CsvReader($this->root->url() . '/folderWithOneFile/two_lines.csv');
         $list = $reader->getList();
         $this->assertCount(2, $list);
     }

@@ -4,6 +4,7 @@
 namespace Nikoms\FailLover\Storage\FileSystem\Csv;
 
 
+use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\FileNameGeneratorInterface;
 use Nikoms\FailLover\TestCaseResult\Storage\ReaderInterface;
 use Nikoms\FailLover\TestCaseResult\TestCase;
 
@@ -27,10 +28,13 @@ class CsvReader implements ReaderInterface
 
 
     /**
-     * @param string $fileName
+     * @param string|FileNameGeneratorInterface $fileName
      */
     public function __construct($fileName)
     {
+        if ($fileName instanceof FileNameGeneratorInterface) {
+            $fileName = $fileName->getGeneratedFileName();
+        }
         $this->fileName = $fileName;
         $this->init();
     }
