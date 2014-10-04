@@ -25,8 +25,8 @@
         </whitelist>
     </filter>
     <listeners>
-        <listener class="Nikoms\FailLover\Listener\FailLoverListener" file="src/Listener/FailLoverListener.php" />
-        <!--<listener class="Nikoms\FailLover\Listener\LoggerListener" file="src/Listener/LoggerListener.php">-->
+        <listener class="Nikoms\FailLover\Listener\FailLoverListener" />
+        <!--<listener class="Nikoms\FailLover\Listener\LoggerListener">-->
             <!--<arguments>-->
                 <!--<object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvRecorder">-->
                     <!--<arguments>-->
@@ -35,7 +35,7 @@
                 <!--</object>-->
             <!--</arguments>-->
         <!--</listener>-->
-        <!--<listener class="Nikoms\FailLover\Listener\ReplayListener" file="src/Listener/ReplayListener.php">-->
+        <!--<listener class="Nikoms\FailLover\Listener\ReplayListener">-->
             <!--<arguments>-->
                 <!--<object class="Nikoms\FailLover\Storage\FileSystem\Csv\CsvReader">-->
                     <!--<arguments>-->
