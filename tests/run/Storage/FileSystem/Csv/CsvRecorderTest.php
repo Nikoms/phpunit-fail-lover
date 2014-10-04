@@ -5,11 +5,13 @@ namespace Nikoms\FailLover\TestCaseResult;
 
 
 use Nikoms\FailLover\Storage\FileSystem\Csv\CsvRecorder;
+use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\FileNameGenerator;
 use Nikoms\FailLover\Tests\FilterTestMock;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 
-class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
+class CsvRecorderTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @var vfsStreamDirectory
@@ -18,7 +20,10 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
 
     public function setUp()
     {
-        $this->root = vfsStream::setup('root',null, array(
+        $this->root = vfsStream::setup(
+            'root',
+            null,
+            array(
                 'empty_file.csv' => '',
                 'not_empty_file.csv' => 'This file is not empty',
                 'one_line.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testSimple,,' . "\n",
@@ -26,6 +31,7 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
                 'one_line_with_indexed_data_0.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testWithIndexedDataProvider,0,' . "\n",
                 'two_lines_with_indexed_data.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testWithIndexedDataProvider,0,' . "\n" . '"Nikoms\FailLover\Tests\FilterTestMock",testWithIndexedDataProvider,myIndex,' . "\n",
                 'one_line_with_double_quote_index.csv' => '"Nikoms\FailLover\Tests\FilterTestMock",testWithIndexedDataProvider,"""myIndex""",' . "\n",
+                'folderForGenerator' => array(),
             )
         );
     }
@@ -36,6 +42,17 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $recorder = new CsvRecorder($filePath);
         $recorder->clear();
         $this->assertFileEquals($this->root->url() . '/empty_file.csv', $filePath);
+    }
+
+
+    public function testGetList_WhenFileIsAFileNameGenerator_ItIsConvertedToString()
+    {
+        $fileNameGenerator = new FileNameGenerator($this->root->url() . '/folderForGenerator:last');
+        $fileNameGenerated = $this->root->url() . '/folderForGenerator/fail-lover.txt';
+        $recorder = new CsvRecorder($fileNameGenerator);
+        $recorder->add(new FilterTestMock('testSimple'));
+        $this->assertFileExists($fileNameGenerated);
+        $this->assertFileEquals($this->root->url() . '/one_line.csv', $fileNameGenerated);
     }
 
     public function testAdd_WhenTheFileDoesNotExist_TheFileIsCreated()
@@ -92,7 +109,9 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $filePath = $this->root->url() . '/empty_file.csv';
         $recorder = new CsvRecorder($filePath);
 
-        $this->assertTrue($recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('no empty data'), '0')));
+        $this->assertTrue(
+            $recorder->add(new FilterTestMock('testWithIndexedDataProvider', array('no empty data'), '0'))
+        );
         $this->assertFileEquals($this->root->url() . '/one_line_with_indexed_data_0.csv', $filePath);
     }
 
@@ -101,8 +120,10 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $filePath = $this->root->url() . '/empty_file.csv';
         $recorder = new CsvRecorder($filePath);
 
-        $this->assertTrue($recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('data 0'), 0)));
-        $this->assertTrue($recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('data 1'), 'myIndex')));
+        $this->assertTrue($recorder->add(new FilterTestMock('testWithIndexedDataProvider', array('data 0'), 0)));
+        $this->assertTrue(
+            $recorder->add(new FilterTestMock('testWithIndexedDataProvider', array('data 1'), 'myIndex'))
+        );
         $this->assertFileEquals($this->root->url() . '/two_lines_with_indexed_data.csv', $filePath);
     }
 
@@ -111,7 +132,9 @@ class CsvRecorderTest extends \PHPUnit_Framework_TestCase {
         $filePath = $this->root->url() . '/empty_file.csv';
         $recorder = new CsvRecorder($filePath);
 
-        $this->assertTrue($recorder->add(new FilterTestMock('testWithIndexedDataProvider',array('data 1'), '"myIndex"')));
+        $this->assertTrue(
+            $recorder->add(new FilterTestMock('testWithIndexedDataProvider', array('data 1'), '"myIndex"'))
+        );
         $this->assertFileEquals($this->root->url() . '/one_line_with_double_quote_index.csv', $filePath);
     }
 

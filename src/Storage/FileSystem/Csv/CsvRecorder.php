@@ -4,6 +4,7 @@
 namespace Nikoms\FailLover\Storage\FileSystem\Csv;
 
 
+use Nikoms\FailLover\Storage\FileSystem\FileNameGeneration\FileNameGeneratorInterface;
 use Nikoms\FailLover\TestCaseResult\Exception\OutputNotAvailableException;
 use Nikoms\FailLover\TestCaseResult\Storage\RecorderInterface;
 use Nikoms\FailLover\TestCaseResult\TestCaseFactory;
@@ -16,11 +17,14 @@ class CsvRecorder implements RecorderInterface
     private $filePath;
 
     /**
-     * @param string $filePath
+     * @param string|FileNameGeneratorInterface $filePath
      * @throws \InvalidArgumentException
      */
     public function __construct($filePath)
     {
+        if ($filePath instanceof FileNameGeneratorInterface) {
+            $filePath = $filePath->getGeneratedFileName();
+        }
         $filePath = (string)$filePath;
 
         if ($filePath === '') {
