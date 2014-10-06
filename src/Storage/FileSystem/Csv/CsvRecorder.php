@@ -22,19 +22,8 @@ class CsvRecorder implements RecorderInterface
      */
     public function __construct($filePath)
     {
-        if ($filePath instanceof FileNameGeneratorInterface) {
-            $filePath = $filePath->getGeneratedFileName();
-        }
-        $filePath = (string)$filePath;
-
-        if ($filePath === '') {
-            throw new \InvalidArgumentException();
-        }
-        if (file_exists($filePath) && is_dir($filePath)) {
-            throw new \InvalidArgumentException();
-        }
-
-        $this->filePath = $filePath;
+        $this->initFilePath($filePath);
+        $this->checkFilePath();
     }
 
     /**
@@ -100,6 +89,29 @@ class CsvRecorder implements RecorderInterface
                 mkdir($folderPath, 0777, true);
             }
             file_put_contents($this->filePath, '');
+        }
+    }
+
+    /**
+     * @param string|FileNameGeneratorInterface $filePath
+     * @return string
+     */
+    private function initFilePath($filePath)
+    {
+        if ($filePath instanceof FileNameGeneratorInterface) {
+            $filePath = $filePath->getGeneratedFileName();
+        }
+
+        $this->filePath = (string)$filePath;
+    }
+
+    private function checkFilePath()
+    {
+        if ($this->filePath === '') {
+            throw new \InvalidArgumentException();
+        }
+        if (file_exists($this->filePath) && is_dir($this->filePath)) {
+            throw new \InvalidArgumentException();
         }
     }
 }
