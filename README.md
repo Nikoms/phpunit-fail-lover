@@ -4,13 +4,13 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/Nikoms/phpunit-fail-lover/badges/coverage.png)](https://scrutinizer-ci.com/g/Nikoms/phpunit-fail-lover/)
 
 
-# Fail Lover <3
+# Fail Lover <3 Run tests that fails!
 
 * You have tests that failed?
 * You want to run them without running the tons of (selenium?) tests that take hours to execute?
 * You don't want to add a special debug `@group` annotation for all of them?
 
-No problem! This plugin allows you to **rerun only tests that failed**!
+No problem! This plugin allows you to **rerun only tests that just failed**!
 
 ## Installation
 
@@ -47,9 +47,9 @@ To use this plugin, simply run the phpunit command `phpunit`.
 
 What does it do?
 
-* The first time that the command is called, it will store the tests that failed into the file specified in the configuration (`output/only-one-fail-lover-file.csv` in our previous example).
+* The first time that the command is called, it will store the tests that failed into a csv file (`output/fail-lover.csv` by default. See the customize section to use another file).
 * The second time that the command is called, it will only run the tests placed in this file. Then, the file will be replaced by a new one that contains only tests that failed in the second execution. So your file may lose weight if you have corrected some tests.
-* Continue to call the command until the very last test passes. At the end, your file will be deleted and you will be able to run the entire suite again.
+* Continue to call the command until the very last test passes. It will delete the file and the entire suite again will be launched again.
 
 
 ## Customize
@@ -154,7 +154,7 @@ Sometimes, you may want to generate an alternative/dynamic file name. These are 
 
 ### Separate logger and replay
 
-You can use a different file for the *log* and the *replay* by using separated listeners. In fact, the `FailLoverListener` seen above is just a shortcut that uses these two listeners.
+You can use a different file for the *log* and the *replay* by using separated listeners. In fact, the `FailLoverListener` seen above is just a shortcut of these two listeners.
 
 #### Log only
 
