@@ -32,22 +32,36 @@ class Directory
      */
     public function getLastModifiedFileName()
     {
-
-        if (!$this->exists() || !($dh = opendir($this->dir))) {
+        if (!$this->exists()) {
             throw new \InvalidArgumentException($this->dir . ' is not a valid folder');
         }
 
         $lastFile = '';
         $lastModifiedTime = 0;
-        while (($file = readdir($dh)) !== false) {
-            if ($this->isFileValid($file) && $this->isFileMoreRecent($file, $lastModifiedTime)) {
+
+        foreach ($this->getFiles() as $file) {
+            if ($this->isFileMoreRecent($file, $lastModifiedTime)) {
                 $lastFile = $file;
                 $lastModifiedTime = filemtime($this->dir . $file);
             }
         }
-        closedir($dh);
 
         return $lastFile;
+    }
+
+    /**
+     * @return array
+     */
+    private function getFiles()
+    {
+        $files = array();
+        $dh = opendir($this->dir);
+        while (($file = readdir($dh)) !== false) {
+            if ($this->isFileValid($file)) {
+                $files[] = $file;
+            }
+        }
+        return $files;
     }
 
     /**
@@ -56,9 +70,7 @@ class Directory
      */
     private function isFileValid($file)
     {
-        return $file != '..'
-        && $file != '.'
-        && is_file($this->dir . $file);
+        return $file != '..' && $file != '.' && is_file($this->dir . $file);
     }
 
     /**
@@ -70,4 +82,4 @@ class Directory
     {
         return $lastModifiedTime < filemtime($this->dir . $file);
     }
-} 
+}
