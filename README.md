@@ -4,7 +4,9 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/Nikoms/phpunit-fail-lover/badges/coverage.png)](https://scrutinizer-ci.com/g/Nikoms/phpunit-fail-lover/)
 
 
-# Fail Lover <3 Run tests that fails!
+# Fail Lover <3
+
+## In two words
 
 * You have tests that failed?
 * You want to run them without running the tons of (selenium?) tests that take hours to execute?
