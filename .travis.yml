@@ -14,7 +14,6 @@ env:
 - PHPUNIT_VERSION=4.3.*
 - PHPUNIT_VERSION=4.4.*
 - PHPUNIT_VERSION=4.5.*
-- PHPUNIT_VERSION=4.6.*@dev
 
 cache:
   directories:
